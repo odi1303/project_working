@@ -47,7 +47,7 @@ public class PrimaryController {
 	@FXML
 	void write00(ActionEvent event) throws IOException {
 		Button00.setText(SimpleClient.sign);
-		logicBoard[0][0]=Button00.getText();
+		logicBoard[0][0]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("0,0");
 	}
@@ -55,7 +55,7 @@ public class PrimaryController {
 	@FXML
 	void write01(ActionEvent event) throws IOException {
 		Button01.setText(SimpleClient.sign);
-		logicBoard[0][1]=Button01.getText();
+		logicBoard[0][1]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("0,1");
 	}
@@ -63,7 +63,7 @@ public class PrimaryController {
 	@FXML
 	void write02(ActionEvent event) throws IOException {
 		Button02.setText(SimpleClient.sign);
-		logicBoard[0][2]=Button02.getText();
+		logicBoard[0][2]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("0,2");
 	}
@@ -71,7 +71,7 @@ public class PrimaryController {
 	@FXML
 	void write10(ActionEvent event) throws IOException {
 		Button10.setText(SimpleClient.sign);
-		logicBoard[1][0]=Button10.getText();
+		logicBoard[1][0]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("1,0");
 	}
@@ -79,7 +79,7 @@ public class PrimaryController {
 	@FXML
 	void write11(ActionEvent event) throws IOException {
 		Button11.setText(SimpleClient.sign);
-		logicBoard[1][1]=Button11.getText();
+		logicBoard[1][1]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("1,1");
 	}
@@ -87,7 +87,7 @@ public class PrimaryController {
 	@FXML
 	void write12(ActionEvent event) throws IOException {
 		Button12.setText(SimpleClient.sign);
-		logicBoard[1][2]=Button12.getText();
+		logicBoard[1][2]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("1,2");
 	}
@@ -95,7 +95,7 @@ public class PrimaryController {
 	@FXML
 	void write20(ActionEvent event) throws IOException {
 		Button20.setText(SimpleClient.sign);
-		logicBoard[2][0]=Button20.getText();
+		logicBoard[2][0]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("2,0");
 	}
@@ -103,7 +103,7 @@ public class PrimaryController {
 	@FXML
 	void write21(ActionEvent event) throws IOException {
 		Button21.setText(SimpleClient.sign);
-		logicBoard[2][1]=Button21.getText();
+		logicBoard[2][1]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("2,1");
 	}
@@ -111,7 +111,7 @@ public class PrimaryController {
 	@FXML
 	void write22(ActionEvent event) throws IOException {
 		Button22.setText(SimpleClient.sign);
-		logicBoard[2][2]=Button22.getText();
+		logicBoard[2][2]=SimpleClient.sign;
 		disableBoard();
 		SimpleClient.getClient().sendToServer("2,2");
 
@@ -135,44 +135,46 @@ public class PrimaryController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		disableBoard();
+		updateButtons();
+		//disableBoard();
 
 	}
 	@FXML
 	void myTurn(String[][]board){
-		updateButtons();
 		logicBoard=board;
-		disableBoard();//the turn is over
+		//disableBoard();//the turn is over
+		updateButtons();
+
 
 	}
 	@FXML
 	void updateButtons(){
 		Button00.setText(logicBoard[0][0]);
-		if (Button00.getText()==" ")
+		if (logicBoard[0][0]=="0")
 			Button00.setDisable(false);
 		Button01.setText(logicBoard[0][1]);
-		if (Button01.getText()==" ")
+		if (logicBoard[0][1]=="0")
 			Button01.setDisable(false);
 		Button02.setText(logicBoard[0][2]);
-		if (Button02.getText()==" ")
+		if (logicBoard[0][2]=="0")
 			Button02.setDisable(false);
 		Button10.setText(logicBoard[1][0]);
-		if (Button10.getText()==" ")
+		if (logicBoard[1][0]=="0")
 			Button10.setDisable(false);
 		Button11.setText(logicBoard[1][1]);
-		if (Button11.getText()==" ")
+		if (logicBoard[1][1]=="0")
 			Button11.setDisable(false);
 		Button12.setText(logicBoard[1][2]);
-		if (Button12.getText()==" ")
+		if (logicBoard[1][2]=="0")
 			Button12.setDisable(false);
 		Button20.setText(logicBoard[2][0]);
-		if (Button20.getText()==" ")
+		if (logicBoard[2][0]=="0")
 			Button20.setDisable(false);
 		Button21.setText(logicBoard[2][1]);
-		if (Button21.getText()==" ")
+		if (logicBoard[2][1]=="0")
 			Button21.setDisable(false);
 		Button22.setText(logicBoard[2][2]);
-		if (Button22.getText()==" ")
+		if (logicBoard[2][2]=="0")
 			Button22.setDisable(false);
 	}
 	void disableBoard(){

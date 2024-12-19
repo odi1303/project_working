@@ -27,12 +27,27 @@ public class SimpleClient extends AbstractClient {
 			else if(message.contains("O"))
 				sign="O";
 		}
+
 		else{
-			String[][] board=(String[][]) msg;
-			primaryController.myTurn(board);
+			String[][] board=translateFromStringToArr(message);
+			System.out.println(board);
+			myTurn(board);
 		}
 
 	}
+
+	public String[][] translateFromStringToArr(String temp){
+		String[][] board=new String[3][3];
+		char tempChar;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				tempChar = temp.charAt(i*3+j);
+				board[i][j]=tempChar+"";
+			}
+		}
+		return board;
+	}
+
 	public static String[][] myTurn(String[][] givenboard){
 
 		primaryController.myTurn(givenboard);
