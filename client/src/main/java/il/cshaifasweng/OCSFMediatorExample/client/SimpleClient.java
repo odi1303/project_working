@@ -71,6 +71,9 @@ public class SimpleClient extends AbstractClient {
 			if (message.contains("X")) {
 				sign = "X";
 				System.out.println("My sign is X");
+				Platform.runLater(() -> {
+					primaryController.disableBoard();
+				});
 			} else if (message.contains("O")) {
 				sign = "O";
 				Platform.runLater(() -> {
@@ -79,8 +82,14 @@ public class SimpleClient extends AbstractClient {
 			}
 		} else if (message.equals("all clients are connected")) {
 			System.out.println("All clients are connected.");
+			if (sign.equals("X")) {
+				Platform.runLater(() -> {
+					primaryController.enableBoard();
+				});
+			}
 		} else if (message.equals("0move")) {
 			System.out.println("Received '0move'. No action required.");
+			primaryController.writingSign(sign);
 		}
 		else {
 			System.err.println("Unhandled message: " + message);

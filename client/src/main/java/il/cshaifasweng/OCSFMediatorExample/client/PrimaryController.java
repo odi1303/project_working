@@ -131,7 +131,6 @@ public class PrimaryController {
 
 	@FXML
 	void write22(ActionEvent event) throws IOException {
-		System.out.println("2,2 pressed");
 		Button22.setText(SimpleClient.sign);
 		logicBoard[2][2]=SimpleClient.sign;
 		disableBoard();
@@ -342,8 +341,7 @@ public class PrimaryController {
 		Button22.setDisable(true);
 	}
 
-	void unableBoard(){
-		System.out.println("unable board");
+	void enableBoard(){
 		Button00.setDisable(false);
 		Button01.setDisable(false);
 		Button02.setDisable(false);
@@ -353,6 +351,14 @@ public class PrimaryController {
 		Button20.setDisable(false);
 		Button21.setDisable(false);
 		Button22.setDisable(false);
+	}
+
+	@FXML
+	void writingSign(String sign){
+		Platform.runLater(() -> {
+			welcomeLabel.setText("My sign is "+sign);
+		});
+
 	}
 
 	void initializeBoard(){
