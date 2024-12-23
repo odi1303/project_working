@@ -36,6 +36,7 @@ public class Game {
     public boolean checkHorizontal(){
         for (int i = 0; i < 3; i++) {
             if (board[i][0]!="0"&&board[i][0].equals(board[i][1]) && board[i][1].equals(board[i][2])  ) {
+                winner=board[i][0];
                 return true;
             }
         }
@@ -58,7 +59,7 @@ public class Game {
             return true;
         }
         else if (board[0][2]!="0"&&board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0])  ) {
-            winner=board[0][2];
+            winner=board[1][1];
             return true;
         }
         else
