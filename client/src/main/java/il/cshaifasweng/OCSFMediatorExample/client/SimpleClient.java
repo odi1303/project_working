@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -72,7 +73,9 @@ public class SimpleClient extends AbstractClient {
 				System.out.println("My sign is X");
 			} else if (message.contains("O")) {
 				sign = "O";
-				primaryController.disableBoard();
+				Platform.runLater(() -> {
+					primaryController.disableBoard();
+				});
 			}
 		} else if (message.equals("all clients are connected")) {
 			System.out.println("All clients are connected.");

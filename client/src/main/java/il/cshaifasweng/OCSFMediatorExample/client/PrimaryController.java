@@ -58,11 +58,11 @@ public class PrimaryController {
 
 	@FXML
 	void write00(ActionEvent event) throws IOException {
-		System.out.println("write00"+SimpleClient.sign);
 		Button00.setText(SimpleClient.sign);
 		logicBoard[0][0]=SimpleClient.sign;
 		SimpleClient.getClient().sendToServer("0,0"+SimpleClient.sign);
 		disableBoard();
+		Tie();
 		printBoard();
 	}
 
@@ -71,6 +71,7 @@ public class PrimaryController {
 		Button01.setText(SimpleClient.sign);
 		logicBoard[0][1]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("0,1"+SimpleClient.sign);
 	}
 
@@ -79,6 +80,7 @@ public class PrimaryController {
 		Button02.setText(SimpleClient.sign);
 		logicBoard[0][2]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("0,2"+SimpleClient.sign);
 	}
 
@@ -87,6 +89,7 @@ public class PrimaryController {
 		Button10.setText(SimpleClient.sign);
 		logicBoard[1][0]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("1,0"+SimpleClient.sign);
 	}
 
@@ -95,6 +98,7 @@ public class PrimaryController {
 		Button11.setText(SimpleClient.sign);
 		logicBoard[1][1]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("1,1"+SimpleClient.sign);
 	}
 
@@ -103,6 +107,7 @@ public class PrimaryController {
 		Button12.setText(SimpleClient.sign);
 		logicBoard[1][2]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("1,2"+SimpleClient.sign);
 	}
 
@@ -111,6 +116,7 @@ public class PrimaryController {
 		Button20.setText(SimpleClient.sign);
 		logicBoard[2][0]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("2,0"+SimpleClient.sign);
 	}
 
@@ -119,6 +125,7 @@ public class PrimaryController {
 		Button21.setText(SimpleClient.sign);
 		logicBoard[2][1]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("2,1"+SimpleClient.sign);
 	}
 
@@ -128,6 +135,7 @@ public class PrimaryController {
 		Button22.setText(SimpleClient.sign);
 		logicBoard[2][2]=SimpleClient.sign;
 		disableBoard();
+		Tie();
 		SimpleClient.getClient().sendToServer("2,2"+SimpleClient.sign);
 
 	}
@@ -174,6 +182,7 @@ public class PrimaryController {
 			Platform.runLater(() -> {
                 try {
                     this.updateButtons();
+					Tie();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -184,15 +193,7 @@ public class PrimaryController {
 	}
 
 
-	void myTurn() throws IOException {
-		System.out.println("my turn");
-		printBoard();
-		updateButtons();
-		//disableBoard();//the turn is over
-		unableBoard();
-		updateButtons();
 
-	}
 
 	void updateButtons() throws IOException {
 		//unableBoard();
@@ -317,8 +318,15 @@ public class PrimaryController {
 				welcomeLabel.setText(winner+" won!");
 			});
 		}
+	}
 
-
+	@FXML
+	void Tie(){
+		if (game.checkForTie()){
+			Platform.runLater(() -> {
+				welcomeLabel.setText("It's a tie!");
+			});
+		}
 	}
 
 	void disableBoard(){

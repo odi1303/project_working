@@ -68,4 +68,13 @@ public class Game {
     public String getWinner(){
         return winner;
     }
+    public boolean checkForTie(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j].equals("0"))
+                    return false;
+            }
+        }
+        return true;
+    }
 }
