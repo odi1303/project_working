@@ -5,7 +5,6 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
@@ -15,8 +14,9 @@ public class SimpleServer extends AbstractServer {
 	private SubscribedClient[] subscribers = new SubscribedClient[SubscribersList.size()];
 	private int numberOfSubscribers = 0;
 	private String []signs={"X","O"};
-	public Game game=new Game();
+	//public Game game=new Game();
 	public String sign;
+	public int move=0;
 
 	public SimpleServer(int port) {
 		super(port);
@@ -26,6 +26,7 @@ public class SimpleServer extends AbstractServer {
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
 		String msgString = msg.toString();
+		System.out.println(msgString);
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
 			try {
@@ -44,18 +45,17 @@ public class SimpleServer extends AbstractServer {
 				System.out.println(signs[numberOfSubscribers]);
 				client.sendToClient("client added successfully with sign "+signs[numberOfSubscribers]);
 				numberOfSubscribers++;
+				if (numberOfSubscribers==2){
+					System.out.println(numberOfSubscribers);
+					System.out.println("sent all client are connected");
+					sendToAllClients("all clients are connected");
+					sendToAllClients(move+"move");
+					System.out.println(move+"=move");
+				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-			if (numberOfSubscribers==2){
-				int i=0;
-				for(SubscribedClient subscribedClient: SubscribersList){
-					subscribers[i]=subscribedClient;
-					i++;
-				}
-				System.out.println("all clients are connected");
-				game_manegment();
-			}
+
 		}
 		else if(msgString.startsWith("remove client")){
 			if(!SubscribersList.isEmpty()){
@@ -66,8 +66,16 @@ public class SimpleServer extends AbstractServer {
 					}
 				}
 			}
-		} else if (msgString.length()==3) {
-			game.setMove(msgString.charAt(0),msgString.charAt(2),sign);
+		} else if (msgString.length()==4) {
+			System.out.println("got the message "+msgString);
+			//sendToAllClients(msgString);
+			System.out.println("got in");
+			move++;
+			System.out.println(msgString+move);
+
+			sendToAllClients(msgString+move);
+
+
 		}
 
 
@@ -81,16 +89,7 @@ public class SimpleServer extends AbstractServer {
 			e1.printStackTrace();
 		}
 	}
-	public void game_manegment() throws IOException {
-		ConnectionToClient tempClient;
-		for(int i=0; i<9; i++){
-			sign=signs[i%2];
-			sendToAllClients(game.getBoard());
-			subscribers[i%2].getClient().sendToClient("your turn");
-			System.out.println(sign);
-			System.out.println(game.getBoard());
-		}
-	}
+
 
 
 

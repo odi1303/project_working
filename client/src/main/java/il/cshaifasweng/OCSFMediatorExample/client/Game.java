@@ -1,22 +1,17 @@
-package il.cshaifasweng.OCSFMediatorExample.server;
-
-import java.util.Objects;
+package il.cshaifasweng.OCSFMediatorExample.client;
 
 public class Game {
-    public String[][] board = new String[3][3];
+    public String[][] board = {
+            {"0", "0", "0"},
+            {"0", "0", "0"},
+            {"0", "0", "0"}
+    };
+    String winner;
 
-    public void main(String[] args) {
-        initialize();
-    }
-    public void initialize() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = "0";
-            }
-        }
-    }
     public void setMove(int col, int row, String sign){
         board[row][col] = sign;
+        //System.out.println(board);
+        return;
     }
     public String getBoard() {
         return flattenBoard();
@@ -40,7 +35,7 @@ public class Game {
     //checking for win in horizontal way
     public boolean checkHorizontal(){
         for (int i = 0; i < 3; i++) {
-            if (Objects.equals(board[i][0], board[i][1]) && Objects.equals(board[i][1], board[i][2]) && !Objects.equals(board[i][0], " ")) {
+            if (board[i][0]!="0"&&board[i][0].equals(board[i][1]) && board[i][1].equals(board[i][2])  ) {
                 return true;
             }
         }
@@ -49,7 +44,8 @@ public class Game {
     //checking for win in vertical way
     public boolean checkVertical(){
         for (int i = 0; i < 3; i++) {
-            if (board[0][i]==board[1][i] && board[1][i]==board[2][i] && board[0][i]!=" ") {
+            if (board[0][i]!="0"&&board[0][i].equals(board[1][i]) && board[1][i].equals(board[2][i]) ) {
+                winner=board[0][i];
                 return true;
             }
         }
@@ -57,13 +53,18 @@ public class Game {
     }
     //checking for win in diagonal way
     public boolean checkDiagonal(){
-        if (board[0][0]==board[1][1] && board[1][1]==board[2][2] && board[2][2]!=" ") {
+        if (board[2][2]!="0"&&board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2]) ) {
+            winner=board[2][2];
             return true;
         }
-        else if (board[0][2]==board[1][1] && board[1][1]==board[2][0] && board[0][2]!=" ") {
+        else if (board[0][2]!="0"&&board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0])  ) {
+            winner=board[0][2];
             return true;
         }
         else
             return false;
+    }
+    public String getWinner(){
+        return winner;
     }
 }
