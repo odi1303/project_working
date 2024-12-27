@@ -357,6 +357,8 @@ public class PrimaryController {
 	void writingSign(String sign){
 		Platform.runLater(() -> {
 			welcomeLabel.setText("My sign is "+sign);
+			welcomeLabel.setText("My sign is "+sign);
+			welcomeLabel.setText("My sign is "+sign);
 		});
 
 	}
