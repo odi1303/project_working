@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HomePage">
+   <children>
+      <Label disable="true" layoutX="159.0" layoutY="14.0" prefHeight="40.0" prefWidth="309.0" text="WELCOME TO OUR RESTAURANT!">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="showMenu" layoutX="99.0" layoutY="109.0" mnemonicParsing="false" onAction="#showTheMenu" prefHeight="26.0" prefWidth="402.0" text="to see the menu" />
+      <Button fx:id="reserveButton" layoutX="99.0" layoutY="166.0" mnemonicParsing="false" onAction="#toResrveAtable" prefHeight="26.0" prefWidth="402.0" text="reserve a table for me" />
+      <Button fx:id="connectButton" layoutX="98.0" layoutY="223.0" mnemonicParsing="false" onAction="#toConnect" prefHeight="26.0" prefWidth="402.0" text="connect to my account" />
+      <Label disable="true" layoutX="98.0" layoutY="64.0" text="What would you like to do to today?" />
+      <Button fx:id="aboutButton" layoutX="99.0" layoutY="280.0" mnemonicParsing="false" onAction="#showAbout" prefHeight="26.0" prefWidth="402.0" text="about us" />
+      <ImageView fitHeight="40.0" fitWidth="47.0" layoutX="528.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@cart.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="MyCartBottun" layoutX="526.0" layoutY="60.0" mnemonicParsing="false" onAction="#showMyCart" text="my cart" />
+      <Label fx:id="StatusLabel" disable="true" layoutX="276.0" layoutY="336.0" text="status" />
+   </children>
+</AnchorPane>

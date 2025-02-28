@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ManagerPersonalPage">
+   <children>
+      <ImageView disable="true" fitHeight="80.0" fitWidth="85.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="profile.png" />
+         </image>
+      </ImageView>
+      <Label disable="true" layoutX="110.0" layoutY="25.0" text="Hello manager! ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label disable="true" layoutX="110.0" layoutY="53.0" text="Here are your tasks for today:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="SuggestionsButton" layoutX="110.0" layoutY="133.0" mnemonicParsing="false" onAction="#OpenSuggestions" prefHeight="66.0" prefWidth="317.0" text="Suggestions for changing prices on the menu" />
+      <CheckBox fx:id="viewReportsButton" layoutX="110.0" layoutY="200.0" mnemonicParsing="false" onAction="#viewReports" prefHeight="66.0" prefWidth="317.0" text="View All Reports" />
+      <CheckBox fx:id="requestReportsButton" layoutX="110.0" layoutY="274.0" mnemonicParsing="false" onAction="#requestReports" prefHeight="66.0" prefWidth="317.0" text="Request to create new reports" />
+   </children>
+</AnchorPane>
