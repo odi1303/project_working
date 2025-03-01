@@ -23,28 +23,31 @@
               wrapText="true"/>
 
     <HBox layoutX="20.0" layoutY="100.0" spacing="15.0">
+
+
+
       <ComboBox fx:id="reservationSpace"
                 layoutX="20.0"
                 layoutY="100.0"
-                prefWidth="200.0"
+                prefWidth="100.0"
                 onMouseClicked="#initializeComboBoxForReservationSpace"
                 promptText="Please enter your preferred location"/>
 
       <TextField fx:id="guestNumber"
                 layoutX="20.0"
                 layoutY="160.0"
-                prefWidth="200.0"
+                prefWidth="100.0"
                 promptText="Please enter the number of reservations"/>
 
       <ComboBox fx:id="time"
                 layoutX="20.0"
                 layoutY="220.0"
-                prefWidth="200.0"
+                prefWidth="100.0"
                 onMouseClicked="#initializeComboBoxForTime"
                 promptText="Choose your preferred time"/>
     </HBox>
 
-    <Button fx:id="showOptionsButton" text="Show Options" layoutX="20.0" layoutY="280.0" onAction="#showOptions"/>
+    <Button fx:id="showTheOptionsButtons" text="Show Options" layoutX="20.0" layoutY="280.0" onAction="#showOptions"/>
 
     <HBox fx:id="possibleOptions" layoutX="20.0" layoutY="320.0" spacing="10.0" visible="false">
 
@@ -55,6 +58,14 @@
         <Button fx:id="option5" text="" visible="false" onAction="#selectReservation"/>
 
     </HBox>
+
+    <Button fx:id="homePageButton"
+            text="Home Page"
+            layoutX="500.0"
+            layoutY="350.0"
+            prefWidth="90.0"
+            prefHeight="30.0"
+            onAction="#goToHomePage"/>
 
 </AnchorPane>
 

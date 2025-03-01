@@ -1,9 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import java.io.IOException;
 import java.time.LocalTime;
+
+import java.util.Map;
+import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,8 +25,13 @@ public class TableOrderScreenController {
     public Button option3;
     public Button option4;
     public Button option5;
+
+    private Map<Button, List<String>> buttonsReservations = new HashMap<>();
+
+
     public HBox possibleOptions;
-    public Button showOptionsButton;
+
+    public Button showTheOptionsButtons;
     // Link to FXML components
     @FXML
     private TextArea topText;
@@ -126,35 +136,77 @@ public class TableOrderScreenController {
 
 
     @FXML
-    private void showOptions(){
-      List<String> reservationDetails = List.of(reservationSpace.getValue(), time.getValue(), guestNumber.getText());
+    public void showOptions(ActionEvent event){
+      List<String> reservationDetails = createReservation(reservationSpace.getValue(), time.getValue(), guestNumber.getText());
 
       if (!validateDetails(reservationDetails)){
         return;
       }
 
-      List<String> possibleReservationsTimes = findPossibleReservationsTimes(reservationDetails);
-      showAndLinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
-
+      List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
+      LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
+        showTheOptionsButtons();
 
     }
 
-    private List<String> findPossibleReservationsTimes(List<String> reservationDetails) {
-        return null;
+    private List<String> requestPossibleReservationsTimes(List<String> details){
+        return List.of("10:00", "15:00");
+    }
+
+    private void LinkButtonsToReservationOptions(List<String> possibleReservationsTimes, List<String> reservationDetails) {
+        // List of available buttons
+        List<Button> buttons = List.of(option1, option2, option3, option4, option5);
+        buttonsReservations.clear();
+
+
+
+        // Loop over possible reservation times and assign them to buttons
+        for (int i = 0; i < possibleReservationsTimes.size() && i < buttons.size(); i++) {
+            List<String> reservation = createReservation(reservationDetails.get(0), possibleReservationsTimes.get(i), reservationDetails.get(2));
+
+            // Assign each reservation to a corresponding button
+            Button currentButton = buttons.get(i);
+            buttonsReservations.put(currentButton, reservation);  // Store the reservation for this button
+
+            // Update button text to display reservation time
+            currentButton.setText(possibleReservationsTimes.get(i));
+        }
+    }
+
+    private void showTheOptionsButtons() {
+        List<Button> buttons = List.of(option1, option2, option3, option4, option5);
+
+        for (Button currentButton : buttons) {
+            if (buttonsReservations.containsKey(currentButton)) {
+                currentButton.setVisible(true);
+            }
+        }
+        possibleOptions.setVisible(true);
+    }
+
+
+    @FXML
+    private void selectReservation(ActionEvent event){
+        Button currentButton = (Button) event.getSource();
+        List<String> reservation = buttonsReservations.get(currentButton);
+        //check if reservation is stell posible
+        //save reservation for now
+        //get personal details
+        //update reservation with personal details
+        // save reservation
+        //go back to home page
+    }
+
+    private List<String> createReservation(String space, String time, String guestNumber) {
+        return List.of(space, time, guestNumber);
+    }
+
+    private boolean validateDetails(List<String> reservationDetails){
+        return true;
     }
 
     @FXML
-    private void selectReservation(){
-
+    private void goToHomePage(ActionEvent event) throws IOException {
+        App.setRoot("home-page");
     }
-    private boolean validateDetails(List<String> details){
-      return true;
-    }
-
-    private void showAndLinkButtonsToReservationOptions(List<String> possibleReservationsTimes, List<String> reservationDetails){
-
-
-    }
-
-
 }
