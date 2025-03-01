@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 public class TableAllocation {
-    ArrayList<Timeframe> timeframes;
+    CircularFifoQueue<ArrayList<Timeframe>> timeframes = new CircularFifoQueue<>(32); // allow orders up to 32 days in advance
+    TableAllocation() {
 
+    }
+    public int[] getPossibleTimes(int time, int ppl, int inside) {
+
+    }
 }
 
 class Timeframe {
