@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
+
 public class MenuReview {
     @FXML
     public void initialize() {
@@ -47,6 +49,11 @@ public class MenuReview {
             System.out.println("the length of list is :" + list.size());
             MenuList.setItems(list);
         }
+    }
+
+    @FXML
+    private void goToHomePage(ActionEvent event) throws IOException {
+        App.setRoot("home-page");
     }
 
 }

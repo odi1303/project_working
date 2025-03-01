@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PersonalInformationInputScreenController"
+            prefWidth="400" prefHeight="300">
+
+    <Label text="Enter Personal Information"
+           layoutX="20" layoutY="20"
+           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <VBox layoutX="20" layoutY="60" spacing="10" prefWidth="360">
+        <HBox spacing="10">
+            <Label text="Full Name:"/>
+            <TextField fx:id="fullNameField" promptText="Enter your full name" prefWidth="220"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Phone Number:"/>
+            <TextField fx:id="phoneNumberField" promptText="Enter your phone number" prefWidth="220"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Email:"/>
+            <TextField fx:id="emailField" promptText="Enter your email" prefWidth="220"/>
+        </HBox>
+
+        <Button fx:id="submitButton" text="Submit" onAction="#submit" prefWidth="100"/>
+    </VBox>
+</AnchorPane>
