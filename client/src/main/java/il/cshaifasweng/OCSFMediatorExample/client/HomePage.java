@@ -5,38 +5,58 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class HomePage {
 
-    @FXML // fx:id="MyCartBottun"
-    private Button MyCartBottun; // Value injected by FXMLLoader
+//    @FXML
+//    private Button MyCartBottun;
 
-    @FXML // fx:id="aboutButton"
-    private Button aboutButton; // Value injected by FXMLLoader
+    @FXML
+    private Button aboutButton;
 
-    @FXML // fx:id="connectButton"
-    private Button connectButton; // Value injected by FXMLLoader
+    @FXML
+    private Button connectButton;
 
-    @FXML // fx:id="reserveButton"
-    private Button reserveButton; // Value injected by FXMLLoader
+    @FXML
+    private Button reserveButton;
 
-    @FXML // fx:id="showMenu"
-    private Button showMenu; // Value injected by FXMLLoader
+    @FXML
+    private Button showMenu;
+
+    @FXML
+    private Button updateMenu;
+
+    @FXML
+    private Button orderDelivery;
+
+    @FXML
+    private Button cancelDelivery;
+
+    @FXML
+    private Button cancelTableReservation;
+
+    @FXML
+    private Button fileComplaint;
+
+    @FXML
+    private Button watchComplaints;
+
+    @FXML
+    private Button watchBranchesCapacity;
+
     @FXML
     private Label StatusLabel;
 
-
     @FXML
-    void showAbout(ActionEvent event) {
-
+    void showAbout(ActionEvent event) throws IOException {
+        App.setRoot("aboutScreen");
     }
 
-    @FXML
-    void showMyCart(ActionEvent event) {
-
-    }
+//    @FXML
+//    void showMyCart(ActionEvent event) throws IOException {
+//        App.setRoot("MyCartScreen");
+//    }
 
     @FXML
     void showTheMenu(ActionEvent event) throws IOException {
@@ -62,4 +82,38 @@ public class HomePage {
         App.setRoot("TableOrderScreen");
     }
 
+    @FXML
+    void updateMenu(ActionEvent event) throws IOException {
+        App.setRoot("UpdateMenuScreen");
+    }
+
+    @FXML
+    void orderDelivery(ActionEvent event) throws IOException {
+        App.setRoot("OrderDeliveryScreen");
+    }
+
+    @FXML
+    void cancelDelivery(ActionEvent event) throws IOException {
+        App.setRoot("CancelDeliveryScreen");
+    }
+
+    @FXML
+    void cancelTableReservation(ActionEvent event) throws IOException {
+        App.setRoot("CancelTableReservationScreen");
+    }
+
+    @FXML
+    void fileComplaint(ActionEvent event) throws IOException {
+        App.setRoot("FileComplaintScreen");
+    }
+
+    @FXML
+    void watchComplaints(ActionEvent event) throws IOException {
+        App.setRoot("WatchComplaintsScreen");
+    }
+
+    @FXML
+    void watchBranchesCapacity(ActionEvent event) throws IOException {
+        App.setRoot("WatchBranchesCapacityScreen");
+    }
 }
