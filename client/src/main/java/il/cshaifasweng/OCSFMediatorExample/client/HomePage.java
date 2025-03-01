@@ -58,8 +58,8 @@ public class HomePage {
     }
 
     @FXML
-    void toResrveAtable(ActionEvent event) {
-
+    void toResrveAtable(ActionEvent event) throws IOException {
+        App.setRoot("TableOrderScreen");
     }
 
 }

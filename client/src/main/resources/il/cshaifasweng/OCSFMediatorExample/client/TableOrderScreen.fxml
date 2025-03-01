@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
@@ -49,15 +48,11 @@
 
     <HBox fx:id="possibleOptions" layoutX="20.0" layoutY="320.0" spacing="10.0" visible="false">
 
-        <Button fx:id="option1" text="" visible="false" onAction="selectReservation"/>
-
-        <Button fx:id="option2" text="" visible="false" onAction="selectReservation"/>
-
-        <Button fx:id="option3" text="" visible="false" onAction="selectReservation"/>
-
-        <Button fx:id="option4" text="" visible="false" onAction="selectReservation"/>
-
-        <Button fx:id="option5" text="" visible="false" onAction="selectReservation"/>
+        <Button fx:id="option1" text="" visible="false" onAction="#selectReservation"/>
+        <Button fx:id="option2" text="" visible="false" onAction="#selectReservation"/>
+        <Button fx:id="option3" text="" visible="false" onAction="#selectReservation"/>
+        <Button fx:id="option4" text="" visible="false" onAction="#selectReservation"/>
+        <Button fx:id="option5" text="" visible="false" onAction="#selectReservation"/>
 
     </HBox>
 
