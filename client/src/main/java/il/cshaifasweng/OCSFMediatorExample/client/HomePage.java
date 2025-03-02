@@ -25,16 +25,13 @@ public class HomePage {
     private Button showMenu;
 
     @FXML
-    private Button updateMenu;
+    private Button EditMenu;
 
     @FXML
     private Button orderDelivery;
 
     @FXML
-    private Button cancelDelivery;
-
-    @FXML
-    private Button cancelTableReservation;
+    private Button cancelDeliveryOrReservation;
 
     @FXML
     private Button fileComplaint;
@@ -83,8 +80,8 @@ public class HomePage {
     }
 
     @FXML
-    void updateMenu(ActionEvent event) throws IOException {
-        App.setRoot("UpdateMenuScreen");
+    void EditMenu(ActionEvent event) throws IOException {
+        App.setRoot("EditMenuScreen");
     }
 
     @FXML
@@ -93,14 +90,10 @@ public class HomePage {
     }
 
     @FXML
-    void cancelDelivery(ActionEvent event) throws IOException {
-        App.setRoot("CancelDeliveryScreen");
+    void cancelDeliveryOrReservation(ActionEvent event) throws IOException {
+        App.setRoot("cancelDeliveryOrReservationScreen");
     }
 
-    @FXML
-    void cancelTableReservation(ActionEvent event) throws IOException {
-        App.setRoot("CancelTableReservationScreen");
-    }
 
     @FXML
     void fileComplaint(ActionEvent event) throws IOException {
