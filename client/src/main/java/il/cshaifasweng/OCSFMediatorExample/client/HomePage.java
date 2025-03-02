@@ -27,6 +27,7 @@ public class HomePage {
     @FXML
     private Button EditMenu;
 
+
     @FXML
     private Button orderDelivery;
 
@@ -93,7 +94,6 @@ public class HomePage {
     void cancelDeliveryOrReservation(ActionEvent event) throws IOException {
         App.setRoot("cancelDeliveryOrReservationScreen");
     }
-
 
     @FXML
     void fileComplaint(ActionEvent event) throws IOException {

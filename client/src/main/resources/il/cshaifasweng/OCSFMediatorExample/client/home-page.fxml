@@ -20,33 +20,27 @@
       </font>
    </Label>
 
-   <!-- VBox for Left-Aligned Buttons (Moved Higher) -->
    <VBox alignment="BASELINE_LEFT" spacing="5.0" prefWidth="402.0"
          AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="50.0">
       <Label disable="true" text="What would you like to do today?" />
 
-      <!-- User-first actions -->
       <Button fx:id="showMenu" text="Menu" onAction="#showTheMenu" prefHeight="26.0" prefWidth="250.0" />
       <Button fx:id="reserveButton" text="Reserve a table" onAction="#toResrveAtable" prefHeight="26.0" prefWidth="250.0" />
       <Button fx:id="orderDelivery" text="Order Delivery" onAction="#orderDelivery" prefHeight="26.0" prefWidth="250.0" />
 
-      <!-- Account Management -->
       <Button fx:id="connectButton" text="Log In" onAction="#toConnect" prefHeight="26.0" prefWidth="250.0" />
 
-      <!-- Restaurant Management -->
       <Button fx:id="EditMenu" text="Edit Menu" onAction="#EditMenu" prefHeight="26.0" prefWidth="250.0" />
       <Button fx:id="cancelDeliveryOrReservation" text="Cancel Delivery Or Reservation" onAction="#cancelDeliveryOrReservation" prefHeight="26.0" prefWidth="250.0" />
 
-      <!-- Customer Support -->
+
       <Button fx:id="fileComplaint" text="File A Complaint" onAction="#fileComplaint" prefHeight="26.0" prefWidth="250.0" />
       <Button fx:id="watchComplaints" text="Watch Complaints" onAction="#watchComplaints" prefHeight="26.0" prefWidth="250.0" />
       <Button fx:id="watchBranchesCapacity" text="Watch Branches Capacity" onAction="#watchBranchesCapacity" prefHeight="26.0" prefWidth="250.0" />
 
-      <!-- General Info -->
       <Button fx:id="aboutButton" text="About us" onAction="#showAbout" prefHeight="26.0" prefWidth="250.0" />
    </VBox>
 
-   <!-- Centered Status Label -->
    <Label fx:id="StatusLabel" disable="true" text="Status"
           prefWidth="100.0" alignment="CENTER"
           AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0"
