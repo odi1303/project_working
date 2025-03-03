@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HomePage">
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HomePageScreenController">
 
    <Label disable="true" layoutX="159.0" layoutY="14.0" prefHeight="40.0" prefWidth="309.0"
           text="WELCOME TO OUR RESTAURANT!"

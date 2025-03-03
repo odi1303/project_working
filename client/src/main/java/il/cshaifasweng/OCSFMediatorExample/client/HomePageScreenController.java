@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 
-public class HomePage {
+public class HomePageScreenController {
 
 //    @FXML
 //    private Button MyCartBottun;

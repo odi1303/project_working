@@ -10,6 +10,6 @@ public class CancelDeliveryScreenController {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+        App.setRoot("HomePageScreen");
     }
 }

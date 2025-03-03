@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stg = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("home-page.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("HomePageScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 629, 386);
         stage.setTitle("Restaurant App");
         stage.setScene(scene);
