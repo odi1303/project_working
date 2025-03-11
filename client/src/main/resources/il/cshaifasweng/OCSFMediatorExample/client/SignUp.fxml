@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SignUp">
+    <VBox alignment="CENTER" prefHeight="327.0" prefWidth="641.0" spacing="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+
+        <Label fx:id="joinTeamText" alignment="CENTER" disable="true" maxWidth="Infinity" prefHeight="18.0" style="-fx-alignment: center;" text="Join the team" textAlignment="CENTER" />
+        <PasswordField fx:id="newPassword" promptText="Enter your new password" />
+
+        <TextField fx:id="newUsername" promptText="Enter your new username" />
+      <ChoiceBox prefWidth="150.0" >
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Host"/>
+                <String fx:value="Waiter"/>
+                <String fx:value="Dietitian"/>
+                <String fx:value="Customer Service Worker"/>
+                <String fx:value="Branch Manager"/>
+                <String fx:value="Chain Manager"/>
+            </FXCollections>
+          </items>
+      </ChoiceBox>
+        <TextField fx:id="branchIdField" visible="false" promptText="Enter branch ID"/>
+
+        <Label fx:id="illegalDetails" disable="true" textFill="#800004" />
+
+        <Button fx:id="doneButton" onAction="#onGoBackButtonClick" text="Done" />
+    </VBox>
+    <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />
+</AnchorPane>
