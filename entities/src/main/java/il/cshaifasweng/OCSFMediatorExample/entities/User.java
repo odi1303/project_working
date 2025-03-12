@@ -27,11 +27,6 @@ class User {
         System.out.println(id);
     }
 
-    public User() {
-
-    }
-
-
     public boolean isAdmin() {
         return type == UserType.Admin;
     }
@@ -44,4 +39,14 @@ class User {
         return type;
     }
 
+}
+
+
+class BranchManager extends User {
+    private int branchID;
+
+    public BranchManager(String password, UserType type, int branchID) {
+        super(password, type);
+        this.branchID = branchID;
+    }
 }
