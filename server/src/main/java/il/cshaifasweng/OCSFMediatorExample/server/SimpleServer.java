@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -18,8 +19,9 @@ import java.util.Random;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 public class SimpleServer extends AbstractServer{
-	private static Session session;
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
+	private SubscribedClient[] subscribers = new SubscribedClient[SubscribersList.size()];
+	private static Session session;
 
 	/**
 	 * Constructs a new server.
@@ -161,11 +163,13 @@ public class SimpleServer extends AbstractServer{
 		} else if (msgString.startsWith("add client")) {
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
+			System.out.println(msgString);
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
 				for (SubscribedClient subscribedClient : SubscribersList) {
 					if (subscribedClient.getClient().equals(client)) {
 						SubscribersList.remove(subscribedClient);
+						session.close();
 						break;
 					}
 				}
@@ -208,6 +212,16 @@ public class SimpleServer extends AbstractServer{
 				exception.printStackTrace();
 			}
 
+		}
+		else if (msgString.startsWith("exist?")){
+			int user=Integer.parseInt(msgString.substring(6));
+			UsersRepository usersRepository=new UsersRepository();
+			if (usersRepository.userExists(user)){
+				sendToAllClients("user "+user+" exists");
+			}
+			else {
+				sendToAllClients("user "+user+" does not exist");
+			}
 		}
 	}
 

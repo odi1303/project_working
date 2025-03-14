@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SuggestionView">
+   <children>
+      <Label disable="true" layoutX="51.0" layoutY="35.0" text="Suggestions view">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="suggestion_table" layoutX="51.0" layoutY="78.0" prefHeight="280.0" prefWidth="498.0">
+        <columns>
+          <TableColumn editable="false" prefWidth="101.5999755859375" text="no." />
+          <TableColumn editable="false" prefWidth="140.0" text="changed dish" />
+            <TableColumn editable="false" prefWidth="154.39996337890625" text="desired price" />
+            <TableColumn fx:id="status_col" prefWidth="101.60003662109375" text="status" />
+        </columns>
+      </TableView>
+      <Button fx:id="back_button" layoutX="25.0" layoutY="358.0" mnemonicParsing="false" onAction="#to_go_back" text="back" />
+   </children>
+</AnchorPane>

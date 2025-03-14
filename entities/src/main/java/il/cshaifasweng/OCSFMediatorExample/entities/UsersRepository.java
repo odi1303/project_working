@@ -1,21 +1,19 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
-
+@PersistenceContext
 public class UsersRepository {
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("User");
     @PersistenceContext
-    private EntityManager entityManager;
-
-    public static void main(String[] args) {
-        User manager = new User("1234", UserType.Admin);
-
-    }
+    private EntityManager entityManager= emf.createEntityManager();
 
     public User FindUser(int id) {
         return entityManager.find(User.class, id);

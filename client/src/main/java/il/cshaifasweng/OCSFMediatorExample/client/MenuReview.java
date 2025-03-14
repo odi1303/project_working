@@ -18,7 +18,7 @@ public class MenuReview {
         EventBus.getDefault().register(this);
     }
 
-    CompactMenu compactMenu;
+    CompactMenu compactMenu= (CompactMenu) App.menu;
 
     @FXML
     private ComboBox<String> MenuList;

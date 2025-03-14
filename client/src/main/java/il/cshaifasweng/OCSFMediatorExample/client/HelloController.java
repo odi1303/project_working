@@ -9,7 +9,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import java.io.IOException;
 
 public class HelloController {
-    private final UsersRepository usersRepository = new UsersRepository();
+    //private final UsersRepository usersRepository = new UsersRepository();
     @FXML // fx:id="connectButton"
     private Button connectButton; // Value injected by FXMLLoader
 
@@ -43,17 +43,25 @@ public class HelloController {
         } catch (NumberFormatException e) {
             wrongDetails.setText("Invalid username, the user name should only contain numbers");
         }
-        if (user == -1 || password.getText().isEmpty()) {
+        if(user==1){
+            if (password.getText().equals("manager1"))
+                App.setRoot("manager_personal_page");
+        }
+        else if(user==2){
+            if (password.getText().equals("manager2"))
+                App.setRoot("manager_personal_page");
+        }
+        else if(user==-1||password.getText().isEmpty()){
             wrongDetails.setText("Please fill all the fields");
-        } else if (!usersRepository.userExists(user)) {
-            wrongDetails.setText("User not found, you can create a new account");
-        } else if (usersRepository.correctPassword(user, password.getText())) {
-            if (usersRepository.getUserType(user, password.getText()) == UserType.valueOf("Admin")) {
-                HelloApplication.setRoot("manager_personal_page.fxml");
-            }
+        } else if (user==3) {
+            if (password.getText().equals("client3"))
+                App.setRoot("client_personal_page");
+
         } else {
             wrongDetails.setText("One or more fields are wrong, please try again");
         }
+
+
 
 
     }
@@ -64,3 +72,16 @@ public class HelloController {
     }
 
 }
+/*App.sendMessageToServer("exist? "+username.getText());
+        if (user == -1 || password.getText().isEmpty()) {
+            wrongDetails.setText("Please fill all the fields");
+        } else if (!usersRepository.userExists(user)) {
+            wrongDetails.setText("User not found, you can create a new account");
+        } else if (usersRepository.correctPassword(user, password.getText())) {
+            if (usersRepository.getUserType(user, password.getText()) == UserType.valueOf("Admin")) {
+                HelloApplication.setRoot("manager_personal_page.fxml");
+            }
+        } else {
+            HelloApplication.setRoot("manager_personal_page.fxml");
+            wrongDetails.setText("One or more fields are wrong, please try again");
+        }*/
