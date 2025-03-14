@@ -26,7 +26,7 @@
                text="Connection to the system" textAlignment="CENTER"
                alignment="CENTER" style="-fx-alignment: center;" />
 
-        <TextField fx:id="username" promptText="Enter your username" />
+        <TextField fx:id="username" promptText="Enter your user id" />
         <PasswordField fx:id="password" promptText="Enter your password" />
         <Hyperlink fx:id="create_accont_button" disable="true" onAction="#create_an_account"
                    text="New to our restaurant? Click here to create an account" />

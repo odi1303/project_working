@@ -15,7 +15,7 @@
         <Label fx:id="joinTeamText" alignment="CENTER" disable="true" maxWidth="Infinity" prefHeight="18.0" style="-fx-alignment: center;" text="Join the team" textAlignment="CENTER" />
         <PasswordField fx:id="newPassword" promptText="Enter your new password" />
 
-        <TextField fx:id="newUsername" promptText="Enter your new username" />
+        <TextField fx:id="newUsername" promptText="Enter your new user id" />
       <ChoiceBox prefWidth="150.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
