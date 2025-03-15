@@ -214,7 +214,8 @@ public class SimpleServer extends AbstractServer{
 
 		}
 		else if (msgString.startsWith("exist?")){
-			int user=Integer.parseInt(msgString.substring(6));
+			String user = msgString.substring(6);
+
 			UsersRepository usersRepository=new UsersRepository();
 			if (usersRepository.userExists(user)){
 				sendToAllClients("user "+user+" exists");

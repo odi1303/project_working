@@ -18,7 +18,7 @@
 
         <Label fx:id="welcomeText" alignment="CENTER" disable="true" maxWidth="Infinity" prefHeight="18.0" style="-fx-alignment: center;" text="Connection to the system" textAlignment="CENTER" />
 
-        <TextField fx:id="username" promptText="Enter your user id" />
+        <TextField fx:id="username" promptText="Enter your username" />
         <PasswordField fx:id="password" promptText="Enter your password" />
         <Hyperlink fx:id="create_accont_button" disable="true" onAction="#create_an_account" text="New to our restaurant? Click here to create an account" />
         <Button fx:id="connectButton" defaultButton="true" onAction="#onConnectButtonClick" text="Connect" />

@@ -15,7 +15,10 @@ class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "password")
-    private String password;
+    String password;
+
+    @Column(name = "username")
+    private String userName;
 
     public User(String password, UserType type) {
         this.password = password;
@@ -41,8 +44,8 @@ class User {
 class BranchManager extends User {
     private int branchID;
 
-    public BranchManager(String password, UserType type, int branchID) {
-        super(password, type);
+    public BranchManager(int id, String password, int branchID, String userName) {
+        super(password, UserType.branchManager);
         this.branchID = branchID;
     }
 }
