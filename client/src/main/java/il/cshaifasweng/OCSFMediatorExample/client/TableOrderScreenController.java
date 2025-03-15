@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import java.util.Map;
@@ -15,6 +16,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.DatePicker;
+
 
 import java.util.List;
 
@@ -45,6 +48,13 @@ public class TableOrderScreenController {
     @FXML
     private ComboBox<String> time;
 
+    @FXML
+    private DatePicker reservationDate;
+
+    @FXML
+    private ComboBox<String> branch;
+
+
     private ObservableList<String> reservationOptions = FXCollections.observableArrayList("Outdoors", "Indoors");
 
     private ObservableList<String> timeOptions = FXCollections.observableArrayList(
@@ -74,6 +84,22 @@ public class TableOrderScreenController {
       "23:00", "23:15", "23:30", "23:45"
 );
 
+    @FXML
+    private void initialize() {
+        // Disable past dates in the DatePicker
+        reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(final LocalDate item, final boolean empty) {
+                super.updateItem(item, empty);
+                if (item.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
+
+
+
+    }
 
     // Loads options for reservationSpace ComboBox on first click only
     @FXML
@@ -133,20 +159,24 @@ public class TableOrderScreenController {
       return currentTime.toString();
     }
 
+    @FXML
+    private void initializeComboBoxForBranch() {
+        if (branch.getItems().isEmpty()) {
+            ObservableList<String> branchOptions = FXCollections.observableArrayList("1", "2", "3");
+            branch.setItems(branchOptions);
+        }
+    }
 
 
     @FXML
     public void showOptions(ActionEvent event){
-      List<String> reservationDetails = createReservation(reservationSpace.getValue(), time.getValue(), guestNumber.getText());
+      List<String> reservationDetails = createReservation(branch.getValue(), guestNumber.getText(), reservationSpace.getValue(), reservationDate.getValue().toString(), time.getValue());
 
-      if (!validateDetails(reservationDetails)){
-        return;
+      if (validateDetails(reservationDetails)){
+          List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
+          LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
+          showTheOptionsButtons();
       }
-
-      List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
-      LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
-        showTheOptionsButtons();
-
     }
 
     private List<String> requestPossibleReservationsTimes(List<String> details){
@@ -162,7 +192,7 @@ public class TableOrderScreenController {
 
         // Loop over possible reservation times and assign them to buttons
         for (int i = 0; i < possibleReservationsTimes.size() && i < buttons.size(); i++) {
-            List<String> reservation = createReservation(reservationDetails.get(0), possibleReservationsTimes.get(i), reservationDetails.get(2));
+            List<String> reservation = createReservation(reservationDetails.get(0), reservationDetails.get(1), reservationDetails.get(2), reservationDetails.get(3), possibleReservationsTimes.get(i));
 
             // Assign each reservation to a corresponding button
             Button currentButton = buttons.get(i);
@@ -197,11 +227,19 @@ public class TableOrderScreenController {
         //go back to home page
     }
 
-    private List<String> createReservation(String space, String time, String guestNumber) {
-        return List.of(space, time, guestNumber);
+    private List<String> createReservation(String branch,String guestNumber, String reservationSpace, String reservationDate, String time) {
+        return List.of(branch, guestNumber, reservationSpace, reservationDate, time);
     }
 
-    private boolean validateDetails(List<String> reservationDetails){
+    private boolean validateDetails(List<String> reservationDetails) {
+        if (reservationDetails == null) {
+            return false;
+        }
+        for (String detail : reservationDetails) {
+            if (detail == null) {
+                return false;
+            }
+        }
         return true;
     }
 
