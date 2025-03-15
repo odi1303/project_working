@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CancelDeliveryOrReservationScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CancelDeliveryOrReservationScreenController">
 
-    <VBox spacing="15" alignment="CENTER"
-          AnchorPane.leftAnchor="10"
-          AnchorPane.topAnchor="20"
-          AnchorPane.bottomAnchor="20"
-          AnchorPane.rightAnchor="300">
+    <VBox alignment="CENTER" layoutX="155.0" layoutY="20.0" spacing="15" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="20.0">
 
-        <Button text="Cancel Delivery" onAction="#CancelDelivery" maxWidth="200"/>
-        <Button text="Cancel Reservation" onAction="#CancelReservation" maxWidth="200"/>
+        <Button maxWidth="200" onAction="#CancelDelivery" text="Cancel Delivery" />
+        <Button maxWidth="200" onAction="#CancelReservation" text="Cancel Reservation" />
     </VBox>
     <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />
 

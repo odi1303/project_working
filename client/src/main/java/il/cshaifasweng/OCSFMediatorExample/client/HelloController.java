@@ -47,13 +47,13 @@ public class HelloController {
                 App.setRoot("client_personal_page");
                 break;
             case 2:
-                App.setRoot("employee_page");
+                App.setRoot("employee_personal_page");
                 break;
             case 3:
                 App.setRoot("editMenuScreen");
                 break;
             case 4:
-                App.setRoot("branch_manger_home");
+                App.setRoot("reports_view");
                 break;
             case 5:
                 App.setRoot("manager_personal_page");
