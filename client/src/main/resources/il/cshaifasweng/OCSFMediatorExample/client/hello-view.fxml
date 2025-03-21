@@ -9,28 +9,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HelloController"
-            prefHeight="400.0" prefWidth="700.0">
+<AnchorPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HelloController">
 
-    <VBox alignment="CENTER" spacing="20.0"
-          prefHeight="327.0" prefWidth="641.0"
-          AnchorPane.topAnchor="50.0"
-          AnchorPane.leftAnchor="30.0"
-          AnchorPane.rightAnchor="30.0">
+    <VBox alignment="CENTER" prefHeight="327.0" prefWidth="641.0" spacing="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
         </padding>
 
-        <Label fx:id="welcomeText" disable="true" prefHeight="18.0" maxWidth="Infinity"
-               text="Connection to the system" textAlignment="CENTER"
-               alignment="CENTER" style="-fx-alignment: center;" />
+        <Label fx:id="welcomeText" alignment="CENTER" disable="true" maxWidth="Infinity" prefHeight="18.0" style="-fx-alignment: center;" text="Connection to the system" textAlignment="CENTER" />
 
         <TextField fx:id="username" promptText="Enter your username" />
         <PasswordField fx:id="password" promptText="Enter your password" />
-        <Hyperlink fx:id="create_accont_button" disable="true" onAction="#create_an_account"
-                   text="New to our restaurant? Click here to create an account" />
-        <Button fx:id="connectButton" onAction="#onConnectButtonClick" text="Connect" />
+        <Hyperlink fx:id="create_accont_button" disable="true" onAction="#create_an_account" text="New to our restaurant? Click here to create an account" />
+        <Button fx:id="connectButton" defaultButton="true" onAction="#onConnectButtonClick" text="Connect" />
         <Label fx:id="wrongDetails" disable="true" textFill="#800004" />
     </VBox>
     <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />

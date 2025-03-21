@@ -34,7 +34,7 @@ public class OrderDeliveryScreenController {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("HomePageScreen");
+        App.setRoot("home-page");
     }
 
 }

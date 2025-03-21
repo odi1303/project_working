@@ -18,7 +18,7 @@ public class MenuReview {
         EventBus.getDefault().register(this);
     }
 
-    CompactMenu compactMenu;
+    CompactMenu compactMenu= (CompactMenu) App.menu;
 
     @FXML
     private ComboBox<String> MenuList;
@@ -53,7 +53,7 @@ public class MenuReview {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("HomePageScreen");
+        App.setRoot("home-page");
     }
 
 }

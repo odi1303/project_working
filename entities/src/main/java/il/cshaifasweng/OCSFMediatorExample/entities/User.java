@@ -1,11 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
+
 @Entity
 @Table(name = "users")
 class User {
@@ -19,18 +15,16 @@ class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "password")
-    private String password;
+    String password;
+
+    @Column(name = "username")
+    private String userName;
 
     public User(String password, UserType type) {
         this.password = password;
         this.type = type;
         System.out.println(id);
     }
-
-    public User() {
-
-    }
-
 
     public boolean isAdmin() {
         return type == UserType.Admin;
@@ -44,4 +38,14 @@ class User {
         return type;
     }
 
+}
+
+
+class BranchManager extends User {
+    private int branchID;
+
+    public BranchManager(int id, String password, int branchID, String userName) {
+        super(password, UserType.branchManager);
+        this.branchID = branchID;
+    }
 }

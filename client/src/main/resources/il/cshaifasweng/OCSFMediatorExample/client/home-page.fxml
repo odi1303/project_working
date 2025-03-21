@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.HomePage">
+
+   <Label disable="true" layoutX="159.0" layoutY="14.0" prefHeight="40.0" prefWidth="309.0"
+          text="WELCOME TO OUR RESTAURANT!"
+          AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="160.0">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+
+   <!-- VBox for Left-Aligned Buttons (Moved Higher) -->
+   <VBox alignment="BASELINE_LEFT" spacing="5.0" prefWidth="402.0"
+         AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="50.0">
+      <Label disable="true" text="What would you like to do today?" />
+
+      <!-- User-first actions -->
+      <Button fx:id="showMenu" text="Menu" onAction="#showTheMenu" prefHeight="26.0" prefWidth="250.0" />
+      <Button fx:id="reserveButton" text="Reserve a table" onAction="#toResrveAtable" prefHeight="26.0" prefWidth="250.0" />
+      <Button fx:id="orderDelivery" text="Order Delivery" onAction="#orderDelivery" prefHeight="26.0" prefWidth="250.0" />
+
+      <!-- Account Management -->
+      <Button fx:id="connectButton" text="Log In" onAction="#toConnect" prefHeight="26.0" prefWidth="250.0" />
+
+      <!-- Restaurant Management -->
+      <Button fx:id="EditMenu" text="Edit Menu" onAction="#EditMenu" prefHeight="26.0" prefWidth="250.0" />
+      <Button fx:id="cancelDeliveryOrReservation" text="Cancel Delivery Or Reservation" onAction="#cancelDeliveryOrReservation" prefHeight="26.0" prefWidth="250.0" />
+
+      <!-- Customer Support -->
+      <Button fx:id="fileComplaint" text="File A Complaint" onAction="#fileComplaint" prefHeight="26.0" prefWidth="250.0" />
+      <Button fx:id="watchComplaints" text="Watch Complaints" onAction="#watchComplaints" prefHeight="26.0" prefWidth="250.0" />
+      <Button fx:id="watchBranchesCapacity" text="Watch Branches Capacity" onAction="#watchBranchesCapacity" prefHeight="26.0" prefWidth="250.0" />
+
+      <!-- General Info -->
+      <Button fx:id="aboutButton" text="About us" onAction="#showAbout" prefHeight="26.0" prefWidth="250.0" />
+   </VBox>
+
+   <!-- Centered Status Label -->
+   <Label fx:id="StatusLabel" disable="true" text="Status"
+          prefWidth="100.0" alignment="CENTER"
+          AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" />
+
+   <!-- Cart Section (Blurred) -->
+   <!--
+   <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true"
+              AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0">
+       <image>
+           <Image url="@cart.png" />
+       </image>
+   </ImageView>
+
+   <Button fx:id="MyCartBottun" text="My Cart"
+           mnemonicParsing="false" onAction="#showMyCart"
+           AnchorPane.topAnchor="60.0" AnchorPane.rightAnchor="10.0"/>
+   -->
+
+</AnchorPane>

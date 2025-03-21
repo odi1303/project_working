@@ -9,7 +9,6 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import java.io.IOException;
 
 public class HelloController {
-    private final UsersRepository usersRepository = new UsersRepository();
     @FXML // fx:id="connectButton"
     private Button connectButton; // Value injected by FXMLLoader
 
@@ -17,10 +16,10 @@ public class HelloController {
     private Hyperlink create_accont_button; // Value injected by FXMLLoader
 
     @FXML // fx:id="password"
-    private PasswordField password; // Value injected by FXMLLoader
+    private PasswordField password_field; // Value injected by FXMLLoader
 
     @FXML // fx:id="username"
-    private TextField username; // Value injected by FXMLLoader
+    private TextField username_field; // Value injected by FXMLLoader
 
     @FXML // fx:id="welcomeText"
     private Label welcomeText; // Value injected by FXMLLoader
@@ -29,38 +28,47 @@ public class HelloController {
     private Label wrongDetails; // Value injected by FXMLLoader
 
 
-    @FXML
-    void create_an_account(ActionEvent event) {
-
-    }
 
     @FXML
         //check if the details are correct, if they not show an error
     void onConnectButtonClick(ActionEvent event) throws IOException {
-        int user = -1;
-        try {
-            user = Integer.parseInt(username.getText());
-        } catch (NumberFormatException e) {
-            wrongDetails.setText("Invalid username, the user name should only contain numbers");
-        }
-        if (user == -1 || password.getText().isEmpty()) {
-            wrongDetails.setText("Please fill all the fields");
-        } else if (!usersRepository.userExists(user)) {
-            wrongDetails.setText("User not found, you can create a new account");
-        } else if (usersRepository.correctPassword(user, password.getText())) {
-            if (usersRepository.getUserType(user, password.getText()) == UserType.valueOf("Admin")) {
-                HelloApplication.setRoot("manager_personal_page.fxml");
-            }
-        } else {
-            wrongDetails.setText("One or more fields are wrong, please try again");
+        if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
+            throw new IllegalArgumentException("Please enter your username and password");
         }
 
+        String userName = username_field.getText();
+        String password = password_field.getText();
 
+        UsersRepository usersRepository=new UsersRepository();
+        int user_type = usersRepository.searchUser(userName, password);
+
+        switch (user_type) {
+            case 1:
+                App.setRoot("client_personal_page");
+                break;
+            case 2:
+                App.setRoot("employee_personal_page");
+                break;
+            case 3:
+                App.setRoot("editMenuScreen");
+                break;
+            case 4:
+                App.setRoot("reports_view");
+                break;
+            case 5:
+                App.setRoot("manager_personal_page");
+                break;
+            default:
+                wrongDetails.setText("Incorrect username or password");
+        }
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("HomePageScreen");
+        App.setRoot("home-page");
     }
 
+    public void create_an_account(ActionEvent actionEvent) throws IOException {
+        App.setRoot("SignUp");
+    }
 }

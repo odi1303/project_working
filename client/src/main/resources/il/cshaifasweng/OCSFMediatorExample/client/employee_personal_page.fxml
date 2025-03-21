@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EmployeePersonalPage">
+   <children>
+      <Button layoutX="221.0" layoutY="147.0" mnemonicParsing="false" text="View resturant maps" />
+      <Button layoutX="219.0" layoutY="188.0" mnemonicParsing="false" text="View personal details" />
+      <Label layoutY="7.0" prefHeight="94.0" prefWidth="227.0" text="Welcome!">
+         <font>
+            <Font name="Edwardian Script ITC" size="64.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
