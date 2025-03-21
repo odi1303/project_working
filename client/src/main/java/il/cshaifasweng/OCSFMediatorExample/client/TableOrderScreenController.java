@@ -29,6 +29,9 @@ public class TableOrderScreenController {
     public Button option4;
     public Button option5;
 
+
+    public Button homePageButton;
+
     private Map<Button, List<String>> buttonsReservations = new HashMap<>();
 
 
@@ -96,9 +99,6 @@ public class TableOrderScreenController {
                 }
             }
         });
-
-
-
     }
 
     // Loads options for reservationSpace ComboBox on first click only
@@ -245,6 +245,6 @@ public class TableOrderScreenController {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("HomePageScreen");
+        App.setRoot("home-page");
     }
 }
