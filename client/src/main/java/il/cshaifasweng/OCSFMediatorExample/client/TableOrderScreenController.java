@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 
 
 import java.util.List;
@@ -151,7 +152,7 @@ public class TableOrderScreenController {
     }
 
     private String getClosingTime(){
-      return "22:00";
+      return "23:00";
     }
 
     private String getCurrentTime(){
@@ -217,11 +218,19 @@ public class TableOrderScreenController {
 
     @FXML
     private void selectReservation(ActionEvent event){
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try{
+            popupDialogService.openPopup("InformationWindow.fxml","testing", (Stage) reservationSpace.getScene().getWindow());
+        } catch (IOException e) {
+
+        }
+
         Button currentButton = (Button) event.getSource();
         List<String> reservation = buttonsReservations.get(currentButton);
         //check if reservation is stell posible
         //save reservation for now
         //get personal details
+
         //update reservation with personal details
         // save reservation
         //go back to home page
