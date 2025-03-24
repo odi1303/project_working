@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class PopupDialogService {
 
-    public <T extends PopupController> String openPopup(String fxml, String input, Stage ownerStage) throws IOException{
+    public <I, O, T extends PopupController<I, O>> O openPopup(String fxml, I input, Stage ownerStage) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = loader.load(); //load fxml
         T controller = loader.getController();  //get fxml controller

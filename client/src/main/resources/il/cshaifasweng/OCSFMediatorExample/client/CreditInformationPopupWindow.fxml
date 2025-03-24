@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CreditInformationPopupWindowController">
+
+    <Label layoutX="20" layoutY="20"
+           style="-fx-font-size: 16px; -fx-font-weight: bold;"
+           text="Enter Credit Information" />
+
+    <VBox layoutX="22.0" layoutY="73.0" prefHeight="167.0" prefWidth="360" spacing="10">
+
+        <HBox spacing="10">
+            <Label text="Card Number:" />
+            <TextField fx:id="cardNumberField" alignment="CENTER" prefWidth="220"
+                       promptText="Enter 16-digit card number" />
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Expiration Date:" />
+            <TextField fx:id="expirationDateField" alignment="CENTER" prefWidth="220"
+                       promptText="MM/YY" />
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="CVV:" />
+            <TextField fx:id="cvvField" alignment="CENTER" prefWidth="220"
+                       promptText="3-digit CVV" />
+        </HBox>
+
+        <Button fx:id="submitButton" onAction="#submit" prefHeight="25.0" prefWidth="72.0" text="Submit" />
+    </VBox>
+</AnchorPane>

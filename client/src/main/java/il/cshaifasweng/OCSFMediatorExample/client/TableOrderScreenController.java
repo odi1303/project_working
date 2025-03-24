@@ -33,7 +33,7 @@ public class TableOrderScreenController {
 
     public Button homePageButton;
 
-    private Map<Button, List<String>> buttonsReservations = new HashMap<>();
+    private Map<Button, ReservationDetails> buttonsReservations = new HashMap<>();
 
 
     public HBox possibleOptions;
@@ -170,21 +170,38 @@ public class TableOrderScreenController {
 
 
     @FXML
-    public void showOptions(ActionEvent event){
-      List<String> reservationDetails = createReservation(branch.getValue(), guestNumber.getText(), reservationSpace.getValue(), reservationDate.getValue().toString(), time.getValue());
+    public void showOptions(){
+        ReservationDetails reservationDetails = new ReservationDetails(branch.getValue(), guestNumber.getText(), reservationSpace.getValue(), reservationDate.getValue().toString(), time.getValue());
 
-      if (validateDetails(reservationDetails)){
-          List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
-          LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
-          showTheOptionsButtons();
+      if (reservationDetails.isValid()){
+          if(canTheReservationBeMadeInOneHour(reservationDetails)){
+              List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
+              LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
+              showTheOptionsButtons();
+          }else if(canTheReservationBeMadeInSameDate(reservationDetails)) {
+              List<String> possibleReservationsTimesInSameDate = requestPossibleReservationsTimesInSameDate(reservationDetails);
+              PopupDialogService popupDialogService = new PopupDialogService();
+              try {
+                  popupDialogService.openPopup("InformationWindow.fxml", String.join(", ", possibleReservationsTimesInSameDate), (Stage) reservationSpace.getScene().getWindow());
+              } catch (Exception e) {}
+          }else{
+              PopupDialogService popupDialogService = new PopupDialogService();
+              try {
+                  popupDialogService.openPopup("InformationWindow.fxml", "A new reservation can't be made in this date", (Stage) reservationSpace.getScene().getWindow());
+              }catch (Exception e) {}
+
+          }
+
+
+
       }
     }
 
-    private List<String> requestPossibleReservationsTimes(List<String> details){
+    private List<String> requestPossibleReservationsTimes(ReservationDetails details){
         return List.of("10:00", "15:00");
     }
 
-    private void LinkButtonsToReservationOptions(List<String> possibleReservationsTimes, List<String> reservationDetails) {
+    private void LinkButtonsToReservationOptions(List<String> possibleReservationsTimes, ReservationDetails reservationDetails) {
         // List of available buttons
         List<Button> buttons = List.of(option1, option2, option3, option4, option5);
         buttonsReservations.clear();
@@ -193,7 +210,7 @@ public class TableOrderScreenController {
 
         // Loop over possible reservation times and assign them to buttons
         for (int i = 0; i < possibleReservationsTimes.size() && i < buttons.size(); i++) {
-            List<String> reservation = createReservation(reservationDetails.get(0), reservationDetails.get(1), reservationDetails.get(2), reservationDetails.get(3), possibleReservationsTimes.get(i));
+            ReservationDetails reservation = new ReservationDetails(reservationDetails.getBranch(), reservationDetails.getGuestNumber(), reservationDetails.getReservationSpace(), reservationDetails.getReservationDate(), possibleReservationsTimes.get(i));
 
             // Assign each reservation to a corresponding button
             Button currentButton = buttons.get(i);
@@ -221,13 +238,44 @@ public class TableOrderScreenController {
         PopupDialogService popupDialogService = new PopupDialogService();
         try{
             popupDialogService.openPopup("InformationWindow.fxml","testing", (Stage) reservationSpace.getScene().getWindow());
-        } catch (IOException e) {
+            PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml","testing", (Stage) reservationSpace.getScene().getWindow());
+            if (personalInformation == null){
+                showOptions();
+                return;
+            }
+            CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml","testing", (Stage) reservationSpace.getScene().getWindow());
+            if (creditInformation == null){
+                showOptions();
+                return;
+            }
 
-        }
+            Button currentButton = (Button) event.getSource();
+            ReservationDetails reservation = buttonsReservations.get(currentButton);
+            Reservation fullReservation = new Reservation(reservation, personalInformation, creditInformation);
+            if (isReservationPossible(fullReservation)){
+                boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml","testing", (Stage) reservationSpace.getScene().getWindow());
+                if (!isConfirmed){
+                    showOptions();
+                    return;
+                }else if (isReservationPossible(fullReservation)){
+                    boolean isReserved = bookReservation(fullReservation);
+                    if (isReserved){
+                        popupDialogService.openPopup("InformationWindow.fxml","reservation booked", (Stage) reservationSpace.getScene().getWindow());
+                        goToHomePage();
+                    } else{
+                        popupDialogService.openPopup("InformationWindow.fxml","reservation failed", (Stage) reservationSpace.getScene().getWindow());
+                        showOptions();
+                    }
+                    return;
+                }
+            }else{
+                popupDialogService.openPopup("InformationWindow.fxml","reservation taken", (Stage) reservationSpace.getScene().getWindow());
+                showOptions();
+                return;
+            }
+        } catch (IOException e) {}
 
-        Button currentButton = (Button) event.getSource();
-        List<String> reservation = buttonsReservations.get(currentButton);
-        //check if reservation is stell posible
+        //check if reservation is still posible
         //save reservation for now
         //get personal details
 
@@ -236,24 +284,42 @@ public class TableOrderScreenController {
         //go back to home page
     }
 
-    private List<String> createReservation(String branch,String guestNumber, String reservationSpace, String reservationDate, String time) {
-        return List.of(branch, guestNumber, reservationSpace, reservationDate, time);
+//    private ReservationDetails createReservation(String branch,String guestNumber, String reservationSpace, String reservationDate, String time) {
+//        return new ReservationDetails(branch, guestNumber, reservationSpace, reservationDate, time);
+//    }
+
+
+    @FXML
+    private void goToHomePage() throws IOException {
+        App.setRoot("home-page");
     }
 
-    private boolean validateDetails(List<String> reservationDetails) {
-        if (reservationDetails == null) {
-            return false;
-        }
-        for (String detail : reservationDetails) {
-            if (detail == null) {
-                return false;
-            }
-        }
+//    private void closeWindow() {
+//        Stage stage = (Stage) reservationSpace.getScene().getWindow();
+//        stage.close();
+//    }
+
+
+    //temporary should be at server
+    boolean isReservationPossible(Reservation fullReservation) {
+        return true;
+    }
+    //temporary should be at server
+    boolean bookReservation(Reservation fullReservation) {
+        return true;
+    }
+    //temporary should be at server
+    boolean canTheReservationBeMadeInOneHour(ReservationDetails ReservationDetails) {
+        return true;
+    }
+    //temporary should be at server
+    boolean canTheReservationBeMadeInSameDate(ReservationDetails ReservationDetails) {
         return true;
     }
 
-    @FXML
-    private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+    List<String> requestPossibleReservationsTimesInSameDate(ReservationDetails details){
+        return List.of("16:00", "17:00");
     }
+
 }
+

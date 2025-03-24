@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 
-public class InformationWindowController implements PopupController{
+public class InformationWindowController implements PopupController<String, String>{
     private String output;
 
     @FXML

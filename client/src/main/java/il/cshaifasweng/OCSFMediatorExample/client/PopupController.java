@@ -1,7 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 
-public interface PopupController {
-    void reInitialize(String input);
-    String getOutput();
+public interface PopupController<I, O> {
+    void reInitialize(I input);
+    O getOutput();
 }
