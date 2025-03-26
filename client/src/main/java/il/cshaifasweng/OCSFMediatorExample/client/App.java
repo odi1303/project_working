@@ -23,13 +23,15 @@ public class App extends Application {
     private static Session session;
     private static Scene scene;
     private static SimpleClient client;
-    public static ObservableList<java. lang. String> menu;
+    public static ObservableList<String> menu;
 
     @Override
     public void start(Stage stage) throws IOException {
     	EventBus.getDefault().register(this);
-//    	client = SimpleClient.getClient();
-//    	client.openConnection();
+    	client = SimpleClient.getClient();
+        client.openConnection();
+        client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
+
         scene = new Scene(loadFXML("home-page"), 640, 480);
         stage.setScene(scene);
         stage.show();
