@@ -54,7 +54,6 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		} else if (msgString.startsWith("add client")) {
-			System.out.println("in server");
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
 			System.out.println(msgString);
@@ -68,8 +67,6 @@ public class SimpleServer extends AbstractServer{
 					}
 				}
 			}
-		} else if (msgString.startsWith("testing")) {
-			System.out.println(msgString);
 		}
 	}
 	public void sendToAllClients(String message) {
