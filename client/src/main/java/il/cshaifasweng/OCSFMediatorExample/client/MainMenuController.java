@@ -49,7 +49,6 @@ public class MainMenuController {
         //for order section
         dishesInOrder = new ArrayList<DishClient>();
         isOrder = false;
-        reinitialize(true);
     }
 
     public void reinitialize(boolean isOrder) {

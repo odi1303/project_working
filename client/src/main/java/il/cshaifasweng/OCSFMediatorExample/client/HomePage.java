@@ -86,7 +86,8 @@ public class HomePage {
 
     @FXML
     void orderDelivery(ActionEvent event) throws IOException {
-        App.setRoot("OrderDeliveryScreen");
+        MainMenuController controller = App.setRootAndGetController("MainMenu");
+        controller.reinitialize(true); //change the screen to handle orders and not only show the menu
     }
 
     @FXML
