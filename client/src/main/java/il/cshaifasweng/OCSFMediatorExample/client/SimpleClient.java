@@ -14,7 +14,6 @@ public class SimpleClient extends AbstractClient {
 	private static SimpleClient client = null;
 	private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
-		sendToServer("add client");
 	}
 
 
@@ -22,15 +21,13 @@ public class SimpleClient extends AbstractClient {
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
-		} else if (msg instanceof String) {
-			String message = (String) msg;
-			System.out.println(message);
+		} else if (msg instanceof String message) {
+            System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			}
-		} else if (msg instanceof CompactMenu) {
+		} else if (msg instanceof CompactMenu compactMenu) {
 			try {
-				CompactMenu compactMenu = (CompactMenu) msg;
 				var list = FXCollections.observableList(compactMenu.dishes);
 				System.out.println("the length of list is :" + list.size());
 				App.setMenu(list);
