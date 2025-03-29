@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MainMenuController"
+      prefWidth="1200" prefHeight="800"
+      spacing="10">
+
+    <HBox fx:id="filterSection" spacing="10">
+
+        <Label text="Filter Section"/>
+
+        <!-- 🔹 Branch Filter -->
+        <TitledPane text="Filter Branches" expanded="false">
+            <VBox fx:id="branchCheckboxContainerForFilter" spacing="5">
+                <!-- CheckBoxes for branches will be added in the controller -->
+            </VBox>
+        </TitledPane>
+
+        <!-- 🔹 Ingredient Filter -->
+        <TitledPane text="Filter Ingredients" expanded="false">
+            <VBox fx:id="IngredientsCheckboxContainerForFilter" spacing="5">
+                <!-- CheckBoxes for ingredients will be added in the controller -->
+            </VBox>
+        </TitledPane>
+
+        <!-- 🔹 Control Buttons -->
+        <HBox spacing="10">
+            <Button text="Apply Filter" onAction="#applyFilter"/>
+            <Button text="Clear Filter" onAction="#clearFilter"/>
+        </HBox>
+    </HBox>
+
+    <!-- 🔹 Menu Section -->
+    <VBox fx:id="menuSection" spacing="10" minHeight="250" VBox.vgrow="ALWAYS">
+        <Label text="Menu Section"/>
+        <ScrollPane fx:id="menuScrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+            <VBox fx:id="menuDishList" spacing="8" />
+        </ScrollPane>
+    </VBox>
+
+    <!-- 🔹 Order Section (Collapsible) -->
+    <VBox fx:id="orderSection" spacing="10" minHeight="250" prefHeight="250" visible="false" managed="false">
+        <Label text="Order Section"/>
+        <ScrollPane fx:id="orderScrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+            <HBox fx:id="orderDishList" spacing="8" />
+        </ScrollPane>
+        <Button text="Finish Order" />
+    </VBox>
+
+</VBox>

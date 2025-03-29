@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="il.cshaifasweng.OCSFMediatorExample.client.DishSectionInMenuController"
+      prefHeight="200.0" prefWidth="600.0" spacing="15" alignment="TOP_LEFT"
+      style="-fx-border-color: lightgray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white;">
+
+    <ImageView fx:id="dishImage" fitWidth="100.0" fitHeight="100.0" preserveRatio="true" />
+
+    <VBox alignment="TOP_LEFT" spacing="8.0">
+        <Label fx:id="dishName" />
+        <Label fx:id="dishDescription" wrapText="true" />
+        <Label fx:id="dishPrice" />
+
+        <TitledPane text="Available Branches" expanded="false">
+            <VBox fx:id="availableBranches" spacing="5" />
+        </TitledPane>
+
+        <TitledPane text="Ingredients" expanded="false">
+            <VBox fx:id="ingredients" spacing="5" />
+        </TitledPane>
+    </VBox>
+</HBox>
