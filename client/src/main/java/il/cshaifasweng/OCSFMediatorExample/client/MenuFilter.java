@@ -26,7 +26,8 @@ public class MenuFilter {
         }
         for (DishClient dish : menu.getMenu()){
             boolean isAtListOneNotFilterAvailableBranch = dish.getAvailableBranches().stream().anyMatch(filteredBranches::contains);
-            if (isAtListOneNotFilterAvailableBranch) {
+            boolean areAllIngredientsContainedInFilteredIngredients = dish.getIngredients().stream().allMatch(filteredIngredients::contains);
+            if (isAtListOneNotFilterAvailableBranch && areAllIngredientsContainedInFilteredIngredients) {
                 filteredMenu.addDish(dish);
             }
         }

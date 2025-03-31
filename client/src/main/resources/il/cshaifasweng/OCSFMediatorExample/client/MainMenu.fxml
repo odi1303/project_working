@@ -51,5 +51,5 @@
         </ScrollPane>
         <Button text="Finish Order" />
     </VBox>
-
+    <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />
 </VBox>

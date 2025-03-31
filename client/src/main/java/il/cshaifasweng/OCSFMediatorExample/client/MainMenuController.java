@@ -7,6 +7,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         List<String> branches = List.of("Haifa", "Tel Aviv", "Jerusalem");
-        List<String> ingredients = List.of("Cheese", "Tomato", "Olives", "Onion");
+        List<String> ingredients = List.of("Cheese", "Tomato", "Olives", "Onion", "Beef", "Lettuce", "Cucumber", "Feta", "Hummus", "Falafel");
         putBranchCheckBoxesInFilter(branches);
         putIngredientsCheckBoxesInFilter(ingredients);
 
@@ -176,36 +177,6 @@ public class MainMenuController {
         }
     }
 
-    private List<DishClient> getHardcodedDishes() {
-        DishClient pizza = new DishClient(
-                "Pizza Margherita",
-                "Classic pizza with tomato, mozzarella, and basil.",
-                35.0f,
-                "https://example.com/images/pizza.jpg",
-                List.of("Haifa", "Tel Aviv"),
-                List.of("Tomato", "Cheese", "Basil")
-        );
-
-        DishClient burger = new DishClient(
-                "Beef Burger",
-                "Juicy beef patty with lettuce, tomato, and cheese.",
-                42.5f,
-                "https://example.com/images/burger.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
-                List.of("Beef", "Lettuce", "Tomato", "Cheese", "Bun")
-        );
-
-        DishClient salad = new DishClient(
-                "Greek Salad",
-                "Fresh vegetables with feta cheese and olives.",
-                28.0f,
-                "https://example.com/images/salad.jpg",
-                List.of("Haifa", "Jerusalem"),
-                List.of("Cucumber", "Tomato", "Feta", "Olives")
-        );
-
-        return List.of(pizza, burger, salad);
-    }
 
     public void orderDish(DishClient dish){
         addDishToOrderSection(dish);
@@ -226,4 +197,107 @@ public class MainMenuController {
             throw new RuntimeException(e);
         }
     }
+
+
+    @FXML
+    private void goToHomePage() throws IOException {
+        App.setRoot("home-page");
+    }
+
+    private List<DishClient> getHardcodedDishes() {
+        DishClient pizza = new DishClient(
+                "Pizza Margherita",
+                "Classic pizza with tomato, cheese, and olives.",
+                35.0f,
+                "https://example.com/images/pizza.jpg",
+                List.of("Haifa", "Tel Aviv"),
+                List.of("Cheese", "Tomato", "Olives")
+        );
+
+        DishClient burger = new DishClient(
+                "Beef Burger",
+                "Juicy beef patty with lettuce, tomato, and cheese.",
+                42.5f,
+                "https://example.com/images/burger.jpg",
+                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Beef", "Lettuce", "Tomato", "Cheese")
+        );
+
+        DishClient salad = new DishClient(
+                "Greek Salad",
+                "Fresh vegetables with feta cheese and olives.",
+                28.0f,
+                "https://example.com/images/salad.jpg",
+                List.of("Haifa", "Jerusalem"),
+                List.of("Cucumber", "Tomato", "Feta", "Olives")
+        );
+
+        DishClient hummusPlate = new DishClient(
+                "Hummus Plate",
+                "Creamy hummus served with vegetables and pita.",
+                25.0f,
+                "https://example.com/images/hummus.jpg",
+                List.of("Haifa", "Tel Aviv"),
+                List.of("Hummus", "Tomato", "Onion", "Olives")
+        );
+
+        DishClient falafelPlate = new DishClient(
+                "Falafel Plate",
+                "Delicious falafel balls served with hummus and salad.",
+                22.0f,
+                "https://example.com/images/falafel.jpg",
+                List.of("Tel Aviv", "Haifa", "Jerusalem"),
+                List.of("Falafel", "Hummus", "Lettuce", "Tomato")
+        );
+
+        DishClient veggieBurger = new DishClient(
+                "Veggie Burger",
+                "A healthy burger with tomato, lettuce, and cheese.",
+                38.0f,
+                "https://example.com/images/veggie_burger.jpg",
+                List.of("Tel Aviv", "Haifa"),
+                List.of("Lettuce", "Tomato", "Cheese", "Onion")
+        );
+
+        DishClient cheeseSandwich = new DishClient(
+                "Cheese Sandwich",
+                "A simple cheese sandwich with tomato and lettuce.",
+                20.0f,
+                "https://example.com/images/cheese_sandwich.jpg",
+                List.of("Haifa", "Jerusalem"),
+                List.of("Cheese", "Tomato", "Lettuce")
+        );
+
+        DishClient beefSalad = new DishClient(
+                "Beef Salad",
+                "Salad with grilled beef, lettuce, tomato, and cucumber.",
+                40.0f,
+                "https://example.com/images/beef_salad.jpg",
+                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Beef", "Lettuce", "Tomato", "Cucumber")
+        );
+
+        DishClient falafelWrap = new DishClient(
+                "Falafel Wrap",
+                "Falafel served in pita bread with lettuce and hummus.",
+                24.0f,
+                "https://example.com/images/falafel_wrap.jpg",
+                List.of("Haifa", "Tel Aviv"),
+                List.of("Falafel", "Hummus", "Lettuce")
+        );
+
+        DishClient mixedPlatter = new DishClient(
+                "Mixed Platter",
+                "Combination of falafel, hummus, tomato, and olives.",
+                30.0f,
+                "https://example.com/images/mixed_platter.jpg",
+                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Falafel", "Hummus", "Tomato", "Olives")
+        );
+
+        return List.of(pizza, burger, salad, hummusPlate, falafelPlate, veggieBurger, cheeseSandwich, beefSalad, falafelWrap, mixedPlatter);
+    }
+
+
+
 }
