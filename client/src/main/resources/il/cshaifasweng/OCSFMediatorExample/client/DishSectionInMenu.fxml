@@ -7,7 +7,7 @@
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="il.cshaifasweng.OCSFMediatorExample.client.DishSectionInMenuController"
-      prefHeight="200.0" prefWidth="600.0" spacing="15" alignment="TOP_LEFT"
+      prefHeight="200.0" prefWidth="300.0" spacing="15" alignment="TOP_LEFT"
       style="-fx-border-color: lightgray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white;">
 
     <ImageView fx:id="dishImage" fitWidth="100.0" fitHeight="100.0" preserveRatio="true" />

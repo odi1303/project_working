@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CancelDeliveryScreenController">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CancelDeliveryScreenController"
+      spacing="10">
 
-    <VBox spacing="15" alignment="CENTER"
-          AnchorPane.leftAnchor="10"
-          AnchorPane.topAnchor="20"
-          AnchorPane.bottomAnchor="20"
-          AnchorPane.rightAnchor="300">
+    <!-- ScrollPane for Dynamic Scrolling -->
+    <ScrollPane fx:id="scrollPane" prefWidth="800" prefHeight="600"
+                hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS"
+                fitToWidth="true" >
 
-    </VBox>
-    <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />
+    <!-- VBox that will expand dynamically -->
+        <VBox fx:id="orderTable" spacing="10" VBox.vgrow="ALWAYS"/>
 
-</AnchorPane>
+    </ScrollPane>
+
+    <!-- Home Page Button -->
+    <Button fx:id="homePageButton" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />
+
+</VBox>
