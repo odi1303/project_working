@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ReservationCardController"
+      spacing="10" >
+
+    <HBox spacing="10">
+        <Label text="Reservation"/>
+        <Button fx:id="ReservationDetailsButton" text="Reservation Details" onAction="#switchToReservationDetails"/>
+        <Button fx:id="PersonalInformationButton" text="Personal Information" onAction="#switchToPersonalInformation"/>
+        <Button fx:id="CreditInformationButton" text="Credit Information" onAction="#switchToCreditInformation"/>
+    </HBox>
+
+    <VBox fx:id="ReservationDetailsSection" visible="false" managed="false" spacing="10">
+        <Label text="Reservation Details"/>
+        <Label fx:id="ReservationBranchLabel" text="Branch: " />
+        <Label fx:id="ReservationGuestNumberLabel" text="Guest Number: " />
+        <Label fx:id="ReservationReservationSpaceLabel" text="Reservation Space: " />
+        <Label fx:id="ReservationReservationDateLabel" text="Reservation Date: " />
+        <Label fx:id="ReservationTimeLabel" text="Time: " />
+    </VBox>
+
+    <VBox fx:id="PersonalInformationSection" visible="false" managed="false" spacing="10">
+        <Label text="Personal Information"/>
+        <Label fx:id="PersonalInformationFullNameLabel" text="Full Name: " />
+        <Label fx:id="PersonalInformationPhoneNumberLabel" text="Phone Number: " />
+        <Label fx:id="PersonalInformationEmailLabel" text="Email: " />
+    </VBox>
+
+    <VBox fx:id="CreditInformationSection" visible="false" managed="false" spacing="10">
+        <Label text="Credit Information"/>
+        <Label fx:id="CreditInformationCardNumberLabel" text="Card Number: " />
+        <Label fx:id="CreditInformationExpirationDateLabel" text="Expiration Date: " />
+        <Label fx:id="CreditInformationCVVLabel" text="CVV: " />
+    </VBox>
+</VBox>
