@@ -1,7 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,7 +8,7 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 
 public class OrderableDishSectionInMenuController {
-    private MainMenuController mainMenuController;
+    private MenuController menuController;
 
     private DishSectionInMenuController dishSectionController;
 
@@ -29,18 +27,18 @@ public class OrderableDishSectionInMenuController {
         }
     }
 
-    public void reinitialize(MainMenuController mainMenuController) {
-        setMainMenuController(mainMenuController);
+    public void reinitialize(MenuController menuController) {
+        setMainMenuController(menuController);
     }
 
-    private void setMainMenuController(MainMenuController mainMenuController) {
-        this.mainMenuController = mainMenuController;
+    private void setMainMenuController(MenuController menuController) {
+        this.menuController = menuController;
     }
 
     @FXML
     private void orderDish(){
-        if (mainMenuController != null && dishSectionController != null) {
-            mainMenuController.orderDish(dishSectionController.getDishClient());
+        if (menuController != null && dishSectionController != null) {
+            menuController.orderDish(dishSectionController.getDishClient());
         }
     }
 
