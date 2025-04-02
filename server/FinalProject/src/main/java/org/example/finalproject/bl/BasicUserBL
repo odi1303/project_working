@@ -1,0 +1,18 @@
+package org.example.finalproject.bl;
+
+import jakarta.inject.Inject;
+import org.example.finalproject.dal.UsersRepository;
+import org.example.finalproject.dal.UserType;
+import org.example.finalproject.dal.models.User;
+
+import java.util.Optional;
+
+public class BasicUserBL {
+    @Inject
+    UsersRepository usersRepository;
+
+    public UserType usertype(int userId, Request request)
+    {
+        return user.map(User::getType).orElse(null);
+    }
+}
