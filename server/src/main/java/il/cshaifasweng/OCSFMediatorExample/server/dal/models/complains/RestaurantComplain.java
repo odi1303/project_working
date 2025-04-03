@@ -1,11 +1,11 @@
-package org.example.finalproject.dal.models.complains;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.example.finalproject.dal.models.Restaurant;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.util.Date;
 

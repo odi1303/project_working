@@ -1,32 +1,32 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.dal.ComplainsRepository;
-import org.example.finalproject.dal.DeliveriesRepository;
-import org.example.finalproject.dal.RestaurantsRepositroy;
-import org.example.finalproject.dal.UsersRepository;
-import org.example.finalproject.dal.models.Delivery;
-import org.example.finalproject.dal.models.Restaurant;
-import org.example.finalproject.dal.models.User;
-import org.example.finalproject.dal.models.complains.Complain;
-import org.example.finalproject.dal.models.complains.DeliveryComplain;
-import org.example.finalproject.dal.models.complains.RestaurantComplain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.ComplainsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
 
 import java.util.Date;
 import java.util.Optional;
 
 public class ComplainsBL {
-//    @Inject
+    @Inject
     ComplainsRepository complainsRepository;
 
-//    @Inject
+    @Inject
     UsersRepository usersRepository;
 
-//    @Inject
+    @Inject
     DeliveriesRepository deliveriesRepository;
 
-//    @Inject
-    RestaurantsRepositroy restaurantsRepository;
+    @Inject
+    RestaurantsRepository restaurantsRepository;
 
     public void createDeliveryComplain(Long userId, Long deliveryId, String description) {
         Optional<User> maybeUser = usersRepository.findById(userId);
@@ -59,20 +59,20 @@ public class ComplainsBL {
     }
 
     public void closeComplain(Long complainId) {
-        Complain comlain = complainsRepository.findById(complainId).get();
+        Complain complain = complainsRepository.findById(complainId).get();
 
-        comlain.setAnsweredAt(new Date());
+        complain.setAnsweredAt(new Date());
 
-        complainsRepository.update(comlain);
+        complainsRepository.update(complain);
     }
 
     public void compensateComplain(Long complainId, Long compensation) {
-        Complain comlain = complainsRepository.findById(complainId).get();
+        Complain complain = complainsRepository.findById(complainId).get();
 
-        comlain.setAnsweredAt(new Date());
-        comlain.setCompensation(compensation);
+        complain.setAnsweredAt(new Date());
+        complain.setCompensation(compensation);
 
 
-        complainsRepository.update(comlain);
+        complainsRepository.update(complain);
     }
 }

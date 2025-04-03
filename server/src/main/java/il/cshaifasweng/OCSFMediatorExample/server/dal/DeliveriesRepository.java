@@ -1,8 +1,8 @@
-package org.example.finalproject.dal;
+package il.cshaifasweng.OCSFMediatorExample.server.dal;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
-import org.example.finalproject.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 
 import javax.swing.*;
 

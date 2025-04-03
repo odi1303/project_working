@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 

@@ -1,8 +1,8 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.finalproject.dal.UserType;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
 
 import java.util.List;
 
@@ -27,6 +27,14 @@ public class User {
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     private List<Delivery> deliveries;
+
+    public List<TableOrder> getTableOrders() {
+        return tableOrders;
+    }
+
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
 
     public boolean isAdmin() {
         return type == UserType.Admin;

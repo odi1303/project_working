@@ -1,8 +1,8 @@
-package org.example.finalproject.dal;
+package il.cshaifasweng.OCSFMediatorExample.server.dal;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 @Repository
 public interface UsersRepository extends CrudRepository<User, Long>

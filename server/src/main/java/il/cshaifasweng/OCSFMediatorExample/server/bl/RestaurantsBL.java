@@ -1,14 +1,13 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.api.models.RestaurantSummery;
-import org.example.finalproject.dal.RestaurantsRepositroy;
-import org.example.finalproject.dal.TableOrderRepository;
-import org.example.finalproject.dal.UsersRepository;
-import org.example.finalproject.dal.models.Restaurant;
-import org.example.finalproject.dal.models.RestaurantTable;
-import org.example.finalproject.dal.models.TableOrder;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.TableOrderRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.RestaurantTable;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +17,7 @@ import java.util.stream.Stream;
 
 public class RestaurantsBL {
     @Inject
-    RestaurantsRepositroy restaurantsRepositroy;
+    RestaurantsRepository restaurantsRepository;
 
     @Inject
     UsersRepository usersRepository;
@@ -26,9 +25,9 @@ public class RestaurantsBL {
     @Inject
     TableOrderRepository tableOrderRepository;
 
-    public List<RestaurantSummery> getAllRestaurantsSummeries()
+    /*public List<RestaurantSummery> getAllRestaurantsSummeries()
     {
-        return restaurantsRepositroy.findAll().map(r -> new RestaurantSummery(
+        return restaurantsRepository.findAll().map(r -> new RestaurantSummery(
             r.getId(),
             r.getTables().stream().filter(RestaurantTable::isInside).mapToLong(RestaurantTable::getSize).sum(),
             r.getTables().stream().filter(t -> !t.isInside()).mapToLong(RestaurantTable::getSize).sum(),
@@ -36,11 +35,11 @@ public class RestaurantsBL {
                 r.getMondayOpeningHours()
                 // Fill other opening hours
         )).toList();
-    }
+    }*/
 
     public void orderTables(Long restaurantId, Long userId, boolean inside, Date startDate, Date endDate, Long amount) {
         User user = usersRepository.findById(userId).get();
-        Restaurant restaurant = restaurantsRepositroy.findById(restaurantId).get();
+        Restaurant restaurant = restaurantsRepository.findById(restaurantId).get();
         Stream<RestaurantTable> tablesInCorrectPlace = restaurant.getTables().stream().filter(t -> t.isInside() == inside);
         Stream<RestaurantTable> availableTables = tablesInCorrectPlace.filter(t -> t.getTableOrders().stream().allMatch(to -> endDate.before(to.getStartDate()) || startDate.after(to.getEndDate())));
 

@@ -1,7 +1,8 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -24,6 +25,18 @@ public class RestaurantTable {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<TableOrder> tableOrders;
+
+    public int getSize() {
+        return size.intValue();
+    }
+
+    public boolean isInside() {
+        return inside;
+    }
+
+    public List<TableOrder> getTableOrders() {
+        return tableOrders;
+    }
 
     public RestaurantTable() {}
 }

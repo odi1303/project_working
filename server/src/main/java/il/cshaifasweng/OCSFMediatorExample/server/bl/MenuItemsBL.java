@@ -1,8 +1,8 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.dal.MenuRepository;
-import org.example.finalproject.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 
 import java.util.List;
 import java.util.stream.Stream;

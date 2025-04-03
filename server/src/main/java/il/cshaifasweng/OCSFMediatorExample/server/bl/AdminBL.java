@@ -1,15 +1,15 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.dal.MenuRepository;
-import org.example.finalproject.dal.RequestsRepository;
-import org.example.finalproject.dal.UsersRepository;
-import org.example.finalproject.dal.models.MenuItem;
-import org.example.finalproject.dal.models.User;
-import org.example.finalproject.dal.models.requests.DeleteRequest;
-import org.example.finalproject.dal.models.requests.InsertRequest;
-import org.example.finalproject.dal.models.requests.Request;
-import org.example.finalproject.dal.models.requests.UpdateRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.InsertRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
 
 import java.util.List;
 import java.util.Optional;

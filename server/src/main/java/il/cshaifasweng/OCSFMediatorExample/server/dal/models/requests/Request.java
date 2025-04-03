@@ -1,7 +1,7 @@
-package org.example.finalproject.dal.models.requests;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
-import org.example.finalproject.dal.RequestStatus;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestStatus;
 
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="action", discriminatorType = DiscriminatorType.STRING)
