@@ -25,16 +25,21 @@ public class RestaurantsBL {
     @Inject
     TableOrderRepository tableOrderRepository;
 
-    /*public List<RestaurantSummery> getAllRestaurantsSummeries()
+   /* public List<RestaurantSummery> getAllRestaurantsSummeries()
     {
-        return restaurantsRepository.findAll().map(r -> new RestaurantSummery(
-            r.getId(),
-            r.getTables().stream().filter(RestaurantTable::isInside).mapToLong(RestaurantTable::getSize).sum(),
-            r.getTables().stream().filter(t -> !t.isInside()).mapToLong(RestaurantTable::getSize).sum(),
+        return restaurantsRepositroy.findAll().map(r -> new RestaurantSummery(
+                r.getId(),
+                r.getTables().stream().filter(RestaurantTable::isInside).mapToLong(RestaurantTable::getSize).sum(),
+                r.getTables().stream().filter(t -> !t.isInside()).mapToLong(RestaurantTable::getSize).sum(),
                 r.getSundayOpeningHours(),
                 r.getMondayOpeningHours()
-                // Fill other opening hours
-        )).toList();
+                r.getTuesdayOpeningHours(),
+                r.getWednesdayOpeningHours(),
+                r.getThursdayOpeningHours(),
+                r.getFridayOpeningHours(),
+                r.getSaturdayOpeningHours(),
+
+                )).toList();
     }*/
 
     public void orderTables(Long restaurantId, Long userId, boolean inside, Date startDate, Date endDate, Long amount) {

@@ -59,7 +59,11 @@ public class ComplainsBL {
     }
 
     public void closeComplain(Long complainId) {
-        Complain complain = complainsRepository.findById(complainId).get();
+        Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
+        if (maybeComplain.isEmpty()) {
+            return;
+        }
+        Complain complain = maybeComplain.get();
 
         complain.setAnsweredAt(new Date());
 
@@ -67,11 +71,14 @@ public class ComplainsBL {
     }
 
     public void compensateComplain(Long complainId, Long compensation) {
-        Complain complain = complainsRepository.findById(complainId).get();
+        Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
+        if (maybeComplain.isEmpty()) {
+            return;
+        }
+        Complain complain = maybeComplain.get();
 
         complain.setAnsweredAt(new Date());
         complain.setCompensation(compensation);
-
 
         complainsRepository.update(complain);
     }
