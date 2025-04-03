@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class OrderableDishSectionInMenuController {
+public class DeletableDishSectionController {
     private MenuController menuController;
 
     private DishSectionInMenuController dishSectionController;
@@ -36,9 +36,16 @@ public class OrderableDishSectionInMenuController {
     }
 
     @FXML
-    private void orderDish(){
+    private void deleteDish(){
         if (menuController != null && dishSectionController != null) {
-            menuController.orderDish(dishSectionController.getDishClient());
+            menuController.deleteDishPressed(dishSectionController.getDishClient());
+        }
+    }
+
+    @FXML
+    public void EditDish(){
+        if (menuController != null && dishSectionController != null) {
+            menuController.EditDishPressed(dishSectionController.getDishClient());
         }
     }
 

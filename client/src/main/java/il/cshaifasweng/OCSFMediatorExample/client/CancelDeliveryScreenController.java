@@ -89,7 +89,7 @@ public class CancelDeliveryScreenController {
     private void removeOrder(ScrollPane scrollPane) {
         PopupDialogService popupDialogService = new PopupDialogService();
         try {
-            boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you shure you want to delete the order?", (Stage) orderTable.getScene().getWindow());
+            boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the order?", (Stage) orderTable.getScene().getWindow());
             if (isConfirmed) {
                 boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay ___.", (Stage) orderTable.getScene().getWindow());
                 if (confirmed) {

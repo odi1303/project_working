@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="editDishPane" prefHeight="174.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EditDishController">
+
+
+
+    <!-- Submit Button -->
+    <Button fx:id="submitButton" layoutX="32.0" layoutY="28.0" onAction="#submitDish" text="Submit" />
+
+    <!-- Dish Name -->
+    <HBox layoutX="50" layoutY="70" spacing="10">
+        <Label text="Name:" />
+        <TextField fx:id="nameTextField" />
+    </HBox>
+
+    <!-- Dish Description -->
+    <HBox layoutX="304.0" layoutY="70.0" spacing="10">
+        <Label text="Description:" />
+        <TextField fx:id="descriptionTextField" />
+    </HBox>
+
+    <!-- Dish Price -->
+    <HBox layoutX="53.0" layoutY="119.0" spacing="10">
+        <Label text="Price:" />
+        <TextField fx:id="priceTextField" />
+    </HBox>
+
+    <!-- Dish Image URL -->
+    <HBox layoutX="300.0" layoutY="119.0" spacing="10">
+        <Label text="Image URL:" />
+        <TextField fx:id="imageUrlTextField" />
+    </HBox>
+</Pane>
