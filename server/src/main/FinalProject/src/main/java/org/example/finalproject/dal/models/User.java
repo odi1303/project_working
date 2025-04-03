@@ -8,15 +8,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name="type", nullable=false)
-    private UserType type;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     private List<TableOrder> tableOrders;
