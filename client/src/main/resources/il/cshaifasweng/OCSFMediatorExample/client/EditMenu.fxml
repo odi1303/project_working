@@ -16,6 +16,10 @@
                     <Button text="Add New Dish" onAction="#addNewDish"/>
                     <Button text="Add Dish From Database" onAction="#addDishFromDatabase"/>
                     <Button text="Save Changes" onAction="#saveChanges"/>
+                    <HBox spacing="10">
+                        <Label text="Menu name:"/>
+                        <TextField promptText="enter a name"/>
+                    </HBox>
                 </VBox>
                 <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="800">
                     <VBox fx:id="menuContainer" spacing="10"/>
