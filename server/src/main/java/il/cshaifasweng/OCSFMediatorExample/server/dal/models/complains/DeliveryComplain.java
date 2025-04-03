@@ -18,9 +18,9 @@ import java.util.Date;
 public class DeliveryComplain extends Complain
 {
     @ManyToOne(optional = false)
-    private Delivery delivery;
+    public Delivery delivery;
     @Id
-    private Long id;
+    public Long id;
 
     public DeliveryComplain(String description, Date registeredAt, User complainer, Delivery delivery) {
         super(description, registeredAt, complainer);

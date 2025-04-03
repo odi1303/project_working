@@ -17,9 +17,9 @@ import java.util.Date;
 public class RestaurantComplain extends Complain
 {
     @ManyToOne(optional = false)
-    private Restaurant restaurant;
+    public Restaurant restaurant;
     @Id
-    private Long id;
+    public Long id;
 
     public RestaurantComplain(String description, Date date, User user, Restaurant restaurant) {
         super(description, date, user);

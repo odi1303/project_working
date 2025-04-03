@@ -15,22 +15,22 @@ public abstract class Complain
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name="description", nullable = false)
-    private String description;
+    public String description;
 
     @Column(name="registered_at", nullable = false)
-    private Date registeredAt;
+    public Date registeredAt;
 
     @Column(name="answered_at")
-    private Date answeredAt;
+    public Date answeredAt;
 
     @Column(name = "compensation")
-    private Long compensation;
+    public Long compensation;
 
     @ManyToOne()
-    private User complainer;
+    public User complainer;
 
     public Long getId() {
         return id;

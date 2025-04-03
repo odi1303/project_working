@@ -12,21 +12,20 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
-    /*@Column(name="type", nullable=false)
-     private String s;
-     */
+    @Column(name="password", nullable=false)
+    public String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name="type", nullable=false)
-    private UserType type;
+    public UserType type;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    private List<TableOrder> tableOrders;
+    public List<TableOrder> tableOrders;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    private List<Delivery> deliveries;
+    public List<Delivery> deliveries;
 
     public List<TableOrder> getTableOrders() {
         return tableOrders;

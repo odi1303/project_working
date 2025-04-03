@@ -12,19 +12,19 @@ import java.util.List;
 public class RestaurantTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Restaurant restaurant;
+    public Restaurant restaurant;
 
     @Column(name="size", nullable = false)
-    private Long size;
+    public Long size;
 
     @Column(name="inside", nullable = false)
-    private boolean inside;
+    public boolean inside;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<TableOrder> tableOrders;
+    public List<TableOrder> tableOrders;
 
     public int getSize() {
         return size.intValue();

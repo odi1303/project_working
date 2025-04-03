@@ -9,10 +9,10 @@ public abstract class Request
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
     @Enumerated(EnumType.STRING)
     @Column(name="status", nullable=false)
-    private RequestStatus status;
+    public RequestStatus status;
 
     public Request() { }
 

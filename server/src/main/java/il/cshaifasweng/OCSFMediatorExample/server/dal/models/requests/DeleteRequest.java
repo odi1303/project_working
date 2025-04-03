@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 public class DeleteRequest extends Request
 {
     @Column(name="menu_item_id", nullable=false)
-    private Long menuItemId;
+    public Long menuItemId;
     @Id
-    private Long id;
+    public Long id;
 
     public Long getMenuItem() {
         return menuItemId;

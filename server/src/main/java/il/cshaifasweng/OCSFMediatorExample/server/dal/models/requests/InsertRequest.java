@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 public class InsertRequest extends Request
 {
     @Column(name="menu_item_description", nullable=false)
-    private String menuItemDescription;
+    public String menuItemDescription;
 
     @Column(name="menu_item_price", nullable=false)
-    private Long menuItemPrice;
+    public Long menuItemPrice;
     @Id
-    private Long id;
+    public Long id;
 
     public String getMenuItemDescription() {
         return menuItemDescription;

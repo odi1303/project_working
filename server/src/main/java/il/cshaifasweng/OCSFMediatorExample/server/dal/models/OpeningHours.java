@@ -7,14 +7,14 @@ import jakarta.persistence.*;
 public class OpeningHours {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name="start_hour")
-    private Long startHour;
+    public Long startHour;
 
     @Column(name="end_hour")
-    private Long endHour;
+    public Long endHour;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Restaurant restaurant;
+    public Restaurant restaurant;
 }
