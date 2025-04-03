@@ -2,6 +2,10 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 import java.io.IOException;
 
@@ -9,7 +13,17 @@ public class EditMenuScreenController {
 
     @FXML
     private void createNewMenu(ActionEvent event) {
-        // TODO: Implement logic for creating a new menu
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditMenu.fxml"));
+            Parent root = loader.load();
+            EditMenuController controller = loader.getController();
+            controller.setMenu(new MenuClient());
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            currentScene.setRoot(root);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

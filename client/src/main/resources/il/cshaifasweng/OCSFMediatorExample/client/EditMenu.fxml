@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EditMenuController"
+            prefHeight="400.0" prefWidth="600.0">
+        <VBox>
+            <HBox>
+                <VBox fx:id="controlSection" spacing="10">
+                    <Button text="Add New Dish" onAction="#addNewDish"/>
+                    <Button text="Add Dish From Database" onAction="#addDishFromDatabase"/>
+                    <Button text="Save Changes" onAction="#saveChanges"/>
+                </VBox>
+                <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="800">
+                    <VBox fx:id="menuContainer" spacing="10"/>
+                </ScrollPane>
+            </HBox>
+
+            <HBox fx:id="editDishContainer"/>
+            <Button text="Home Page" onAction="#goToHomePage"/>
+        </VBox>
+
+</AnchorPane>
