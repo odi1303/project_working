@@ -7,7 +7,6 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
       fx:controller="il.cshaifasweng.OCSFMediatorExample.client.MenuController"
-      prefWidth="1200" prefHeight="800"
       spacing="10">
 
     <HBox fx:id="filterSection" spacing="10">
@@ -36,10 +35,10 @@
     </HBox>
 
     <!-- 🔹 Menu Section -->
-    <VBox fx:id="menuSection" spacing="10" minHeight="250" VBox.vgrow="ALWAYS">
+    <VBox fx:id="menuSection" spacing="10" minHeight="250" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
         <Label text="Menu Section"/>
         <ScrollPane fx:id="menuScrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
-            <VBox fx:id="menuDishList" spacing="8" />
+            <VBox fx:id="menuDishList" spacing="8"/>
         </ScrollPane>
     </VBox>
 

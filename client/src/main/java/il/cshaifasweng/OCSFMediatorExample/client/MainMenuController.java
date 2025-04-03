@@ -30,7 +30,7 @@ public class MainMenuController {
 
 
     public void reinitialize(boolean isOrder){
-        menuController.reinitialize(isOrder);
+        menuController.reinitialize(isOrder, true);
     }
 
     @FXML

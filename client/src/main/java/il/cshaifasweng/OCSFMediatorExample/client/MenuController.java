@@ -1,5 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -33,10 +36,16 @@ public class MenuController {
     private MenuClient currentMenu;
 
     private ArrayList<DishClient> dishesInOrder;
-    boolean isOrder;
+    private boolean isOrder;
+    private boolean isDelete = false;
+    private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu
+
+    private EditMenuController editMenuController;
 
     @FXML
     public void initialize() {
+        isMain = true;
+        fullMenu = new MenuClient();
         List<String> branches = List.of("Haifa", "Tel Aviv", "Jerusalem");
         List<String> ingredients = List.of("Cheese", "Tomato", "Olives", "Onion", "Beef", "Lettuce", "Cucumber", "Feta", "Hummus", "Falafel");
         putBranchCheckBoxesInFilter(branches);
@@ -52,10 +61,26 @@ public class MenuController {
         isOrder = false;
     }
 
-    public void reinitialize(boolean isOrder) {
+    public void reinitialize(boolean isOrder, boolean isMain) {
         if (isOrder) {
             this.isOrder = true;
             addOrderSupportToMenu();
+        }
+        if (!isMain) {
+            this.isMain = false;
+        }
+    }
+    public void setEdit(EditMenuController editMenuController) {
+        this.editMenuController = editMenuController;
+        isDelete = true;
+        isOrder = false;
+        clearFilter();
+    }
+
+    public void setMenu(MenuClient menu) {
+        if (!isMain) {
+            fullMenu = menu;
+            clearFilter();
         }
     }
 
@@ -72,10 +97,15 @@ public class MenuController {
     }
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
         menuDishList.getChildren().clear();
-        for (DishClient dish : menuClient.getMenu()) {
-            addDishToMenuSection(dish, isOrder);
+        if (menuClient != null){
+            for (DishClient dish : menuClient.getMenu()) {
+                addDishToMenuSection(dish, isOrder);
+            }
+            currentMenu = new MenuClient(menuClient.getMenu());
+        }else{
+            currentMenu = null;
         }
-        currentMenu = new MenuClient(menuClient.getMenu());
+
     }
 
     private void putBranchCheckBoxesInFilter(List<String> branches){
@@ -152,7 +182,7 @@ public class MenuController {
 
     private void addDishToMenuSection(DishClient dish, boolean isOrder){
         try {
-            if (!isOrder) {
+            if (!isOrder && !isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
                 Node dishNode = fxmlLoader.load();
                 DishSectionInMenuController dishSectionInMenuController = fxmlLoader.getController();
@@ -160,17 +190,24 @@ public class MenuController {
                 dishSectionInMenuController.setDishDataInDishSection();
 
                 menuDishList.getChildren().add(dishNode);
-            }else{
+            }else if (!isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderableDishSectionInMenu.fxml"));
                 Node dishNode = fxmlLoader.load();
                 OrderableDishSectionInMenuController orderableDishSectionInMenuController = fxmlLoader.getController();
                 orderableDishSectionInMenuController.reinitialize(this);
                 orderableDishSectionInMenuController.setDishInDishSection(dish);
                 orderableDishSectionInMenuController.setDishDataInDishSection();
-
-
-
                 menuDishList.getChildren().add(dishNode);
+            }else{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DeletableDishSection.fxml"));
+                Node dishNode = fxmlLoader.load();
+                DeletableDishSectionController DeletableDishSectionController = fxmlLoader.getController();
+                DeletableDishSectionController.reinitialize(this);
+                DeletableDishSectionController.setDishInDishSection(dish);
+                DeletableDishSectionController.setDishDataInDishSection();
+                menuDishList.getChildren().add(dishNode);
+
+
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -294,5 +331,10 @@ public class MenuController {
     }
 
 
-
+    public void deleteDishPressed(DishClient dish) {
+        editMenuController.deleteDishPressed(dish);
+    }
+    public void EditDishPressed(DishClient dish) {
+        editMenuController.EditDishPressed(dish);
+    }
 }
