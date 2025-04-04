@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import org.greenrobot.eventbus.EventBus;
 
 public class EditDishController {
 
@@ -37,9 +38,15 @@ public class EditDishController {
     private DishClient dish;
 
     public void initialize() {
-//        positionButtons();
-//        editDishPane.widthProperty().addListener((observable, oldValue, newValue) -> positionButtons());
-//        editDishPane.heightProperty().addListener((observable, oldValue, newValue) -> positionButtons());
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     private void positionButtons() {

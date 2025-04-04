@@ -8,10 +8,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
 public class EditMenuScreenController {
+
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     @FXML
     private void createNewMenu(ActionEvent event) {
