@@ -46,8 +46,8 @@ public class MenuController {
     public void initialize() {
         isMain = true;
         fullMenu = new MenuClient();
-        List<String> branches = List.of("Haifa", "Tel Aviv", "Jerusalem");
-        List<String> ingredients = List.of("Cheese", "Tomato", "Olives", "Onion", "Beef", "Lettuce", "Cucumber", "Feta", "Hummus", "Falafel");
+        List<String> branches = fullMenu.getAllBranches();
+        List<String> ingredients = fullMenu.getAllIngredients();
         putBranchCheckBoxesInFilter(branches);
         putIngredientsCheckBoxesInFilter(ingredients);
 
@@ -55,6 +55,7 @@ public class MenuController {
         fullMenu = new MenuClient(new ArrayList<>(dishes));
         setMenuInMenuSection(fullMenu, false);
         currentMenu = new MenuClient(new ArrayList<>(dishes));
+        updateFilter();
 
         //for order section
         dishesInOrder = new ArrayList<DishClient>();
@@ -80,8 +81,16 @@ public class MenuController {
     public void setMenu(MenuClient menu) {
         if (!isMain) {
             fullMenu = menu;
-            clearFilter();
+            updateFilter();
         }
+    }
+
+    private void updateFilter() {
+        List<String> branches = fullMenu.getAllBranches();
+        List<String> ingredients = fullMenu.getAllIngredients();
+        putBranchCheckBoxesInFilter(branches);
+        putIngredientsCheckBoxesInFilter(ingredients);
+        clearFilter();
     }
 
     private void addOrderSupportToMenu() {

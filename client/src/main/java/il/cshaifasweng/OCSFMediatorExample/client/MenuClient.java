@@ -1,6 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 public class MenuClient {
     private ArrayList<DishClient> menu;
@@ -72,5 +76,25 @@ public class MenuClient {
             }
         }
         return false;
+    }
+
+    public List<String> getAllBranches() {
+        Set<String> branchesSet = new HashSet<>(); // Using a Set to avoid duplicates
+
+        for (DishClient dish : menu) {
+            branchesSet.addAll(dish.getAvailableBranches());
+        }
+
+        return new ArrayList<>(branchesSet); // Convert Set to List before returning
+    }
+
+    public List<String> getAllIngredients() {
+        Set<String> IngredientsSet = new HashSet<>(); // Using a Set to avoid duplicates
+
+        for (DishClient dish : menu) {
+            IngredientsSet.addAll(dish.getIngredients());
+        }
+
+        return new ArrayList<>(IngredientsSet); // Convert Set to List before returning
     }
 }
