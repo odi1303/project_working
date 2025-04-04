@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -11,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,8 +42,12 @@ public class SimpleServer extends AbstractServer{
 	}
 
 	@Override
-	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
+		if (msg instanceof complaint_to_answer){
+			System.out.println("message received");
+		}
 		String msgString = msg.toString();
+		System.out.println(msgString);
 		System.out.println("SimpleServer" + " " + msgString);
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
@@ -67,6 +71,28 @@ public class SimpleServer extends AbstractServer{
 					}
 				}
 			}
+		} else if (msgString.startsWith("is user exists?")) {
+			int startIndex = msgString.indexOf("(") + 1;
+			int commaIndex = msgString.indexOf(",");
+			int endIndex = msgString.indexOf(")");
+			String username = msgString.substring(startIndex, commaIndex).trim();
+			String password = msgString.substring(commaIndex + 1, endIndex).trim();
+			UsersRepository usersRepository = new UsersRepository();
+			if(!usersRepository.userExists(username)){
+				//if the user doesn't;t exist send it in a message
+				client.sendToClient("user named "+username+" does not exist");
+			}
+			else {
+				if(usersRepository.correctPassword(username, password)){
+					UserType type=usersRepository.getUserType(username,password);
+					String stringType=type.toString();
+					client.sendToClient("the password is ok("+username+","+password+")"+stringType);
+				}
+				else {
+					client.sendToClient("wrong password");
+				}
+			}
+
 		}
 	}
 	public void sendToAllClients(String message) {

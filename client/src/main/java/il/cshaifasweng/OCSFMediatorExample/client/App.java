@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -24,11 +25,15 @@ public class App extends Application {
     private static Scene scene;
     private static SimpleClient client;
     public static ObservableList<String> menu;
+    private static String userName = null;
+    private static String password = null;
+    public static UserType type=null;
+
 
     @Override
     public void start(Stage stage) throws IOException {
-    	EventBus.getDefault().register(this);
-    	client = SimpleClient.getClient();
+        EventBus.getDefault().register(this);
+        client = SimpleClient.getClient();
         client.openConnection();
         client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
 
@@ -45,35 +50,80 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-    public static void setMenu(ObservableList<String> list){
+
+    public static void setMenu(ObservableList<String> list) {
         menu = list;
     }
-    
+
 
     @Override
-	public void stop() throws Exception {
-		// TODO Auto-generated method stub
-    	EventBus.getDefault().unregister(this);
+    public void stop() throws Exception {
+        // TODO Auto-generated method stub
+        EventBus.getDefault().unregister(this);
         client.sendToServer("remove client");
         client.closeConnection();
-		super.stop();
-	}
-    
+        super.stop();
+    }
+
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
-    	Platform.runLater(() -> {
-    		Alert alert = new Alert(AlertType.WARNING,
-        			String.format("Message: %s\nTimestamp: %s\n",
-        					event.getWarning().getMessage(),
-        					event.getWarning().getTime().toString())
-        	);
-        	alert.show();
-    	});
-    	
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.WARNING,
+                    String.format("Message: %s\nTimestamp: %s\n",
+                            event.getWarning().getMessage(),
+                            event.getWarning().getTime().toString())
+            );
+            alert.show();
+        });
+
     }
-    public static void  sendMessageToServer(Object message) throws IOException {
+    public void saveComplaint(String recipient,String subject, String respond_text, String branch){
+
+    }
+
+    public static void sendMessageToServer(Object message) throws IOException {
+        System.out.println("message sent");
         client.sendToServer(message);
     }
+
+    //saves the details of the client for this session so he will not be needed to enter every time
+    public static void saveClientDetails(String userName, String password, String type) throws IOException {
+        App.userName = userName;
+        App.password = password;
+        if (type.equals("Admin")){
+            App.type = UserType.Admin;
+            setRoot("manager_personal_page");
+        }
+        else if (type.equals("User")) {
+            App.type = UserType.User;
+            setRoot("client_personal_page");
+        } else if (type.equals("employee")) {
+            App.type=UserType.employee;
+            setRoot("employee_personal_page");
+        } else if (type.equals("dietician")) {
+            App.type=UserType.dietician;
+        } else if (type.equals("branchManager")) {
+            App.type=UserType.branchManager;
+        }
+        else
+            App.type=UserType.chainManager;
+    }
+    //return true if he entered once and false otherwise
+    public boolean detailsExist(){
+        if (userName == null || password == null){
+            return false;
+        }
+        return true;
+    }
+    //returns the client saved username
+    public String getUserName(){
+        return userName;
+    }
+    //returns the client saved password
+    public String getPassword(){
+        return password;
+    }
+
 
 	public static void main(String[] args) {
         launch();

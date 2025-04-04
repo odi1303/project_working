@@ -1,4 +1,6 @@
-module org.example.finalproject {
+module finalproject {
+    requires entities; // Add this line
+
     requires javafx.controls;
     requires javafx.fxml;
     requires jakarta.persistence;
@@ -9,6 +11,6 @@ module org.example.finalproject {
     requires java.naming;
     requires static lombok;
 
-    opens org.example.finalproject to javafx.fxml;
-    exports org.example.finalproject;
+    opens finalproject to javafx.fxml;
+    exports finalproject;
 }

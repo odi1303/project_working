@@ -47,7 +47,7 @@ public class HomePage {
 
     @FXML
     void showAbout(ActionEvent event) throws IOException {
-        App.setRoot("aboutScreen");
+        App.setRoot("about-us-page");
     }
 
 //    @FXML
@@ -97,12 +97,12 @@ public class HomePage {
 
     @FXML
     void fileComplaint(ActionEvent event) throws IOException {
-        App.setRoot("FileComplaintScreen");
+        App.setRoot("file-a-complaint");
     }
 
     @FXML
     void watchComplaints(ActionEvent event) throws IOException {
-        App.setRoot("WatchComplaintsScreen");
+        App.setRoot("view-complaints");
     }
 
     @FXML

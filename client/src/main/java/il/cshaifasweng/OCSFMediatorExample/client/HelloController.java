@@ -9,6 +9,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import java.io.IOException;
 
 public class HelloController {
+    //private final UsersRepository usersRepository = new UsersRepository();
     @FXML // fx:id="connectButton"
     private Button connectButton; // Value injected by FXMLLoader
 
@@ -32,35 +33,44 @@ public class HelloController {
     @FXML
         //check if the details are correct, if they not show an error
     void onConnectButtonClick(ActionEvent event) throws IOException {
+        if (App.type!=null){
+            UserType user_type = App.type;
+            switch (user_type) {
+                case User:
+                    App.setRoot("client_personal_page");
+                    break;
+                case employee:
+                    App.setRoot("employee_personal_page");
+                    break;
+                case dietician:
+                    App.setRoot("editMenuScreen");
+                    break;
+                case chainManager:
+                    App.setRoot("reports_view");
+                    break;
+                case branchManager:
+                    App.setRoot("manager_personal_page");
+                    break;
+                default:
+                    wrongDetails.setText("Incorrect username or password");
+            }
+        }
         if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
-            throw new IllegalArgumentException("Please enter your username and password");
+            wrongDetails.setText("Please enter your username and password");
+            return;
         }
 
         String userName = username_field.getText();
         String password = password_field.getText();
+        App.sendMessageToServer("is user exists?("+userName+","+password+")");
 
         UsersRepository usersRepository=new UsersRepository();
-        int user_type = usersRepository.searchUser(userName, password);
 
-        switch (user_type) {
-            case 1:
-                App.setRoot("client_personal_page");
-                break;
-            case 2:
-                App.setRoot("employee_personal_page");
-                break;
-            case 3:
-                App.setRoot("editMenuScreen");
-                break;
-            case 4:
-                App.setRoot("reports_view");
-                break;
-            case 5:
-                App.setRoot("manager_personal_page");
-                break;
-            default:
-                wrongDetails.setText("Incorrect username or password");
-        }
+
+
+
+
+
     }
 
     @FXML
