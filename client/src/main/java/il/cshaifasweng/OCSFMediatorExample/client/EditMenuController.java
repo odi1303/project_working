@@ -102,6 +102,8 @@ public class EditMenuController {
 
     public void setMenu(MenuClient menu) {
         this.menu = menu;
+        menuController.setMenu(menu);
+
     }
 
     @FXML

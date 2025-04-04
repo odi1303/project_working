@@ -59,13 +59,13 @@ public class HomePage {
     void showTheMenu(ActionEvent event) throws IOException {
 //        boolean sent = false;
 //        while (!sent) {
-//            try {
-//                SimpleClient.getClient().sendToServer("GetDishNames");
+//           try {
+//                SimpleClient.getClient().sendToServer("pp poopoo");
 //                sent = true;
 //            } catch (Exception ignored) {
 //            }
 //        }
-        StatusLabel.setText("Loading Menu");
+//        StatusLabel.setText("Loading Menu");
         App.setRoot("MainMenu");
     }
 
