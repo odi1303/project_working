@@ -22,8 +22,8 @@ public class DeliveriesBL {
 
     @Inject
     MenuRepository menuRepository;
-
-    /*public void createDelivery(Long userId, DeliveryAPI delivery) {
+/*
+    public void createDelivery(Long userId, DeliveryAPI delivery) {
         User user = usersRepository.findById(userId).get();
 
         List<DeliveryItem> deliveryItems = delivery.getDeliveryItems().stream()
@@ -31,8 +31,8 @@ public class DeliveriesBL {
                 .toList();
 
         deliveriesRepository.insert(new Delivery(delivery.getArriavl(), user, deliveryItems));
-    }*/
-
+    }
+*/
     public void cancelDelivery(Long userId, Long deliveryId) {
         User user = usersRepository.findById(userId).orElseThrow();
         Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();

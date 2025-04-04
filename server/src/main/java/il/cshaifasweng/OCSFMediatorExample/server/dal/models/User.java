@@ -24,6 +24,10 @@ public class User {
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     public List<TableOrder> tableOrders;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="type", nullable=false)
+    public String MailAddress;
+
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     public List<Delivery> deliveries;
 
