@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.scene.Node;
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,10 +23,19 @@ public class CancelDeliveryScreenController {
 
     @FXML
     public void initialize() {
-        ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
-        for (OrderClient order : orders) {
-            addOrderToVBox(order);
+        try {
+            EventBus.getDefault().register(this);
+            ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
+            for (OrderClient order : orders) {
+                addOrderToVBox(order);
+            }
+        } catch(Exception e) {
+            throw new RuntimeException();
         }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

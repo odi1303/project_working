@@ -1,6 +1,6 @@
 package org.example.finalproject.bl;
 
-import org.example.finalproject.dal.ComplainsRepository;
+import org.finalproject.bl.ComplainsRepository;
 import org.example.finalproject.dal.DeliveriesRepository;
 import org.example.finalproject.dal.RestaurantsRepositroy;
 import org.example.finalproject.dal.UsersRepository;

@@ -18,6 +18,10 @@ public class MenuReview {
         EventBus.getDefault().register(this);
     }
 
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
     CompactMenu compactMenu= (CompactMenu) App.menu;
 
     @FXML
