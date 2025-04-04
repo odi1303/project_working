@@ -44,13 +44,15 @@ public class TableOrderScreenController {
     private TextArea topText;
 
     @FXML
-    private ComboBox<String> reservationSpace;
-
+    private ComboBox<String> reservationSpace ;
+    @FXML
+    private ComboBox<String> branch_selection;
     @FXML
     private TextField guestNumber;
 
     @FXML
     private ComboBox<String> time;
+    private ObservableList<String> spaces=FXCollections.observableArrayList("Kiryon-Kiryat Bialik","Grand Kenyon-Haifa");
 
     @FXML
     private DatePicker reservationDate;
@@ -81,11 +83,7 @@ public class TableOrderScreenController {
       "16:00", "16:15", "16:30", "16:45",
       "17:00", "17:15", "17:30", "17:45",
       "18:00", "18:15", "18:30", "18:45",
-      "19:00", "19:15", "19:30", "19:45",
-      "20:00", "20:15", "20:30", "20:45",
-      "21:00", "21:15", "21:30", "21:45",
-      "22:00", "22:15", "22:30", "22:45",
-      "23:00", "23:15", "23:30", "23:45"
+      "19:00"
 );
 
     @FXML
@@ -101,7 +99,11 @@ public class TableOrderScreenController {
             }
         });
     }
-
+    @FXML
+    private void initializeComboBoxForBranch_Selection() {
+        if (branch_selection.getItems().isEmpty())
+            branch_selection.getItems().addAll(spaces);
+    }
     // Loads options for reservationSpace ComboBox on first click only
     @FXML
     private void initializeComboBoxForReservationSpace() {

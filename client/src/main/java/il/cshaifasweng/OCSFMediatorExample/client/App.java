@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -21,9 +22,37 @@ import org.hibernate.Session;
  */
 public class App extends Application {
     private static Session session;
-    public static Scene scene;
+    private static Scene scene;
     private static SimpleClient client;
     public static ObservableList<String> menu;
+
+    public static String username;
+    public static String password;
+    public static UserType userType;
+
+    public static void saveClientDetails(String username, String password, UserType type) {
+        assert type != UserType.Empty;
+        App.username = username;
+        App.password = password;
+        userType = type;
+
+        switch (type) {
+            case Admin:
+                break;
+            case User:
+                break;
+            case Employee:
+                break;
+            case Dietitian:
+                break;
+            case ChainManager:
+                break;
+            case CustomerServiceWorker:
+                break;
+            case BranchManager:
+                break;
+        }
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -39,13 +68,6 @@ public class App extends Application {
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
-    }
-
-    public static <T> T setRootAndGetController(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        Parent root = loader.load();
-        scene.setRoot(root);
-        return loader.getController();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

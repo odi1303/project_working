@@ -57,32 +57,8 @@ public class HelloController {
     }
 
     @Subscribe
-    public void onMaybeUserType(UserType userType) {
-        Platform.runLater(() -> {
-            try {
-                switch (userType.ordinal()) {
-                    case 1:
-                        App.setRoot("client_personal_page");
-                        break;
-                    case 2:
-                        App.setRoot("employee_personal_page");
-                        break;
-                    case 3:
-                        App.setRoot("editMenuScreen");
-                        break;
-                    case 4:
-                        App.setRoot("reports_view");
-                        break;
-                    case 5:
-                        App.setRoot("manager_personal_page");
-                        break;
-                    default:
-                }
-                EventBus.getDefault().unregister(this);
-            } catch (Exception e) {
-
-            }
-        });
+    public void onUserType(UserType userType) {
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

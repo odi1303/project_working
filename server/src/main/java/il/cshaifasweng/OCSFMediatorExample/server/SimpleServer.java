@@ -2,7 +2,6 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -12,20 +11,34 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
+
 	/**
 	 * Constructs a new server.
 	 *
 	 * @param port the port number on which to listen.
 	 */
-	public SimpleServer(int port) throws HibernateException{
+	public SimpleServer(int port) {
 		super(port);
 		Database.getInstance();
+	}
+
+	private static SessionFactory getSessionFactory() throws HibernateException {
+		var config = new Configuration();
+		config.addAnnotatedClass(Dish.class);
+		config.addAnnotatedClass(Ingredient.class);
+		config.addAnnotatedClass(PersonalPreference.class);
+
+		var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
+		return config.buildSessionFactory(serviceRegistry);
 	}
 
 	@Override
@@ -56,8 +69,8 @@ public class SimpleServer extends AbstractServer{
 		} else if (msg instanceof GetUserType getUserType) {
 			try {
 				client.sendToClient(Database.basicUsers.getUserType(getUserType.name, getUserType.password));
-			} catch (Exception e){
-				System.out.println("Error: " + e.getMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

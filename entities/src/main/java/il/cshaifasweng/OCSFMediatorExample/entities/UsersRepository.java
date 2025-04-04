@@ -82,11 +82,11 @@ public class UsersRepository {
     }
 
     //checks if the password is correct
-    public boolean correctPassword(int id, String password) {
+    public boolean correctPassword(String username, String password) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root<User> root = query.from(User.class);
-        query.where(builder.equal(root.get("id"), id));
+        query.where(builder.equal(root.get("username"), username));
         List<User> users = entityManager.createQuery(query).getResultList();
         for (User user : users) {
             if (user.correctPassword(password))
@@ -96,11 +96,11 @@ public class UsersRepository {
     }
 
     //returns the type of the user
-    public UserType getUserType(int id, String password) {
+    public UserType getUserType(String username, String password) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root<User> root = query.from(User.class);
-        query.where(builder.equal(root.get("id"), id));
+        query.where(builder.equal(root.get("username"), username));
         List<User> users = entityManager.createQuery(query).getResultList();
         for (User user : users) {
             if (user.correctPassword(password))
