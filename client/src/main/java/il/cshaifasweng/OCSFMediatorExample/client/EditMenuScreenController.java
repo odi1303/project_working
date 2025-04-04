@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -28,17 +30,43 @@ public class EditMenuScreenController {
 
     @FXML
     private void createMenuFromCopy(ActionEvent event) {
-        // TODO: Implement logic for creating a menu from a copy
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseMenu.fxml"));
+            Parent root = loader.load();
+            ChooseMenuController controller = loader.getController();
+            controller.setCreateCopy(true);
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void editExistingMenu(ActionEvent event) {
-        // TODO: Implement logic for editing an existing menu
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseMenu.fxml"));
+            Parent root = loader.load();
+            ChooseMenuController controller = loader.getController();
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void submitMenu(ActionEvent event) {
-        // TODO: Implement logic for submitting a menu
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseMenu.fxml"));
+            Parent root = loader.load();
+            ChooseMenuController controller = loader.getController();
+            controller.setSubmit(true);
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

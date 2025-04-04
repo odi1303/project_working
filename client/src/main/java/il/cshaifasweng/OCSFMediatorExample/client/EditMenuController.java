@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,6 +24,9 @@ public class EditMenuController {
 
     @FXML
     public HBox editDishContainer;
+
+    @FXML
+    public TextField menuName;
 
     private MenuController menuController;
 
@@ -61,8 +65,18 @@ public class EditMenuController {
     }
 
     public void deleteDishPressed(DishClient dish) {
-        menu.removeDish(dish);
-        menuController.setMenu(menu);
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the dish?", (Stage) controlSection.getScene().getWindow());
+            if (isConfirmed) {
+                menu.removeDish(dish);
+                menuController.setMenu(menu);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
     public void EditDishPressed(DishClient dish) {
         EditDish(dish);
@@ -92,6 +106,9 @@ public class EditMenuController {
 
     public void setMenu(MenuClient menu) {
         this.menu = menu;
+        menuName.setText(menu.getMenuName());
+        menuController.setMenu(menu);
+
     }
 
     @FXML
