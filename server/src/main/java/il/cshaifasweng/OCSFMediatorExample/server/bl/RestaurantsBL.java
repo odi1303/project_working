@@ -24,8 +24,8 @@ public class RestaurantsBL {
 
     @Inject
     TableOrderRepository tableOrderRepository;
-
-   /* public List<RestaurantSummery> getAllRestaurantsSummeries()
+/*
+    public List<RestaurantSummery> getAllRestaurantsSummeries()
     {
         return restaurantsRepositroy.findAll().map(r -> new RestaurantSummery(
                 r.getId(),
@@ -40,8 +40,8 @@ public class RestaurantsBL {
                 r.getSaturdayOpeningHours(),
 
                 )).toList();
-    }*/
-
+    }
+*/
     public void orderTables(Long restaurantId, Long userId, boolean inside, Date startDate, Date endDate, Long amount) {
         User user = usersRepository.findById(userId).get();
         Restaurant restaurant = restaurantsRepository.findById(restaurantId).get();

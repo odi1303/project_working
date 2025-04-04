@@ -14,6 +14,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Restauran
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class ComplainsBL {
     @Inject
@@ -27,6 +30,25 @@ public class ComplainsBL {
 
     @Inject
     RestaurantsRepository restaurantsRepository;
+
+    public List<Complain> getAllComplains() {
+        List<Complain> complains = complainsRepository.findAll().toList();
+        return complains;
+    }
+
+    public List<DeliveryComplain> getDeliveryComplaints() {
+        return complainsRepository.findAll()
+                .filter(c -> c instanceof DeliveryComplain)
+                .map(c -> (DeliveryComplain) c)
+                .collect(Collectors.toList());
+    }
+
+    public List<RestaurantComplain> getRestaurantComplains() {
+        return complainsRepository.findAll()
+                .filter(c -> c instanceof RestaurantComplain)
+                .map(c -> (RestaurantComplain) c)
+                .collect(Collectors.toList());
+    }
 
     public void createDeliveryComplain(Long userId, Long deliveryId, String description) {
         Optional<User> maybeUser = usersRepository.findById(userId);
