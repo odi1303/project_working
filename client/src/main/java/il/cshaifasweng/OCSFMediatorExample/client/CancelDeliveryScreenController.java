@@ -24,7 +24,7 @@ public class CancelDeliveryScreenController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().unregister(this);
+            EventBus.getDefault().register(this);
             ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
             for (OrderClient order : orders) {
                 addOrderToVBox(order);

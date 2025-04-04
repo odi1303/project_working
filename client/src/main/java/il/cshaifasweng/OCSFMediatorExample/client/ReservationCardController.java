@@ -65,6 +65,11 @@ public class ReservationCardController {
 //        setData(reservations.getFirst());
 //    }
 
+
+    public void Initialize() {
+
+    }
+
     public void setData(Reservation reservation) {
         this.reservation = reservation;
         setDataInLabels();

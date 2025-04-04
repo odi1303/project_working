@@ -12,6 +12,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,11 +28,21 @@ public class ChooseMenuController {
 
     @FXML
     public void initialize() {
-        List<MenuClient> menuList = MenuFactory.getMenus();
-        menuListContainer.getChildren().clear();
-        for (MenuClient menu : menuList) {
-            addMenuToMenuListContainer(menu);
+        try {
+            EventBus.getDefault().register(this);
+            List<MenuClient> menuList = MenuFactory.getMenus();
+            menuListContainer.getChildren().clear();
+            for (MenuClient menu : menuList) {
+                addMenuToMenuListContainer(menu);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
+
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     public void setCreateCopy(boolean createCopy) {
