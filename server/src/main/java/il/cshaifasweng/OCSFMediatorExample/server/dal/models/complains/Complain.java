@@ -1,8 +1,8 @@
-package org.example.finalproject.dal.models.complains;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.util.Date;
 //האם צריך שכל אחת מהמחלקות היורשות יהיו טבלה בפני עצמה? או שכולם תחת המחלקה הזאת? צריך לחשוב על זה ולהחליט
@@ -15,22 +15,70 @@ public abstract class Complain
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name="description", nullable = false)
-    private String description;
+    public String description;
 
     @Column(name="registered_at", nullable = false)
-    private Date registeredAt;
+    public Date registeredAt;
 
     @Column(name="answered_at")
-    private Date answeredAt;
+    public Date answeredAt;
 
     @Column(name = "compensation")
-    private Long compensation;
+    public Long compensation;
 
     @ManyToOne()
-    private User complainer;
+    public User complainer;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(Date registeredAt) {
+        this.registeredAt = registeredAt;
+    }
+
+    public Date getAnsweredAt() {
+        return answeredAt;
+    }
+
+    public void setAnsweredAt(Date answeredAt) {
+        this.answeredAt = answeredAt;
+    }
+
+    public Long getCompensation() {
+        return compensation;
+    }
+
+    public void setCompensation(Long compensation) {
+        this.compensation = compensation;
+    }
+
+    public User getComplainer() {
+        return complainer;
+    }
+
+    public void setComplainer(User complainer) {
+        this.complainer = complainer;
+    }
 
     public Complain(String description, Date registeredAt, User complainer) {
         this.description = description;

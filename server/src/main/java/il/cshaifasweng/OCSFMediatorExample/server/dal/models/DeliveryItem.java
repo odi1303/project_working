@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 public class DeliveryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private MenuItem menuItem;
+    public MenuItem menuItem;
 
-    private Long amount;
+    public Long amount;
 
     public DeliveryItem() {}
     public DeliveryItem(MenuItem menuItem, Long amount) {

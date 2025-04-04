@@ -1,17 +1,17 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.api.models.DeliveryAPI;
-import org.example.finalproject.dal.DeliveriesRepository;
-import org.example.finalproject.dal.MenuRepository;
-import org.example.finalproject.dal.UsersRepository;
-import org.example.finalproject.dal.models.Delivery;
-import org.example.finalproject.dal.models.DeliveryItem;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.DeliveryItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class DeliveriesBL {
     @Inject
@@ -23,7 +23,7 @@ public class DeliveriesBL {
     @Inject
     MenuRepository menuRepository;
 
-    public void createDelivery(Long userId, DeliveryAPI delivery) {
+    /*public void createDelivery(Long userId, DeliveryAPI delivery) {
         User user = usersRepository.findById(userId).get();
 
         List<DeliveryItem> deliveryItems = delivery.getDeliveryItems().stream()
@@ -31,11 +31,11 @@ public class DeliveriesBL {
                 .toList();
 
         deliveriesRepository.insert(new Delivery(delivery.getArriavl(), user, deliveryItems));
-    }
+    }*/
 
     public void cancelDelivery(Long userId, Long deliveryId) {
-        User user = usersRepository.findById(userId).get();
-        Delivery delivery = user.getDeliveries().stream().filter(d -> d.getId() == deliveryId).findFirst().get();
+        User user = usersRepository.findById(userId).orElseThrow();
+        Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
 
         Date now = new Date();
         Date nowBeforeHour = Date.from(now.toInstant().minus(1, ChronoUnit.HOURS));

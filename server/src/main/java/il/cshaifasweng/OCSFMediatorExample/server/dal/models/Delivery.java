@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
@@ -10,16 +10,16 @@ import java.util.List;
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name="arriavl_date")
-    private Date arravilDate;
+    public Date arravilDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private User inviter;
+    public User inviter;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<DeliveryItem> items;
+    public List<DeliveryItem> items;
 
     public Delivery() {}
     public Delivery(Date arravilDate, User inviter, List<DeliveryItem> items) {

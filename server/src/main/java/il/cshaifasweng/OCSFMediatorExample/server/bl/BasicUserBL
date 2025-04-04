@@ -1,0 +1,32 @@
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
+
+import jakarta.inject.Inject;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+
+import java.util.Optional;
+
+public class BasicUserBL {
+       @Inject
+       UsersRepository usersRepository;
+
+       public UserType usertype(long userId) {
+           Optional<User> user = usersRepository.findById((long) userId);
+           return user.map(User::getType).orElse(null);
+       }
+
+
+
+        boolean check_password(long id, String Password)
+        {
+            Optional<User> Maybeuser = usersRepository.findById(id);
+            if(Maybeuser.isEmpty() )
+            {
+                return false;
+            }
+            User user= Maybeuser.get();
+            return Password.equals(user.password);
+        }
+}
+

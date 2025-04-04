@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models.requests;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 
@@ -7,15 +7,15 @@ import jakarta.persistence.*;
 public class UpdateRequest extends Request
 {
     @Column(name="menu_item_id", nullable = false)
-    private Long menuItemId;
+    public Long menuItemId;
 
     @Column(name="menu_item_description")
-    private String menuItemDescription;
+    public String menuItemDescription;
 
     @Column(name="menu_item_price")
-    private Long menuItemPrice;
+    public Long menuItemPrice;
     @Id
-    private Long id;
+    public Long id;
 
     public UpdateRequest() { }
 

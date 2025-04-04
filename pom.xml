@@ -17,7 +17,9 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.assemblyPlugin.version>3.3.0</maven.assemblyPlugin.version>
-		<javafx.version>14</javafx.version>
+		<javafx.version>23.0.1</javafx.version>
+		<hibernate.version>6.6.8.Final</hibernate.version>
+		<lombok.version>1.18.36</lombok.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>

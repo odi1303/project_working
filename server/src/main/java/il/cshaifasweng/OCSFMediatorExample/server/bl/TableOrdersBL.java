@@ -1,14 +1,15 @@
-package org.example.finalproject.bl;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.inject.Inject;
-import org.example.finalproject.dal.TableOrderRepository;
-import org.example.finalproject.dal.UsersRepository;
-import org.example.finalproject.dal.models.TableOrder;
-import org.example.finalproject.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.TableOrderRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class TableOrdersBL {
     @Inject
@@ -24,7 +25,7 @@ public class TableOrdersBL {
 
     public void cancelTableOrder(Long userId, Long tableOrderId) {
         User user = usersRepository.findById(userId).get();
-        TableOrder tableOrder = user.getTableOrders().stream().filter(to -> to.getId() == tableOrderId).findFirst().get();
+        TableOrder tableOrder = user.getTableOrders().stream().filter(to -> Objects.equals(to.getId(), tableOrderId)).findFirst().get();
 
         Date now = new Date();
 

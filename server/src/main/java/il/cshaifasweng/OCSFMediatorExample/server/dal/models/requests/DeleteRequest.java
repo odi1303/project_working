@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models.requests;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 
@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 public class DeleteRequest extends Request
 {
     @Column(name="menu_item_id", nullable=false)
-    private Long menuItemId;
+    public Long menuItemId;
     @Id
-    private Long id;
+    public Long id;
 
     public Long getMenuItem() {
         return menuItemId;

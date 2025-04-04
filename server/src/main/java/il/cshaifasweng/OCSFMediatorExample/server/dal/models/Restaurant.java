@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
@@ -9,25 +9,25 @@ import java.util.List;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    private OpeningHours sundayOpeningHours;
+    public OpeningHours sundayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    private OpeningHours mondayOpeningHours;
+    public OpeningHours mondayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    private OpeningHours thusdayOpeningHours;
+    public OpeningHours thusdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    private OpeningHours wendsdayOpeningHours;
+    public OpeningHours wendsdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    private OpeningHours thursdayOpeningHours;
+    public OpeningHours thursdayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
-    private OpeningHours fridayOpeningHours;
+    public OpeningHours fridayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
-    private OpeningHours saterdayOpeningHours;
+    public OpeningHours saterdayOpeningHours;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<RestaurantTable> tables;
+    public List<RestaurantTable> tables;
 
     public Long getId() {
         return id;

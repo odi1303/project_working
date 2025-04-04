@@ -67,7 +67,7 @@ public class SimpleServer extends AbstractServer{
 					}
 				}
 			}
-		}
+		} else System.out.println(msgString);
 	}
 	public void sendToAllClients(String message) {
 		try {

@@ -28,9 +28,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
     	EventBus.getDefault().register(this);
-    	//client = SimpleClient.getClient();
-        //client.openConnection();
-        //client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
+    	client = SimpleClient.getClient();
+        client.openConnection();
+        client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
 
         scene = new Scene(loadFXML("home-page"), 640, 480);
         stage.setScene(scene);

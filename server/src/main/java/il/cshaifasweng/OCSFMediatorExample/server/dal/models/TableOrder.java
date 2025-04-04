@@ -1,4 +1,4 @@
-package org.example.finalproject.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
@@ -10,22 +10,22 @@ import java.util.List;
 public class TableOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name="start_date")
-    private Date startDate;
+    public Date startDate;
 
     @Column(name="end_date")
-    private Date endDate;
+    public Date endDate;
 
     @Column(name="active")
-    private Date active;
+    public Date active;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    private User allocator;
+    public User allocator;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<RestaurantTable> restaurantTables;
+    public List<RestaurantTable> restaurantTables;
 
     public TableOrder() {}
 
