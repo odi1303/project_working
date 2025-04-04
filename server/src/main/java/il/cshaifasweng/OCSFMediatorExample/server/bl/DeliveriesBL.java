@@ -12,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DeliveriesBL {
     @Inject
@@ -34,7 +35,12 @@ public class DeliveriesBL {
     }
 */
     public void cancelDelivery(Long userId, Long deliveryId) {
-        User user = usersRepository.findById(userId).orElseThrow();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return;
+
+        User user = Maybeuser.get();
+
         Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
 
         Date now = new Date();
