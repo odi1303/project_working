@@ -13,18 +13,19 @@ public class Database {
     private static Database db = null;
     private static Session session;
 
-    private static AdminBL admins;
-    private static ComplainsBL complaints;
-    private static DeliveriesBL deliveries;
-    private static MenuItemsBL menuItems;
-    private static TableOrdersBL tableOrders;
-    private static RestaurantsBL restaurants;
-    private static DietitiansBL dietitians;
+    public static AdminBL admins;
+    public static ComplainsBL complaints;
+    public static DeliveriesBL deliveries;
+    public static MenuItemsBL menuItems;
+    public static TableOrdersBL tableOrders;
+    public static RestaurantsBL restaurants;
+    public static DietitiansBL dietitians;
+    public static BasicUserBL basicUsers;
 
     private Database() {
-        SessionFactory sessionFactory = getSessionFactory();
+        /*SessionFactory sessionFactory = getSessionFactory();
         session = sessionFactory.openSession();
-        session.beginTransaction();
+        session.beginTransaction();*/
     }
     public static Database getInstance() {
         if (db == null) {
@@ -32,7 +33,7 @@ public class Database {
         }
         return db;
     }
-
+/*
     private static SessionFactory getSessionFactory() throws HibernateException {
         var config = new Configuration();
         config.addAnnotatedClass(Dish.class);
@@ -41,5 +42,5 @@ public class Database {
 
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         return config.buildSessionFactory(serviceRegistry);
-    }
+    }*/
 }

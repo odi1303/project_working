@@ -21,7 +21,7 @@ import org.hibernate.Session;
  */
 public class App extends Application {
     private static Session session;
-    private static Scene scene;
+    public static Scene scene;
     private static SimpleClient client;
     public static ObservableList<String> menu;
 
@@ -78,7 +78,7 @@ public class App extends Application {
     	});
     	
     }
-    public static void  sendMessageToServer(Object message) throws IOException {
+    public static void sendMessageToServer(Object message) throws IOException {
         client.sendToServer(message);
     }
 

@@ -45,7 +45,7 @@ class BranchManager extends User {
     private int branchID;
 
     public BranchManager(int id, String password, int branchID, String userName) {
-        super(password, UserType.branchManager);
+        super(password, UserType.BranchManager);
         this.branchID = branchID;
     }
 }

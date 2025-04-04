@@ -2,7 +2,8 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
 
@@ -13,6 +14,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+
+    @NaturalId
+    public String name;
 
     @Column(name="password", nullable=false)
     public String password;
@@ -41,5 +45,9 @@ public class User {
 
     public boolean isDietitian() {
         return type == UserType.Dietitian;
+    }
+
+    public UserType getType() {
+        return type;
     }
 }
