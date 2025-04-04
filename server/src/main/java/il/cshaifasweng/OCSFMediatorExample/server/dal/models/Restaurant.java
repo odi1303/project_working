@@ -16,15 +16,15 @@ public class Restaurant {
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours mondayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    public OpeningHours thusdayOpeningHours;
+    public OpeningHours tuesdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    public OpeningHours wendsdayOpeningHours;
+    public OpeningHours wednesdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours thursdayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
     public OpeningHours fridayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
-    public OpeningHours saterdayOpeningHours;
+    public OpeningHours saturdayOpeningHours;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     public List<RestaurantTable> tables;
@@ -44,4 +44,22 @@ public class Restaurant {
     public OpeningHours getMondayOpeningHours() {
         return mondayOpeningHours;
     }
+    public OpeningHours getTuesdayOpeningHours() {
+        return tuesdayOpeningHours;
+    }
+    public OpeningHours getWednesdayOpeningHours() {
+        return wednesdayOpeningHours;
+    }
+    public OpeningHours getThursdayOpeningHours() {
+        return thursdayOpeningHours;
+    }
+    public OpeningHours getFridayOpeningHours() {
+        return fridayOpeningHours;
+    }
+    public OpeningHours getSaturdayOpeningHours() {
+        return saturdayOpeningHours;
+    }
+
+
+
 }
