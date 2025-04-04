@@ -4,8 +4,9 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 
+import jakarta.transaction.Transactional;
 import java.util.stream.Stream;
-
+@Transactional
 @Repository
 public interface MenuRepository extends CrudRepository<MenuItem, Long>
 {

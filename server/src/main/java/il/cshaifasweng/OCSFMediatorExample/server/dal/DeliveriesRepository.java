@@ -4,8 +4,9 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 
-import javax.swing.*;
+import jakarta.transaction.Transactional;
 
+@Transactional
 @Repository
 public interface DeliveriesRepository extends CrudRepository<Delivery, Long>
 {

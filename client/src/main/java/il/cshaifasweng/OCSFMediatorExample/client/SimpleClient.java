@@ -37,9 +37,12 @@ public class SimpleClient extends AbstractClient {
 				String type=message.substring(endIndex + 1).trim();
 				App.saveClientDetails(username,password,type);
 			}*/
-		} else if (msg instanceof UserType) {
+		} else if (msg instanceof UserType type) {
 			System.out.println("hola");
 			EventBus.getDefault().post(msg);
+			if (type != UserType.Empty) {
+				App.saveClientDetails(null, null, type);
+			}
 		}
 	}
 

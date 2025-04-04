@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.4.12.Final</version>
+			<version>6.6.8.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
@@ -49,6 +49,17 @@
 			<groupId>jakarta.data</groupId>
 			<artifactId>jakarta.data-api</artifactId>
 			<version>1.0.1</version>
+		</dependency>
+		<!-- Hibernate implementation of Jakarta Data -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>6.6.8.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld.se</groupId>
+			<artifactId>weld-se-core</artifactId>
+			<version>5.1.2.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
@@ -97,27 +108,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>jakarta.data</groupId>
-			<artifactId>jakarta.data-api</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.ws.rs</groupId>
-			<artifactId>jakarta.ws.rs-api</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.inject</groupId>
-			<artifactId>jakarta.inject-api</artifactId>
+			<groupId>jakarta.transaction</groupId>
+			<artifactId>jakarta.transaction-api</artifactId>
 			<version>2.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.36</version>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

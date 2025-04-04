@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.ComplainsRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
@@ -17,8 +19,9 @@ import java.util.Optional;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-
+@ApplicationScoped
 public class ComplainsBL {
+    public ComplainsBL() {}
     @Inject
     ComplainsRepository complainsRepository;
 

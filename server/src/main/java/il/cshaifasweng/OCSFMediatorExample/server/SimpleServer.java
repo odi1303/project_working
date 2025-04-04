@@ -2,9 +2,12 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,17 +21,25 @@ import java.util.Random;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
+@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-
+	@Inject
+	Database db;
 	/**
 	 * Constructs a new server.
 	 *
 	 * @param port the port number on which to listen.
 	 */
+	@Inject
 	public SimpleServer(int port) {
 		super(port);
-		Database.getInstance();
+	}
+
+	public static void main(String[] args) {
+		SimpleServer server = new SimpleServer(3000);
+		var o = server.db.basicUsers.getUserType("pp", "pp");
+		System.out.println(o);
 	}
 
 	private static SessionFactory getSessionFactory() throws HibernateException {
@@ -57,6 +68,10 @@ public class SimpleServer extends AbstractServer{
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
 			System.out.println(msgString);
+			System.out.println(db.basicUsers);
+			System.out.println("hello there");
+			db.basicUsers.addUser(new User("pp", "pp", UserType.Admin));
+			System.out.println("supposedly added into db");
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
 				for (SubscribedClient subscribedClient : SubscribersList) {
@@ -68,7 +83,11 @@ public class SimpleServer extends AbstractServer{
 			}
 		} else if (msg instanceof GetUserType getUserType) {
 			try {
-				client.sendToClient(Database.basicUsers.getUserType(getUserType.name, getUserType.password));
+				System.out.println("new request: "+msgString);
+				System.out.println(getUserType.name + ", " + getUserType.password);
+				var retval = db.basicUsers.getUserType(getUserType.name, getUserType.password);
+				System.out.println("method returned "+retval);
+				client.sendToClient(retval);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

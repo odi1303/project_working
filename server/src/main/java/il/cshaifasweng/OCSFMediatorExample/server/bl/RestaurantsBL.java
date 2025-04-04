@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.TableOrderRepository;
@@ -14,8 +16,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
-
+@ApplicationScoped
 public class RestaurantsBL {
+    public RestaurantsBL() {}
     @Inject
     RestaurantsRepository restaurantsRepository;
 

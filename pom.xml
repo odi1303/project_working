@@ -48,6 +48,27 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.0</version>
+					<configuration>
+						<source>21</source> <!-- Your Java version -->
+						<target>21</target>
+						<annotationProcessorPaths>
+							<!-- Hibernate JPA Metamodel Generator -->
+							<path>
+								<groupId>org.hibernate.orm</groupId>
+								<artifactId>hibernate-jpamodelgen</artifactId>
+								<version>6.6.8.Final</version>
+							</path>
+
+							<!-- Lombok -->
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>1.18.30</version>
+							</path>
+
+							<!-- Add other annotation processors as needed -->
+						</annotationProcessorPaths>
+					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>

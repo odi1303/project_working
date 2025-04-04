@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestsRepository;
@@ -14,7 +16,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequ
 import java.util.List;
 import java.util.Optional;
 
+@ApplicationScoped
 public class AdminBL {
+    public AdminBL() {}
     @Inject
     MenuRepository menuRepository;
 

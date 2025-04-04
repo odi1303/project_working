@@ -3,35 +3,36 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
 import il.cshaifasweng.OCSFMediatorExample.entities.Ingredient;
 import il.cshaifasweng.OCSFMediatorExample.entities.PersonalPreference;
 import il.cshaifasweng.OCSFMediatorExample.server.bl.*;
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-
+@ApplicationScoped
 public class Database {
-    private static Database db = null;
-    private static Session session;
+    // private static Session session;
+    @Inject
+    AdminBL admins;
+    @Inject
+    ComplainsBL complaints;
+    @Inject
+    DeliveriesBL deliveries;
+    @Inject
+    MenuItemsBL menuItems;
+    @Inject
+    TableOrdersBL tableOrders;
+    @Inject
+    RestaurantsBL restaurants;
+    @Inject
+    DietitiansBL dietitians;
+    @Inject
+    BasicUserBL basicUsers;
 
-    public static AdminBL admins;
-    public static ComplainsBL complaints;
-    public static DeliveriesBL deliveries;
-    public static MenuItemsBL menuItems;
-    public static TableOrdersBL tableOrders;
-    public static RestaurantsBL restaurants;
-    public static DietitiansBL dietitians;
-    public static BasicUserBL basicUsers;
+    public Database() {
 
-    private Database() {
-        /*SessionFactory sessionFactory = getSessionFactory();
-        session = sessionFactory.openSession();
-        session.beginTransaction();*/
-    }
-    public static Database getInstance() {
-        if (db == null) {
-            db = new Database();
-        }
-        return db;
     }
 /*
     private static SessionFactory getSessionFactory() throws HibernateException {

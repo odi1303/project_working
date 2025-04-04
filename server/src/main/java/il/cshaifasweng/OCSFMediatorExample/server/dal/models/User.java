@@ -5,6 +5,7 @@ import lombok.Data;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 import org.hibernate.annotations.NaturalId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,11 +27,17 @@ public class User {
     public UserType type;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    public List<TableOrder> tableOrders;
+    public List<TableOrder> tableOrders = new ArrayList<>();
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    public List<Delivery> deliveries;
+    public List<Delivery> deliveries = new ArrayList<>();
 
+    public User() {}
+    public User(String name, String password, UserType type) {
+        this.name = name;
+        this.password = password;
+        this.type = type;
+    }
     public List<TableOrder> getTableOrders() {
         return tableOrders;
     }
