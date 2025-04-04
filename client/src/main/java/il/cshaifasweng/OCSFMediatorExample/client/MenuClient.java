@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class MenuClient {
     private ArrayList<DishClient> menu;
+    private String menuName;
 
     public MenuClient() {
         this.menu = new ArrayList<>();
+        menuName = "";
     }
 
     public MenuClient(ArrayList<DishClient> dishes) {
@@ -15,6 +17,23 @@ public class MenuClient {
         }else {
             menu = new ArrayList<>(dishes);
         }
+        menuName = "";
+    }
+
+    public MenuClient(String menuName, ArrayList<DishClient> dishes) {
+        if (dishes == null){
+            menu = new ArrayList<>();
+        }else {
+            menu = new ArrayList<>(dishes);
+        }
+        this.menuName = menuName;
+    }
+
+    public void changeName(String newName) {
+        menuName = newName;
+    }
+    public String getMenuName() {
+        return menuName;
     }
 
     public ArrayList<DishClient> getMenu() {

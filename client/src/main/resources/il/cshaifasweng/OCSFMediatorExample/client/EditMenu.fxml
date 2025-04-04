@@ -18,7 +18,7 @@
                     <Button text="Save Changes" onAction="#saveChanges"/>
                     <HBox spacing="10">
                         <Label text="Menu name:"/>
-                        <TextField promptText="enter a name"/>
+                        <TextField fx:id="menuName"/>
                     </HBox>
                 </VBox>
                 <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="800">

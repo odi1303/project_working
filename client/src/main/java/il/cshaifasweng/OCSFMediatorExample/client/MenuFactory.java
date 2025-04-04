@@ -8,11 +8,11 @@ import java.util.List;
 
 public class MenuFactory {
 
-    public static List<Pair<String, MenuClient>> getMenus() {
-        List<Pair<String, MenuClient>> menus = new ArrayList<>();
+    public static List<MenuClient> getMenus() {
+        List<MenuClient> menus = new ArrayList<>();
 
         // Italian Menu
-        MenuClient italianMenu = new MenuClient(new ArrayList<>(Arrays.asList(
+        MenuClient italianMenu = new MenuClient("Italian Menu", new ArrayList<>(Arrays.asList(
                 new DishClient("Margherita Pizza", "Classic pizza with tomato sauce, mozzarella cheese, and fresh basil",
                         25.0f, "images/margherita.jpg",
                         Arrays.asList("Rome", "Naples", "Florence"),
@@ -23,10 +23,10 @@ public class MenuFactory {
                         Arrays.asList("Rome", "Milan", "Venice"),
                         Arrays.asList("Pasta", "Pancetta", "Parmesan Cheese", "Egg", "Black Pepper"))
         )));
-        menus.add(new Pair<>("Italian Menu", italianMenu));
+        menus.add(italianMenu);
 
         // American Menu
-        MenuClient americanMenu = new MenuClient(new ArrayList<>(Arrays.asList(
+        MenuClient americanMenu = new MenuClient("American Menu", new ArrayList<>(Arrays.asList(
                 new DishClient("Cheeseburger", "Juicy beef patty with cheddar cheese, lettuce, tomato, and pickles",
                         18.5f, "images/cheeseburger.jpg",
                         Arrays.asList("New York", "Chicago", "Dallas"),
@@ -37,10 +37,10 @@ public class MenuFactory {
                         Arrays.asList("Nashville", "Houston", "Atlanta"),
                         Arrays.asList("Chicken", "Flour", "Spices", "Fries"))
         )));
-        menus.add(new Pair<>("American Menu", americanMenu));
+        menus.add(americanMenu);
 
         // Japanese Menu
-        MenuClient japaneseMenu = new MenuClient(new ArrayList<>(Arrays.asList(
+        MenuClient japaneseMenu = new MenuClient("Japanese Menu", new ArrayList<>(Arrays.asList(
                 new DishClient("Sushi Platter", "An assortment of fresh sushi including nigiri, sashimi, and maki rolls",
                         35.0f, "images/sushi.jpg",
                         Arrays.asList("Tokyo", "Osaka", "Kyoto"),
@@ -51,7 +51,7 @@ public class MenuFactory {
                         Arrays.asList("Tokyo", "Fukuoka", "Sapporo"),
                         Arrays.asList("Noodles", "Pork", "Egg", "Vegetables", "Broth"))
         )));
-        menus.add(new Pair<>("Japanese Menu", japaneseMenu));
+        menus.add(japaneseMenu);
 
         return menus;
     }

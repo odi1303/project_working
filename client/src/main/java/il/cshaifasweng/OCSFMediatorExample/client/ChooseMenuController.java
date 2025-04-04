@@ -27,9 +27,9 @@ public class ChooseMenuController {
 
     @FXML
     public void initialize() {
-        List<Pair<String, MenuClient>> menuList = MenuFactory.getMenus();
+        List<MenuClient> menuList = MenuFactory.getMenus();
         menuListContainer.getChildren().clear();
-        for (Pair<String, MenuClient> menu : menuList) {
+        for (MenuClient menu : menuList) {
             addMenuToMenuListContainer(menu);
         }
     }
@@ -41,7 +41,7 @@ public class ChooseMenuController {
         isSubmit = submit;
     }
 
-    private void addMenuToMenuListContainer(Pair<String, MenuClient> menu) {
+    private void addMenuToMenuListContainer(MenuClient menu) {
         if(menu != null) {
             ScrollPane scroller = new ScrollPane();
             //create vbox
@@ -49,12 +49,12 @@ public class ChooseMenuController {
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(10);
             //create button
-            Button nameButton = new Button(menu.getKey());
+            Button nameButton = new Button(menu.getMenuName());
             nameButton.setOnAction(event -> chooseMenu(menu));
 
             vbox.getChildren().add(nameButton);
             //create menu
-            Node node = createMenuNode(menu.getValue());
+            Node node = createMenuNode(menu);
 
             vbox.getChildren().add(node);
             scroller.setContent(vbox);
@@ -76,11 +76,11 @@ public class ChooseMenuController {
             return null;
         }
     }
-    private void chooseMenu(Pair<String, MenuClient> menu) {
+    private void chooseMenu(MenuClient menu) {
         if (isCreateCopy) {
-            chosenMenu = createCopy(menu.getValue());
+            chosenMenu = createCopy(menu);
         }else if(!isSubmit) {
-            chosenMenu = menu.getValue();
+            chosenMenu = menu;
         }else{
             try {
                 goToHomePage();

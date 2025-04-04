@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,6 +24,9 @@ public class EditMenuController {
 
     @FXML
     public HBox editDishContainer;
+
+    @FXML
+    public TextField menuName;
 
     private MenuController menuController;
 
@@ -102,6 +106,7 @@ public class EditMenuController {
 
     public void setMenu(MenuClient menu) {
         this.menu = menu;
+        menuName.setText(menu.getMenuName());
         menuController.setMenu(menu);
 
     }
