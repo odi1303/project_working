@@ -3,6 +3,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
 import il.cshaifasweng.OCSFMediatorExample.entities.Ingredient;
 import il.cshaifasweng.OCSFMediatorExample.entities.PersonalPreference;
 import il.cshaifasweng.OCSFMediatorExample.server.bl.*;
+import jakarta.annotation.PostConstruct;
 import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -32,8 +33,17 @@ public class Database {
     BasicUserBL basicUsers;
 
     public Database() {
-
+        System.out.println("Database constructor called");
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Database @PostConstruct:");
+        System.out.println("  basicUsers: " + basicUsers);
+        System.out.println("  dietitians: " + dietitians);
+    }
+
+    public BasicUserBL getBasicUsers() { return basicUsers; }
 /*
     private static SessionFactory getSessionFactory() throws HibernateException {
         var config = new Configuration();

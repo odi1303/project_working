@@ -1,14 +1,19 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal;
 
-import jakarta.data.repository.CrudRepository;
+import org.springframework.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Optional;
 @Transactional
-@Repository
+//@Repository
 public interface UsersRepository extends CrudRepository<User, Long>
 {
     Optional<User> findByNameAndPassword(String name, String password);
+
+    List<User> findByName(String name);
 }

@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 import org.hibernate.annotations.NaturalId;
 
@@ -10,13 +9,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NaturalId
+    @Column(name="name", nullable=false)
     public String name;
 
     @Column(name="password", nullable=false)

@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,11 +15,14 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @ApplicationScoped
 public class ComplainsBL {
     public ComplainsBL() {}
@@ -35,19 +39,20 @@ public class ComplainsBL {
     RestaurantsRepository restaurantsRepository;
 
     public List<Complain> getAllComplains() {
-        List<Complain> complains = complainsRepository.findAll().toList();
-        return complains;
+        var retval = new ArrayList<Complain>();
+        complainsRepository.findAll().forEach(retval::add);
+        return retval;
     }
 
     public List<DeliveryComplain> getDeliveryComplaints() {
-        return complainsRepository.findAll()
+        return StreamSupport.stream(complainsRepository.findAll().spliterator(),false)
                 .filter(c -> c instanceof DeliveryComplain)
                 .map(c -> (DeliveryComplain) c)
                 .collect(Collectors.toList());
     }
 
     public List<RestaurantComplain> getRestaurantComplains() {
-        return complainsRepository.findAll()
+        return StreamSupport.stream(complainsRepository.findAll().spliterator(),false)
                 .filter(c -> c instanceof RestaurantComplain)
                 .map(c -> (RestaurantComplain) c)
                 .collect(Collectors.toList());
@@ -65,7 +70,7 @@ public class ComplainsBL {
         }
         Delivery delivery= optionalDelivery.get();
 
-        complainsRepository.insert(new DeliveryComplain(description, new Date(), user, delivery));
+        complainsRepository.save(new DeliveryComplain(description, new Date(), user, delivery));
     }
 
     public void createRestaurantComplain(Long userId, Long restaurantId, String description) {
@@ -80,7 +85,7 @@ public class ComplainsBL {
         }
         Restaurant restaurant = optionalRestaurant.get();
 
-        complainsRepository.insert(new RestaurantComplain(description, new Date(), user, restaurant));
+        complainsRepository.save(new RestaurantComplain(description, new Date(), user, restaurant));
     }
 
     public void closeComplain(Long complainId) {
@@ -92,7 +97,7 @@ public class ComplainsBL {
 
         complain.setAnsweredAt(new Date());
 
-        complainsRepository.update(complain);
+        complainsRepository.save(complain);
     }
 
     public void compensateComplain(Long complainId, Long compensation) {
@@ -105,6 +110,6 @@ public class ComplainsBL {
         complain.setAnsweredAt(new Date());
         complain.setCompensation(compensation);
 
-        complainsRepository.update(complain);
+        complainsRepository.save(complain);
     }
 }

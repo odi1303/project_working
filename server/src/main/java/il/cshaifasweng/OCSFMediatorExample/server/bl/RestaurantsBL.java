@@ -72,6 +72,6 @@ public class RestaurantsBL {
             return;
         }
 
-        tableOrderRepository.insert(new TableOrder(startDate, endDate, user, tablesToOrder));
+        tableOrderRepository.save(new TableOrder(startDate, endDate, user, tablesToOrder));
     }
 }

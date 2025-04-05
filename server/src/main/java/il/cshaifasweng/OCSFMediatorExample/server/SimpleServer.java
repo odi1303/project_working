@@ -21,6 +21,12 @@ import java.util.Random;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
+import jakarta.inject.Qualifier;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 @ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
@@ -31,15 +37,8 @@ public class SimpleServer extends AbstractServer{
 	 *
 	 * @param port the port number on which to listen.
 	 */
-	@Inject
-	public SimpleServer(int port) {
-		super(port);
-	}
-
-	public static void main(String[] args) {
-		SimpleServer server = new SimpleServer(3000);
-		var o = server.db.basicUsers.getUserType("pp", "pp");
-		System.out.println(o);
+	public SimpleServer() {
+		super(3000);
 	}
 
 	private static SessionFactory getSessionFactory() throws HibernateException {
@@ -68,9 +67,10 @@ public class SimpleServer extends AbstractServer{
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
 			System.out.println(msgString);
-			System.out.println(db.basicUsers);
+			System.out.println("Database pointer " + db);
+			System.out.println(db.getBasicUsers());
 			System.out.println("hello there");
-			db.basicUsers.addUser(new User("pp", "pp", UserType.Admin));
+			db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
 			System.out.println("supposedly added into db");
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
@@ -85,7 +85,7 @@ public class SimpleServer extends AbstractServer{
 			try {
 				System.out.println("new request: "+msgString);
 				System.out.println(getUserType.name + ", " + getUserType.password);
-				var retval = db.basicUsers.getUserType(getUserType.name, getUserType.password);
+				var retval = db.getBasicUsers().getUserType(getUserType.name, getUserType.password);
 				System.out.println("method returned "+retval);
 				client.sendToClient(retval);
 			} catch (IOException e) {

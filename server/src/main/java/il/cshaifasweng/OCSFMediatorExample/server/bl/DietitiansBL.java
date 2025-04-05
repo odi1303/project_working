@@ -34,6 +34,6 @@ public class DietitiansBL {
             return;
         }
 
-        requestsRepository.insert(request);
+        requestsRepository.save(request);
     }
 }
