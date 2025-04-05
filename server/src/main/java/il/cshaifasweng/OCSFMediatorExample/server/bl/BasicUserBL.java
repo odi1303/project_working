@@ -1,8 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+l.cshaifasweng.OCSFMediatorExample.server.dal.UserType
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.util.Optional;
