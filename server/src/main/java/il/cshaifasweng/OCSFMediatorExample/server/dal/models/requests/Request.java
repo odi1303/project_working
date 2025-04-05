@@ -2,7 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestStatus;
-
+@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="action", discriminatorType = DiscriminatorType.STRING)
 public abstract class Request

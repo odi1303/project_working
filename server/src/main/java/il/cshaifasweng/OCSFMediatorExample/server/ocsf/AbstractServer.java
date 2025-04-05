@@ -157,7 +157,7 @@ public abstract class AbstractServer implements Runnable
    * @exception IOException if an I/O error occurs
    * when creating the server socket.
    */
-  final public void listen() throws IOException
+  /*final*/ public void listen() throws IOException
   {
     if (!isListening())
     {
@@ -176,7 +176,7 @@ public abstract class AbstractServer implements Runnable
   /**
    * Causes the server to stop accepting new connections.
    */
-  final public void stopListening()
+  /*final*/ public void stopListening()
   {
     readyToStop = true;
   }
@@ -193,7 +193,7 @@ public abstract class AbstractServer implements Runnable
    * @exception IOException if an I/O error occurs while
    * closing the server socket.
    */
-  final public void close() throws IOException
+  /*final*/ public void close() throws IOException
   {
     if (serverSocket == null)
       return;
@@ -265,7 +265,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @return true if the server is listening.
    */
-  final public boolean isListening()
+  /*final*/ public boolean isListening()
   {
     return connectionListener!=null && connectionListener.isAlive(); // modified in version 2.31
   }
@@ -276,7 +276,7 @@ public abstract class AbstractServer implements Runnable
    * @return true if the server is closed.
    * @since version 2.2
    */
-  final public boolean isClosed()
+  /*final*/ public boolean isClosed()
   {
     return (serverSocket == null);
   }
@@ -293,7 +293,7 @@ public abstract class AbstractServer implements Runnable
    * @return an array of <code>Thread</code> containing
    * <code>ConnectionToClient</code> instances.
    */
-  synchronized final public Thread[] getClientConnections()
+  synchronized /*final*/ public Thread[] getClientConnections()
   {
     Thread[] clientThreadList = new
       Thread[clientThreadGroup.activeCount()];
@@ -308,7 +308,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @return the number of clients currently connected.
    */
-  final public int getNumberOfClients()
+  /*final*/ public int getNumberOfClients()
   {
     return clientThreadGroup.activeCount();
   }
@@ -318,7 +318,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @return the port number.
    */
-  final public int getPort()
+  /*final*/ public int getPort()
   {
     return port;
   }
@@ -330,7 +330,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @param port the port number.
    */
-  final public void setPort(int port)
+  /*final*/ public void setPort(int port)
   {
     this.port = port;
   }
@@ -344,7 +344,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @param timeout the timeout time in ms.
    */
-  final public void setTimeout(int timeout)
+  /*final*/ public void setTimeout(int timeout)
   {
     this.timeout = timeout;
   }
@@ -357,7 +357,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @param backlog the maximum number of connections.
    */
-  final public void setBacklog(int backlog)
+  /*final*/ public void setBacklog(int backlog)
   {
     this.backlog = backlog;
   }
@@ -372,7 +372,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @param factory the connection factory.
    */
-  final public void setConnectionFactory(AbstractConnectionFactory factory)
+  /*final*/ public void setConnectionFactory(AbstractConnectionFactory factory)
   {
     this.connectionFactory = factory;
   }
@@ -383,7 +383,7 @@ public abstract class AbstractServer implements Runnable
    * Runs the listening thread that allows clients to connect.
    * Not to be called.
    */
-  final public void run()
+  /*final*/ public void run()
   {
     // call the hook method to notify that the server is starting
     readyToStop= false;  // added in version 2.31
@@ -547,7 +547,7 @@ public abstract class AbstractServer implements Runnable
    * @param client the connection connected to the client that
    *  sent the message.
    */
-  final synchronized void receiveMessageFromClient(
+  /*final*/ synchronized void receiveMessageFromClient(
     Object msg, ConnectionToClient client) throws IOException {
     this.handleMessageFromClient(msg, client);
   }

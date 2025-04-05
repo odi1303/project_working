@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestsRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
@@ -8,8 +10,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
 
 import java.util.Optional;
-
+@ApplicationScoped
 public class DietitiansBL {
+    public DietitiansBL() {}
     @Inject
     UsersRepository usersRepository;
 
@@ -31,6 +34,6 @@ public class DietitiansBL {
             return;
         }
 
-        requestsRepository.insert(request);
+        requestsRepository.save(request);
     }
 }

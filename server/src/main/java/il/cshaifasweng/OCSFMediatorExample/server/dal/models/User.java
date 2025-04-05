@@ -1,20 +1,22 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import org.hibernate.annotations.NaturalId;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name="name", nullable=true)
+    @NaturalId
+    @Column(name="name", nullable=false)
     public String name;
 
     @Column(name="password", nullable=false)
@@ -25,7 +27,7 @@ public class User {
     public UserType type;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    public List<TableOrder> tableOrders;
+    public List<TableOrder> tableOrders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
 
@@ -33,8 +35,14 @@ public class User {
     public String MailAddress;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
-    public List<Delivery> deliveries;
+    public List<Delivery> deliveries = new ArrayList<>();
 
+    public User() {}
+    public User(String name, String password, UserType type) {
+        this.name = name;
+        this.password = password;
+        this.type = type;
+    }
     public List<TableOrder> getTableOrders() {
         return tableOrders;
     }

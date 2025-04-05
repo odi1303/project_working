@@ -11,6 +11,7 @@ import java.util.Date;
 @DiscriminatorColumn(name="origin", discriminatorType = DiscriminatorType.STRING)
 @Data()
 @NoArgsConstructor()
+@Entity
 public abstract class Complain
 {
     @Id
