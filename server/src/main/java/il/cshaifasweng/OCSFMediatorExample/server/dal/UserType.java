@@ -4,5 +4,6 @@ public enum UserType {
     Admin,
     Customer,
     Dietitian,
-    Empty, CustomerServiceWorker
+    CustomerServiceWorker,
+    Empty,
 }

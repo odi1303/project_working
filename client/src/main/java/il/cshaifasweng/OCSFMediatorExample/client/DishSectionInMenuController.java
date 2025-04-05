@@ -18,6 +18,7 @@ public class DishSectionInMenuController {
 
     private DishClient dish;
 
+    @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);

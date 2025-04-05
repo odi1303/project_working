@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -17,6 +18,18 @@ public class SimpleClient extends AbstractClient {
 		super(host, port);
 	}
 
+	@FXML
+	public void initialize() {
+		try {
+			EventBus.getDefault().register(this);
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+	}
 
 	@Override
 	protected void handleMessageFromServer(Object msg) throws IOException {

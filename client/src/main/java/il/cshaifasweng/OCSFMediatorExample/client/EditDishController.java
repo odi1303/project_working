@@ -37,6 +37,7 @@ public class EditDishController {
     private boolean isEdit = false;
     private DishClient dish;
 
+    @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);

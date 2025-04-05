@@ -19,6 +19,7 @@ public class CreditInformationPopupWindowController implements PopupController<S
     @FXML
     private TextField cvvField;
 
+    @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);

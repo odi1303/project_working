@@ -1,12 +1,27 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.fxml.FXML;
 import javafx.util.Pair;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MenuFactory {
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     public static List<MenuClient> getMenus() {
         List<MenuClient> menus = new ArrayList<>();

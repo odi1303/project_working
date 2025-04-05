@@ -15,6 +15,7 @@ public class InformationWindowController implements PopupController<String, Stri
     @FXML
     private Label informationLabel;
 
+    @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);

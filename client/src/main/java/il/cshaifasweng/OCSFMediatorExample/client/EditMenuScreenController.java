@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class EditMenuScreenController {
 
+    @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);
