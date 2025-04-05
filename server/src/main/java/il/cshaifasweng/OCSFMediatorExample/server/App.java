@@ -7,6 +7,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.util.AnnotationLiteral;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
@@ -19,6 +20,7 @@ public class App {
     private static SimpleServer server;
 
     public static void main(String[] args) throws IOException {
+        AnnotationConfigApplicationContext springContext = new AnnotationConfigApplicationContext(SpringConfig.class);
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         // Get BeanManager

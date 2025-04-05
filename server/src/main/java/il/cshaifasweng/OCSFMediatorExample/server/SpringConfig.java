@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import jakarta.enterprise.inject.Produces;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +50,10 @@ public class SpringConfig {
 
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        props.put("hibernate.hbm2ddl.auto", "create");
+        props.put("hibernate.hbm2ddl.auto", "create-drop");
+        props.put("hibernate.show_sql", "true"); // Show SQL statements
+        props.put("hibernate.format_sql", "true"); // Format SQL for readability
+        props.put("hibernate.use_sql_comments", "true"); // Add comments to SQL
         em.setJpaProperties(props);
 
         return em;

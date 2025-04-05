@@ -39,6 +39,7 @@ public class SimpleServer extends AbstractServer{
 	 */
 	public SimpleServer() {
 		super(3000);
+
 	}
 
 	private static SessionFactory getSessionFactory() throws HibernateException {
