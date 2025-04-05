@@ -17,7 +17,8 @@ public class HardcodedOrders {
                 35.0f,
                 "images/pizza.jpg",
                 Arrays.asList("Branch A", "Branch B", "Branch C"),
-                Arrays.asList("Cheese", "Tomato Sauce", "Dough")
+                Arrays.asList("Cheese", "Tomato Sauce", "Dough"),
+                new ArrayList<>() // Initializing personalPreferences as an empty list
         );
 
         DishClient burger = new DishClient(
@@ -26,7 +27,8 @@ public class HardcodedOrders {
                 40.0f,
                 "images/burger.jpg",
                 Arrays.asList("Branch A", "Branch D"),
-                Arrays.asList("Beef Patty", "Lettuce", "Tomato", "Bun")
+                Arrays.asList("Beef Patty", "Lettuce", "Tomato", "Bun"),
+                new ArrayList<>() // Initializing personalPreferences as an empty list
         );
 
         DishClient pasta = new DishClient(
@@ -35,7 +37,8 @@ public class HardcodedOrders {
                 30.0f,
                 "images/pasta.jpg",
                 Arrays.asList("Branch B", "Branch C"),
-                Arrays.asList("Spaghetti", "Meatballs", "Tomato Sauce")
+                Arrays.asList("Spaghetti", "Meatballs", "Tomato Sauce"),
+                new ArrayList<>() // Initializing personalPreferences as an empty list
         );
 
         DishClient salad = new DishClient(
@@ -44,7 +47,8 @@ public class HardcodedOrders {
                 25.0f,
                 "images/salad.jpg",
                 Arrays.asList("Branch A", "Branch C"),
-                Arrays.asList("Lettuce", "Tomato", "Cucumber", "Dressing")
+                Arrays.asList("Lettuce", "Tomato", "Cucumber", "Dressing"),
+                new ArrayList<>() // Initializing personalPreferences as an empty list
         );
 
         DishClient sushi = new DishClient(
@@ -53,7 +57,8 @@ public class HardcodedOrders {
                 55.0f,
                 "images/sushi.jpg",
                 Arrays.asList("Branch D"),
-                Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables")
+                Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables"),
+                new ArrayList<>() // Initializing personalPreferences as an empty list
         );
 
         // Creating LocationInformation objects
