@@ -1,4 +1,4 @@
-ackage il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
