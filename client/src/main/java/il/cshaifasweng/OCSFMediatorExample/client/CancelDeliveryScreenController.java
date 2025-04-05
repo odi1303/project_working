@@ -91,7 +91,7 @@ public class CancelDeliveryScreenController {
         try {
             boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the order?", (Stage) orderTable.getScene().getWindow());
             if (isConfirmed) {
-                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredCancelationFee(order)), (Stage) orderTable.getScene().getWindow());
+                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredOrderCancelationFee(order)), (Stage) orderTable.getScene().getWindow());
                 if (confirmed) {
                     orderTable.getChildren().remove(scrollPane);
                 }
@@ -101,7 +101,7 @@ public class CancelDeliveryScreenController {
         }
     }
 
-    private double getRequiredCancelationFee(OrderClient order) {
+    private double getRequiredOrderCancelationFee(OrderClient order) {
         return 5.0;
     }
 }

@@ -24,7 +24,7 @@ public class CancelReservationScreenController {
         try {
             for (Reservation reservation : reservations) {
                 HBox hbox = new HBox();
-                Button cancelButton = createCancelButton();
+                Button cancelButton = createCancelButton(reservation);
                 hbox.getChildren().add(cancelButton);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReservationCard.fxml"));
@@ -41,20 +41,20 @@ public class CancelReservationScreenController {
         }
     }
 
-    private Button createCancelButton() {
+    private Button createCancelButton(Reservation reservation) {
         Button button = new Button();
         button.setText("Cancel Reservation");
-        button.setOnAction(event -> {cancelReservation(button);});
+        button.setOnAction(event -> {cancelReservation(reservation, button);});
         return button;
     }
 
-    private void cancelReservation(Button button) {
+    private void cancelReservation(Reservation reservation, Button button) {
         HBox hbox = (HBox) button.getParent();
         PopupDialogService popupDialogService = new PopupDialogService();
         try {
             boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you shure you want to cancel the reservation?", (Stage) ReservationListContainer.getScene().getWindow());
             if (isConfirmed) {
-                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay ___.", (Stage) ReservationListContainer.getScene().getWindow());
+                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredReservationCancelationFee(reservation)), (Stage) ReservationListContainer.getScene().getWindow());
                 if (confirmed) {
                     ReservationListContainer.getChildren().remove(hbox);
                 }
@@ -67,5 +67,9 @@ public class CancelReservationScreenController {
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
         App.setRoot("home-page");
+    }
+
+    private double getRequiredReservationCancelationFee(Reservation reservations) {
+        return 10.0;
     }
 }
