@@ -1,4 +1,4 @@
-package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+ackage il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
@@ -18,5 +18,11 @@ public class DeliveryItem {
     public DeliveryItem(MenuItem menuItem, Long amount) {
         this.menuItem = menuItem;
         this.amount = amount;
+    }
+    public long DeliveryItemPrice()
+    {
+        if(menuItem == null)
+            return 0;
+        return menuItem.price;
     }
 }
