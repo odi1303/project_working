@@ -22,13 +22,11 @@
     <Button fx:id="showTheOptionsButtons" layoutX="20.0" layoutY="280.0" onAction="#showOptions" text="Show Options" />
 
     <HBox fx:id="possibleOptions" layoutX="20.0" layoutY="320.0" spacing="10.0" visible="false">
-
-        <Button fx:id="option1" onAction="#selectReservation" text="" visible="false" />
-        <Button fx:id="option2" onAction="#selectReservation" text="" visible="false" />
-        <Button fx:id="option3" onAction="#selectReservation" text="" visible="false" />
-        <Button fx:id="option4" onAction="#selectReservation" text="" visible="false" />
-        <Button fx:id="option5" onAction="#selectReservation" text="" visible="false" />
-
+        <Button fx:id="option1" onAction="#selectReservation" visible="false" />
+        <Button fx:id="option2" onAction="#selectReservation" visible="false" />
+        <Button fx:id="option3" onAction="#selectReservation" visible="false" />
+        <Button fx:id="option4" onAction="#selectReservation" visible="false" />
+        <Button fx:id="option5" onAction="#selectReservation" visible="false" />
     </HBox>
 
     <Button fx:id="homePageButton" layoutX="500.0" layoutY="350.0" onAction="#goToHomePage" prefHeight="30.0" prefWidth="90.0" text="Home Page" />

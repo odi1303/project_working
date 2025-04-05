@@ -1,19 +1,27 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.lang.Math.max;
 
 public class MenuController {
 
@@ -41,7 +49,9 @@ public class MenuController {
     private boolean isDelete = false;
     private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu
 
+    private List<Pair<DishClient, Label>> orderDishNodeCountLabelPair = new ArrayList<>();
     private EditMenuController editMenuController;
+
 
     @FXML
     public void initialize() {
@@ -72,6 +82,31 @@ public class MenuController {
         EventBus.getDefault().unregister(this);
     }
 
+
+    private LocationInformation getLocationInformation() {
+        LocationInformation locationInformation;
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            locationInformation = popupDialogService.openPopup("LocationInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+            return locationInformation;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean getIsDelivery(){
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            Boolean isDelivery = popupDialogService.openPopup("ConfirmationWindow.fxml", "Would you rather self pickup", (Stage) orderSection.getScene().getWindow());
+            if (isDelivery == null) {
+                return false;
+            }
+            return !isDelivery;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void reinitialize(boolean isOrder, boolean isMain) {
         if (isOrder) {
             this.isOrder = true;
@@ -96,11 +131,13 @@ public class MenuController {
     }
 
     private void updateFilter() {
-        List<String> branches = fullMenu.getAllBranches();
-        List<String> ingredients = fullMenu.getAllIngredients();
-        putBranchCheckBoxesInFilter(branches);
-        putIngredientsCheckBoxesInFilter(ingredients);
-        clearFilter();
+        if(fullMenu != null) {
+            List<String> branches = fullMenu.getAllBranches();
+            List<String> ingredients = fullMenu.getAllIngredients();
+            putBranchCheckBoxesInFilter(branches);
+            putIngredientsCheckBoxesInFilter(ingredients);
+            clearFilter();
+        }
     }
 
     private void addOrderSupportToMenu() {
@@ -235,7 +272,20 @@ public class MenuController {
 
 
     public void orderDish(DishClient dish){
-        addDishToOrderSection(dish);
+        PopupDialogService popupDialogService = new PopupDialogService();
+
+        try {
+            List<String> preferences = popupDialogService.openPopup("PersonalPreferencesPopup.fxml", dish, (Stage) orderSection.getScene().getWindow());
+
+            if (preferences != null && !preferences.isEmpty()) {
+                addDishToOrderSection(new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
+            }else{
+                addDishToOrderSection(dish);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addDishToOrderSection(DishClient dish){
@@ -248,12 +298,81 @@ public class MenuController {
 
             orderDishList.getChildren().add(dishNode);
             dishesInOrder.add(dish);
+            orderDishNodeCountLabelPair.add(new Pair<>(dish, dishSectionInMenuController.getCountLabel()));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    private void finishOrder(){
 
+
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            if(canTheOrderBeMadeFromASingleBranch(dishesInOrder)){
+                Boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Finish Order?", (Stage) orderSection.getScene().getWindow());
+                if (isConfirmed != null && isConfirmed) {
+                    LocationInformation locationInfo = getLocationInformation();
+                    boolean isDelivery = getIsDelivery();
+                    PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    if (personalInformation != null) {
+                        CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                        if (creditInformation != null) {
+                            Boolean Confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Total price is:" + String.valueOf(getTotalPrice()) + ". Confirm Order?", (Stage) orderSection.getScene().getWindow());
+                            if (Confirmed != null && Confirmed) {
+                                OrderClient order = new OrderClient(getDishesCountPair(), isDelivery, locationInfo, personalInformation, creditInformation);
+                                sendOrder(order);
+                            }
+                        }
+                    }
+                }
+            }else {
+                popupDialogService.openPopup("InformationPopupWindow.fxml", "The order cant be made from a single branch", (Stage) orderSection.getScene().getWindow());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean canTheOrderBeMadeFromASingleBranch(ArrayList<DishClient> dishesInOrder){
+        String commonBranch = getCommonBranch(dishesInOrder);
+        if(commonBranch != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private String getCommonBranch(ArrayList<DishClient> dishes) {  // Changed to ArrayList<DishClient>
+        if (dishes == null || dishes.isEmpty()) {
+            return null;
+        }
+        Set<String> commonBranches = new HashSet<>(dishes.get(0).getAvailableBranches());
+        for (DishClient dish : dishes) {
+            commonBranches.retainAll(dish.getAvailableBranches());
+
+            if (commonBranches.isEmpty()) {
+                return null;
+            }
+        }
+        return commonBranches.iterator().next();
+    }
+
+    private double getTotalPrice(){
+        double totalPrice = 0;
+        for (DishClient dish : dishesInOrder) {
+            totalPrice += dish.getPrice() *((double) Math.max(100 - dish.getSale(), 0) / 100.0);
+        }
+        return totalPrice;
+    }
+
+    private ArrayList<Pair<DishClient, Integer>> getDishesCountPair(){
+        ArrayList<Pair<DishClient, Integer>> pairList = new ArrayList<>();
+        for (Pair<DishClient, Label> pair : orderDishNodeCountLabelPair){
+            pairList.add(new Pair<>(pair.getKey(), Integer.parseInt(pair.getValue().getText())));
+        }
+        return pairList;
+    }
 
     private List<DishClient> getHardcodedDishes() {
         DishClient pizza = new DishClient(
@@ -262,7 +381,8 @@ public class MenuController {
                 35.0f,
                 "https://example.com/images/pizza.jpg",
                 List.of("Haifa", "Tel Aviv"),
-                List.of("Cheese", "Tomato", "Olives")
+                List.of("Cheese", "Tomato", "Olives"),
+                10 // Sale: 10% off
         );
 
         DishClient burger = new DishClient(
@@ -271,7 +391,8 @@ public class MenuController {
                 42.5f,
                 "https://example.com/images/burger.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
-                List.of("Beef", "Lettuce", "Tomato", "Cheese")
+                List.of("Beef", "Lettuce", "Tomato", "Cheese"),
+                0 // No Sale
         );
 
         DishClient salad = new DishClient(
@@ -280,7 +401,8 @@ public class MenuController {
                 28.0f,
                 "https://example.com/images/salad.jpg",
                 List.of("Haifa", "Jerusalem"),
-                List.of("Cucumber", "Tomato", "Feta", "Olives")
+                List.of("Cucumber", "Tomato", "Feta", "Olives"),
+                5 // Sale: 5% off
         );
 
         DishClient hummusPlate = new DishClient(
@@ -289,7 +411,8 @@ public class MenuController {
                 25.0f,
                 "https://example.com/images/hummus.jpg",
                 List.of("Haifa", "Tel Aviv"),
-                List.of("Hummus", "Tomato", "Onion", "Olives")
+                List.of("Hummus", "Tomato", "Onion", "Olives"),
+                0 // No Sale
         );
 
         DishClient falafelPlate = new DishClient(
@@ -298,7 +421,8 @@ public class MenuController {
                 22.0f,
                 "https://example.com/images/falafel.jpg",
                 List.of("Tel Aviv", "Haifa", "Jerusalem"),
-                List.of("Falafel", "Hummus", "Lettuce", "Tomato")
+                List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
+                15 // Sale: 15% off
         );
 
         DishClient veggieBurger = new DishClient(
@@ -307,7 +431,8 @@ public class MenuController {
                 38.0f,
                 "https://example.com/images/veggie_burger.jpg",
                 List.of("Tel Aviv", "Haifa"),
-                List.of("Lettuce", "Tomato", "Cheese", "Onion")
+                List.of("Lettuce", "Tomato", "Cheese", "Onion"),
+                0 // No Sale
         );
 
         DishClient cheeseSandwich = new DishClient(
@@ -316,7 +441,8 @@ public class MenuController {
                 20.0f,
                 "https://example.com/images/cheese_sandwich.jpg",
                 List.of("Haifa", "Jerusalem"),
-                List.of("Cheese", "Tomato", "Lettuce")
+                List.of("Cheese", "Tomato", "Lettuce"),
+                0 // No Sale
         );
 
         DishClient beefSalad = new DishClient(
@@ -325,7 +451,8 @@ public class MenuController {
                 40.0f,
                 "https://example.com/images/beef_salad.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
-                List.of("Beef", "Lettuce", "Tomato", "Cucumber")
+                List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
+                20 // Sale: 20% off
         );
 
         DishClient falafelWrap = new DishClient(
@@ -334,7 +461,8 @@ public class MenuController {
                 24.0f,
                 "https://example.com/images/falafel_wrap.jpg",
                 List.of("Haifa", "Tel Aviv"),
-                List.of("Falafel", "Hummus", "Lettuce")
+                List.of("Falafel", "Hummus", "Lettuce"),
+                0 // No Sale
         );
 
         DishClient mixedPlatter = new DishClient(
@@ -343,11 +471,14 @@ public class MenuController {
                 30.0f,
                 "https://example.com/images/mixed_platter.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
-                List.of("Falafel", "Hummus", "Tomato", "Olives")
+                List.of("Falafel", "Hummus", "Tomato", "Olives"),
+                0 // No Sale
         );
 
         return List.of(pizza, burger, salad, hummusPlate, falafelPlate, veggieBurger, cheeseSandwich, beefSalad, falafelWrap, mixedPlatter);
     }
+
+
 
 
     public void deleteDishPressed(DishClient dish) {
@@ -355,5 +486,26 @@ public class MenuController {
     }
     public void EditDishPressed(DishClient dish) {
         editMenuController.EditDishPressed(dish);
+    }
+
+    @FXML
+    public void displayBranchesAndTheirOpeningTime() {
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            popupDialogService.openPopup("BranchesOpeningTimesPopup.fxml", fullMenu.getAllBranches(), (Stage) orderSection.getScene().getWindow());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    private void sendOrder(OrderClient order) {
+        try{
+            App.setRoot("home-page");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

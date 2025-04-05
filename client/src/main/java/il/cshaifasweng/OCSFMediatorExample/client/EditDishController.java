@@ -3,26 +3,37 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 public class EditDishController {
+
+    @FXML
+    public VBox availableBranches;
+    @FXML
+    public VBox ingredients;
+
+    @FXML
+    public Button changeBranchesButton;
+    @FXML
+    public Button changeIngredientsButton;
+    @FXML
+    public TextField SaleTextField;
 
     private DishClient originalDish;
     @FXML
-    public Pane editDishPane;
+    public AnchorPane editDishPane;
 
     @FXML
     public Button submitButton;
-    private double submitButtonHDistFromLRCorner = 30;
-    private double submitButtonWDistFromLRCorner = 30;
 
-    //dish properties fields
     @FXML
     public TextField nameTextField;
     @FXML
@@ -32,7 +43,7 @@ public class EditDishController {
     @FXML
     public TextField imageUrlTextField;
 
-    public final BooleanProperty isSubmitted = new SimpleBooleanProperty(false); //for listeners who want the edited dish.
+    public final BooleanProperty isSubmitted = new SimpleBooleanProperty(false);
 
     private boolean isEdit = false;
     private DishClient dish;
@@ -67,6 +78,7 @@ public class EditDishController {
         updateVisibleDishProperties();
         originalDish = dish;
     }
+
     public DishClient getOriginalDish() {
         return originalDish;
     }
@@ -76,7 +88,11 @@ public class EditDishController {
         priceTextField.setText(String.valueOf(dish.getPrice()));
         descriptionTextField.setText(dish.getDescription());
         imageUrlTextField.setText(dish.getImageUrl());
+        SaleTextField.setText(String.valueOf(dish.getSale()));
+        initializeAvailableBranches(dish.getAvailableBranches());
+        initializeIngredients(dish.getIngredients());
     }
+
     public DishClient getDish() {
         return dish;
     }
@@ -84,16 +100,25 @@ public class EditDishController {
     @FXML
     public void submitDish() {
         if (checkValidFields() && !isSubmitted.get()) {
-            dish = new DishClient(nameTextField.getText(), descriptionTextField.getText(),Float.parseFloat(priceTextField.getText()), imageUrlTextField.getText(), dish.getAvailableBranches(), dish.getIngredients());
+            dish = new DishClient(
+                    nameTextField.getText(),
+                    descriptionTextField.getText(),
+                    Float.parseFloat(priceTextField.getText()),
+                    imageUrlTextField.getText(),
+                    dish.getAvailableBranches(),
+                    dish.getIngredients(),
+                    Integer.parseInt(SaleTextField.getText())
+            );
             isSubmitted.set(true);
         }
     }
+
     public boolean isEdit() {
         return isEdit;
     }
 
     private boolean checkValidFields() {
-        return isFloat(priceTextField);
+        return isFloat(priceTextField) && isInteger(SaleTextField);
     }
 
     private boolean isFloat(TextField textField) {
@@ -105,10 +130,66 @@ public class EditDishController {
         }
     }
 
-    public void setEdit(boolean isEdit) {
-        this.isEdit = isEdit;
-
+    private boolean isInteger(TextField textField) {
+        try {
+            Integer.parseInt(textField.getText());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
+    public void setEdit(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
 
+    private void initializeAvailableBranches(List<String> branches) {
+        availableBranches.getChildren().clear();
+        for (String branch : branches) {
+            Label label = new Label(branch);
+            availableBranches.getChildren().add(label);
+        }
+    }
+
+    private void initializeIngredients(List<String> ingredientsList) {
+        ingredients.getChildren().clear();
+        for (String ingredient : ingredientsList) {
+            Label label = new Label(ingredient);
+            ingredients.getChildren().add(label);
+        }
+    }
+
+    public void updateIngredients(List<String> ingredientsList) {
+        dish = new DishClient(
+                dish.getName(),
+                dish.getDescription(),
+                dish.getPrice(),
+                dish.getImageUrl(),
+                dish.getAvailableBranches(),
+                ingredientsList,
+                dish.getSale()
+        );
+        initializeIngredients(ingredientsList);
+    }
+
+    public void updateBranches(List<String> branchesList) {
+        dish = new DishClient(
+                dish.getName(),
+                dish.getDescription(),
+                dish.getPrice(),
+                dish.getImageUrl(),
+                branchesList,
+                dish.getIngredients(),
+                dish.getSale()
+        );
+        initializeAvailableBranches(branchesList);
+    }
+
+    public Button getChangeBranchesButton() {
+        return changeBranchesButton;
+    }
+
+    public Button getChangeIngredientsButton() {
+        return changeIngredientsButton;
+    }
 }

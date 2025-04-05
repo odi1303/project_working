@@ -17,6 +17,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,6 +31,8 @@ public class DishClient {
     private final String imageUrl;
     private final List<String> availableBranches;
     private final List<String> ingredients;
+    private final List<String> personalPreferences;
+    private final int sale;
 
 
     @FXML
@@ -52,16 +55,32 @@ public class DishClient {
         this.imageUrl = "";
         this.availableBranches = new ArrayList<String>();
         this.ingredients = new ArrayList<String>();
+        personalPreferences = new ArrayList<String>();
+        this.sale = 0;
     }
 
     public DishClient(String name, String description, float price, String imageUrl,
-                List<String> availableBranches, List<String> ingredients) {
+                List<String> availableBranches, List<String> ingredients, List<String> personalPreferences, int sale) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
         this.availableBranches = availableBranches;
         this.ingredients = ingredients;
+        this.personalPreferences = new ArrayList<String>(personalPreferences);
+        this.sale = sale;
+    }
+
+    public DishClient(String name, String description, float price, String imageUrl,
+                      List<String> availableBranches, List<String> ingredients, int sale) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.availableBranches = availableBranches;
+        this.ingredients = ingredients;
+        this.personalPreferences = new ArrayList<String>();
+        this.sale = sale;
     }
 
     public String getName() {
@@ -88,6 +107,14 @@ public class DishClient {
         return ingredients;
     }
 
+    public List<String> getPersonalPreferences() {
+        return personalPreferences;
+    }
+
+    public int getSale() {
+        return sale;
+    }
+
     public boolean isEmpty() {
         return name.isEmpty() && description.isEmpty() && price == 0 && imageUrl.isEmpty() && availableBranches.isEmpty() && ingredients.isEmpty();
     }
@@ -98,6 +125,6 @@ public class DishClient {
             return false;
         }
         DishClient other = (DishClient) obj;
-        return name.equals(other.name) && description.equals(other.description) && price == other.price && imageUrl.equals(other.imageUrl) && availableBranches.equals(other.availableBranches) && ingredients.equals(other.ingredients);
+        return name.equals(other.name) && description.equals(other.description) && price == other.price && imageUrl.equals(other.imageUrl) && availableBranches.equals(other.availableBranches) && ingredients.equals(other.ingredients) && personalPreferences.equals(other.personalPreferences) && sale == other.sale;
     }
 }

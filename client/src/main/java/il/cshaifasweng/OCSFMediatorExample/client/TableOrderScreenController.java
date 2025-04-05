@@ -89,22 +89,69 @@ public class TableOrderScreenController {
 
     @FXML
     private void initialize() {
+        reservationSpace.setDisable(true);
+        guestNumber.setDisable(true);
+        reservationDate.setDisable(true);
+        time.setDisable(true);
+        showTheOptionsButtons.setDisable(true);
+
+        branch.setOnAction(event -> branchChosen());
+        reservationSpace.setOnAction(event -> reservationSpaceChosen());
+        reservationDate.setOnAction(event -> reservationDateChosen());
+        time.setOnAction(event -> timeChosen());
+        guestNumber.setOnKeyReleased(event -> guestNumberChosen());
+
+
+        // Disable past dates in the DatePicker
+        reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(final LocalDate item, final boolean empty) {
+                super.updateItem(item, empty);
+                if (item.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
         try {
             EventBus.getDefault().register(this);
 
-            // Disable past dates in the DatePicker
-            reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
-                @Override
-                public void updateItem(final LocalDate item, final boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item.isBefore(LocalDate.now())) {
-                        setDisable(true);
-                    }
-                }
-            });
+
 
         } catch (Exception e) {
             throw new RuntimeException();
+        }
+    }
+
+    private void branchChosen() {
+        if (branch.getValue() != null) {
+            reservationSpace.setDisable(false);
+        }
+    }
+    private void reservationSpaceChosen() {
+        if (reservationSpace.getValue() != null) {
+            guestNumber.setDisable(false);
+            reservationDate.setDisable(false);
+        }
+    }
+    private void reservationDateChosen() {
+        if (reservationDate.getValue() != null) {
+            time.setDisable(false);
+        }
+    }
+    private void timeChosen() {
+        if (time.getValue() != null && !guestNumber.getText().trim().isEmpty()) {
+            showTheOptionsButtons.setDisable(false);
+        }else{
+            showTheOptionsButtons.setDisable(true);
+            possibleOptions.setVisible(false);
+        }
+    }
+    private void guestNumberChosen() {
+        if (!guestNumber.getText().trim().isEmpty() && time.getValue() != null) {
+            showTheOptionsButtons.setDisable(false);
+        }else{
+            showTheOptionsButtons.setDisable(true);
+            possibleOptions.setVisible(false);
         }
     }
 

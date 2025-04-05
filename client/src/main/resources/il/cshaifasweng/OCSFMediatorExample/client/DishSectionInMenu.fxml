@@ -15,7 +15,10 @@
     <VBox alignment="TOP_LEFT" spacing="8.0">
         <Label fx:id="dishName" />
         <Label fx:id="dishDescription" wrapText="true" />
-        <Label fx:id="dishPrice" />
+        <HBox spacing="8">
+            <Label fx:id="dishPrice"/>
+            <Label fx:id="dishSale"/>
+        </HBox>
 
         <TitledPane text="Available Branches" expanded="false">
             <VBox fx:id="availableBranches" spacing="5" />

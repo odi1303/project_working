@@ -51,7 +51,7 @@ public class CancelDeliveryScreenController {
 
         //add cancel button
         Button cancelButton = new Button("Cancel order");
-        cancelButton.setOnAction(event -> removeOrder(scrollPane));
+        cancelButton.setOnAction(event -> removeOrder(order, scrollPane));
         hBox.getChildren().add(cancelButton);
 
         for (Pair<DishClient, Integer> pair : order.getOrderDishesList()){
@@ -97,12 +97,12 @@ public class CancelDeliveryScreenController {
         return hBox;
     }
 
-    private void removeOrder(ScrollPane scrollPane) {
+    private void removeOrder(OrderClient order, ScrollPane scrollPane) {
         PopupDialogService popupDialogService = new PopupDialogService();
         try {
             boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the order?", (Stage) orderTable.getScene().getWindow());
             if (isConfirmed) {
-                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay ___.", (Stage) orderTable.getScene().getWindow());
+                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredOrderCancelationFee(order)), (Stage) orderTable.getScene().getWindow());
                 if (confirmed) {
                     orderTable.getChildren().remove(scrollPane);
                 }
@@ -110,5 +110,9 @@ public class CancelDeliveryScreenController {
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private double getRequiredOrderCancelationFee(OrderClient order) {
+        return 5.0;
     }
 }
