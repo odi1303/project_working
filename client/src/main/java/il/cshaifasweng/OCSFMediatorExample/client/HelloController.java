@@ -37,7 +37,7 @@ public class HelloController {
 
     @FXML
         //check if the details are correct, if they not show an error
-    void onConnectButtonClick(ActionEvent event) throws IOException {
+    void onConnectButtonClick(ActionEvent event) throws IllegalArgumentException {
         if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
             throw new IllegalArgumentException("Please enter your username and password");
         }
@@ -58,6 +58,7 @@ public class HelloController {
 
     @Subscribe
     public void onUserType(UserType userType) {
+        System.out.println("unregistered controller");
         EventBus.getDefault().unregister(this);
     }
 
