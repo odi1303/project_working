@@ -1,10 +1,8 @@
+/*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestsRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
@@ -37,3 +35,4 @@ public class DietitiansBL {
         requestsRepository.save(request);
     }
 }
+*/

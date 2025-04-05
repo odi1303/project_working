@@ -18,6 +18,8 @@ public abstract class Complain
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
+    public Long branch_id;
+
     @Column(name="description", nullable = false)
     public String description;
 
