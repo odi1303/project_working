@@ -1,7 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
+import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
@@ -11,9 +12,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.*;
+@ApplicationScoped
 public class DeliveriesBL {
+    public DeliveriesBL() {}
     @Inject
     UsersRepository usersRepository;
     @Inject

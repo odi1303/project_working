@@ -31,7 +31,7 @@ public class App extends Application {
     public static String password;
     public static UserType userType;
 
-    public static void saveClientDetails(String username, String password, UserType type) {
+    public static void saveClientDetails(String username, String password, UserType type) throws IOException {
         assert type != UserType.Empty;
         App.username = username;
         App.password = password;
@@ -39,6 +39,7 @@ public class App extends Application {
 
         switch (type) {
             case Admin:
+                setRoot("manager_personal_page");
                 break;
             case User:
                 break;
@@ -57,9 +58,8 @@ public class App extends Application {
 
     public static <T> T setRootAndGetController(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        Parent root = fxmlLoader.load();
-        scene.setRoot(root);
-        return fxmlLoader.getController(); // Return the controller instance
+        scene.setRoot(fxmlLoader.load());
+        return fxmlLoader.getController();
     }
 
     @Override

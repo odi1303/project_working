@@ -23,12 +23,12 @@ public class MenuItem
     @Column(name = "price", nullable=false)
     public Long price;
 
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
+    //@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(fetch = FetchType.LAZY)
     public Restaurant restaurant;
-
+/*
     @Column(name = "restaurant_id")
-    public Long restaurantId;
+    public Long restaurantId;*/
 
     @Column(name = "available_for_takeout")
     public boolean availableForTakeout;
@@ -54,6 +54,6 @@ public class MenuItem
     }
 
     public Long getRestaurantId() {
-        return restaurantId;
+        return restaurant.id;
     }
 }

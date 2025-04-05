@@ -7,6 +7,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
+public class MenuRepository {}
+/*
 
 public class MenuRepository {
     @PersistenceContext
@@ -34,3 +36,4 @@ public class MenuRepository {
         entityManager.persist(menuItem);
     }
 }
+*/
