@@ -10,6 +10,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class TableOrdersBL {
     @Inject
@@ -19,12 +20,20 @@ public class TableOrdersBL {
     TableOrderRepository tableOrderRepository;
 
     public List<TableOrder> getTableOrders(Long userId) {
-        User user = usersRepository.findById(userId).get();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return null;
+
+        User user = Maybeuser.get();
         return user.getTableOrders();
     }
 
     public void cancelTableOrder(Long userId, Long tableOrderId) {
-        User user = usersRepository.findById(userId).get();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return;
+
+        User user = Maybeuser.get();
         TableOrder tableOrder = user.getTableOrders().stream().filter(to -> Objects.equals(to.getId(), tableOrderId)).findFirst().get();
 
         Date now = new Date();

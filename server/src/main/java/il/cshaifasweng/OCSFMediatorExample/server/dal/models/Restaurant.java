@@ -1,9 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor()
 @Entity
 @Table(name = "restaurants")
 public class Restaurant {
@@ -16,23 +18,32 @@ public class Restaurant {
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours mondayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    public OpeningHours thusdayOpeningHours;
+    public OpeningHours tuesdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    public OpeningHours wendsdayOpeningHours;
+    public OpeningHours wednesdayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours thursdayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
     public OpeningHours fridayOpeningHours;
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
-    public OpeningHours saterdayOpeningHours;
+    public OpeningHours saturdayOpeningHours;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     public List<RestaurantTable> tables;
 
+    public long sales;
     public Long getId() {
         return id;
     }
 
+    public Long return_money(long amount_to_return)
+    {
+        return  Math.min(amount_to_return, sales);
+    }
+    public void add_money(long money)
+    {
+        sales += money;
+    }
     public List<RestaurantTable> getTables() {
         return tables;
     }
@@ -44,4 +55,37 @@ public class Restaurant {
     public OpeningHours getMondayOpeningHours() {
         return mondayOpeningHours;
     }
+    public OpeningHours getTuesdayOpeningHours() {
+        return tuesdayOpeningHours;
+    }
+    public OpeningHours getWednesdayOpeningHours() {
+        return wednesdayOpeningHours;
+    }
+    public OpeningHours getThursdayOpeningHours() {
+        return thursdayOpeningHours;
+    }
+    public OpeningHours getFridayOpeningHours() {
+        return fridayOpeningHours;
+    }
+    public OpeningHours getSaturdayOpeningHours() {
+        return saturdayOpeningHours;
+    }
+
+
+    public Restaurant(OpeningHours sundayOpeningHours,OpeningHours mondayOpeningHours,
+                      OpeningHours tuesdayOpeningHours,OpeningHours wednesdayOpeningHours,
+                      OpeningHours thursdayOpeningHours,OpeningHours fridayOpeningHours,
+                      OpeningHours saturdayOpeningHours,List<RestaurantTable> tables)
+    {
+        this.sundayOpeningHours = sundayOpeningHours;
+        this.mondayOpeningHours = mondayOpeningHours;
+        this.tuesdayOpeningHours = tuesdayOpeningHours;
+        this.wednesdayOpeningHours = wednesdayOpeningHours;
+        this.thursdayOpeningHours = thursdayOpeningHours;
+        this.fridayOpeningHours = fridayOpeningHours;
+        this.saturdayOpeningHours = saturdayOpeningHours;
+        this.tables = tables;
+        this.sales = 0;
+    }
+
 }

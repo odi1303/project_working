@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -27,6 +28,18 @@ public class HelloController {
     @FXML // fx:id="wrongDetails"
     private Label wrongDetails; // Value injected by FXMLLoader
 
+
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
 
     @FXML

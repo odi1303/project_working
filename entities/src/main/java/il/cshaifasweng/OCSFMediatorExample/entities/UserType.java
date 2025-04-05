@@ -1,10 +1,12 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 public enum UserType {
+    Empty,
     Admin,
     User,
-    employee,
-    dietician,
-    branchManager,
-    chainManager
+    Employee,
+    Dietitian,
+    BranchManager,
+    ChainManager,
+    CustomerServiceWorker
 }

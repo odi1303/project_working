@@ -1,8 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,27 +27,60 @@ public class App extends Application {
     private static SimpleClient client;
     public static ObservableList<String> menu;
 
+    public static String username;
+    public static String password;
+    public static UserType userType;
+
+    public static void saveClientDetails(String username, String password, UserType type) {
+        assert type != UserType.Empty;
+        App.username = username;
+        App.password = password;
+        userType = type;
+
+        switch (type) {
+            case Admin:
+                break;
+            case User:
+                break;
+            case Employee:
+                break;
+            case Dietitian:
+                break;
+            case ChainManager:
+                break;
+            case CustomerServiceWorker:
+                break;
+            case BranchManager:
+                break;
+        }
+    }
+
+    public static <T> T setRootAndGetController(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        Parent root = fxmlLoader.load();
+        scene.setRoot(root);
+        return fxmlLoader.getController(); // Return the controller instance
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
-    	EventBus.getDefault().register(this);
-    	client = SimpleClient.getClient();
-        client.openConnection();
-        client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
+    }
 
-        scene = new Scene(loadFXML("home-page"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
-    }
-
-    public static <T> T setRootAndGetController(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        Parent root = loader.load();
-        scene.setRoot(root);
-        return loader.getController();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -78,7 +113,7 @@ public class App extends Application {
     	});
     	
     }
-    public static void  sendMessageToServer(Object message) throws IOException {
+    public static void sendMessageToServer(Object message) throws IOException {
         client.sendToServer(message);
     }
 

@@ -14,6 +14,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
+    @Column(name="name", nullable=true)
+    public String name;
+
     @Column(name="password", nullable=false)
     public String password;
 
@@ -23,6 +26,11 @@ public class User {
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     public List<TableOrder> tableOrders;
+
+    @Enumerated(EnumType.STRING)
+
+    @Column(name="MailAddress", nullable=true)
+    public String MailAddress;
 
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     public List<Delivery> deliveries;

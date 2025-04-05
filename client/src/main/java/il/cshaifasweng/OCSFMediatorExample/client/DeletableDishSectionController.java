@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ public class DeletableDishSectionController {
     @FXML
     public void initialize() {
         try {
+            EventBus.getDefault().register(this);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
             Node dishNode = loader.load();
             dishSectionController = loader.getController(); // Properly access the controller
@@ -25,6 +27,10 @@ public class DeletableDishSectionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     public void reinitialize(MenuController menuController) {

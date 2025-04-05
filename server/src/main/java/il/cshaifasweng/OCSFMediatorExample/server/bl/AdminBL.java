@@ -15,13 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class AdminBL {
-    @Inject
     MenuRepository menuRepository;
 
-    @Inject
     RequestsRepository requestsRepository;
 
-    @Inject
     UsersRepository usersRepository;
 
     public AdminBL(MenuRepository menuRepository, RequestsRepository requestsRepository, UsersRepository usersRepository) {

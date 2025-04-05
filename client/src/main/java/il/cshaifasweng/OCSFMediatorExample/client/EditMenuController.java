@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +54,8 @@ public class EditMenuController {
 
         //dynamically create menu section
         try {
+            EventBus.getDefault().register(this);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             Node node = loader.load();
             menuController = loader.getController();
@@ -66,6 +69,8 @@ public class EditMenuController {
 
         //dynamically create editDish section
         try {
+            EventBus.getDefault().register(this);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditDish.fxml"));
             Node node = loader.load();
             editDishController = loader.getController();
@@ -148,6 +153,11 @@ public class EditMenuController {
         ChangeIngredientsScrollPaneContainer.setManaged(false);
     }
 
+
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
 
     public void deleteDishPressed(DishClient dish) {

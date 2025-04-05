@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -47,7 +48,28 @@ public class EditDishController {
     private boolean isEdit = false;
     private DishClient dish;
 
+    @FXML
     public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void positionButtons() {
+        double paneWidth = editDishPane.getWidth();
+        double paneHeight = editDishPane.getHeight();
+
+        //submitButton
+        double submitButtonWidth = submitButton.getWidth();
+        double submitButtonHeight = submitButton.getHeight();
+        submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
+        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
     }
 
     public void setDish(DishClient dish) {

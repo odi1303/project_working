@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -25,6 +26,10 @@ public class OrderableDishSectionInMenuController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     public void reinitialize(MenuController menuController) {

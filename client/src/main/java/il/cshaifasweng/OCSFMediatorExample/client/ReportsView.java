@@ -28,7 +28,7 @@ public class ReportsView {
     private ComboBox<?> report_list; // Value injected by FXMLLoader
 
     @FXML
-    void chosing_report(ActionEvent event) {
+    void choosing_report(ActionEvent event) {
 
     }
     @FXML

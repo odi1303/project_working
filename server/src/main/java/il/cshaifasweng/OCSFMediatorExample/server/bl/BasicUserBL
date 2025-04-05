@@ -16,8 +16,6 @@ public class BasicUserBL {
            return user.map(User::getType).orElse(null);
        }
 
-
-
         boolean check_password(long id, String Password)
         {
             Optional<User> Maybeuser = usersRepository.findById(id);

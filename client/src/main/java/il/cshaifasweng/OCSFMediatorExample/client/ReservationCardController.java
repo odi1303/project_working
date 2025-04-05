@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -64,6 +65,20 @@ public class ReservationCardController {
 //        List<Reservation> reservations = HardcodedReservations.getSampleReservations();
 //        setData(reservations.getFirst());
 //    }
+
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     public void setData(Reservation reservation) {
         this.reservation = reservation;

@@ -17,7 +17,9 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+
+import javafx.fxml.FXML;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,20 @@ public class DishClient {
     private final List<String> personalPreferences;
     private final int sale;
 
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch(Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+    
     public DishClient() {
         this.name = "";
         this.description = "";

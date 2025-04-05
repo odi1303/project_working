@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import org.greenrobot.eventbus.EventBus;
 
 public class DishSectionInMenuController {
 
@@ -17,6 +18,19 @@ public class DishSectionInMenuController {
     @FXML private VBox ingredients;
 
     private DishClient dish;
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     public void setDish(DishClient dish) {
         this.dish = dish;

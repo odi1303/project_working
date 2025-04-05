@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,22 +55,31 @@ public class MenuController {
 
     @FXML
     public void initialize() {
-        isMain = true;
-        fullMenu = new MenuClient();
-        List<String> branches = fullMenu.getAllBranches();
-        List<String> ingredients = fullMenu.getAllIngredients();
-        putBranchCheckBoxesInFilter(branches);
-        putIngredientsCheckBoxesInFilter(ingredients);
+        try {
+            EventBus.getDefault().register(this);
+            isMain = true;
+            fullMenu = new MenuClient();
+            List<String> branches = fullMenu.getAllBranches();
+            List<String> ingredients = fullMenu.getAllIngredients();
+            putBranchCheckBoxesInFilter(branches);
+            putIngredientsCheckBoxesInFilter(ingredients);
 
-        List<DishClient> dishes = getHardcodedDishes();
-        fullMenu = new MenuClient(new ArrayList<>(dishes));
-        setMenuInMenuSection(fullMenu, false);
-        currentMenu = new MenuClient(new ArrayList<>(dishes));
-        updateFilter();
+            List<DishClient> dishes = getHardcodedDishes();
+            fullMenu = new MenuClient(new ArrayList<>(dishes));
+            setMenuInMenuSection(fullMenu, false);
+            currentMenu = new MenuClient(new ArrayList<>(dishes));
+            updateFilter();
 
-        //for order section
-        dishesInOrder = new ArrayList<DishClient>();
-        isOrder = false;
+            //for order section
+            dishesInOrder = new ArrayList<DishClient>();
+            isOrder = false;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
 

@@ -9,10 +9,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.RestaurantTable;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class RestaurantsBL {
@@ -43,7 +40,12 @@ public class RestaurantsBL {
     }
 */
     public void orderTables(Long restaurantId, Long userId, boolean inside, Date startDate, Date endDate, Long amount) {
-        User user = usersRepository.findById(userId).get();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return;
+
+        User user = Maybeuser.get();
+
         Restaurant restaurant = restaurantsRepository.findById(restaurantId).get();
         Stream<RestaurantTable> tablesInCorrectPlace = restaurant.getTables().stream().filter(t -> t.isInside() == inside);
         Stream<RestaurantTable> availableTables = tablesInCorrectPlace.filter(t -> t.getTableOrders().stream().allMatch(to -> endDate.before(to.getStartDate()) || startDate.after(to.getEndDate())));
@@ -69,6 +71,6 @@ public class RestaurantsBL {
             return;
         }
 
-        tableOrderRepository.insert(new TableOrder(startDate, endDate, user, tablesToOrder));
+        tableOrderRepository.save(new TableOrder(startDate, endDate, user, tablesToOrder));
     }
 }
