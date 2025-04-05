@@ -1,12 +1,9 @@
+/*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import jakarta.inject.Inject;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -103,3 +100,4 @@ public class DeliveriesBL {
         return return_money;
     }
 }
+*/
