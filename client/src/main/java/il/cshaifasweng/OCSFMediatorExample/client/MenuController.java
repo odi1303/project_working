@@ -1,18 +1,24 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MenuController {
 
@@ -40,7 +46,9 @@ public class MenuController {
     private boolean isDelete = false;
     private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu
 
+    private List<Pair<DishClient, Label>> orderDishNodeCountLabelPair = new ArrayList<>();
     private EditMenuController editMenuController;
+
 
     @FXML
     public void initialize() {
@@ -60,6 +68,31 @@ public class MenuController {
         //for order section
         dishesInOrder = new ArrayList<DishClient>();
         isOrder = false;
+    }
+
+
+    private LocationInformation getLocationInformation() {
+        LocationInformation locationInformation;
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            locationInformation = popupDialogService.openPopup("LocationInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+            return locationInformation;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean getIsDelivery(){
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            Boolean isDelivery = popupDialogService.openPopup("ConfirmationWindow.fxml", "Would you rather self pickup", (Stage) orderSection.getScene().getWindow());
+            if (isDelivery == null) {
+                return false;
+            }
+            return !isDelivery;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void reinitialize(boolean isOrder, boolean isMain) {
@@ -240,12 +273,81 @@ public class MenuController {
 
             orderDishList.getChildren().add(dishNode);
             dishesInOrder.add(dish);
+            orderDishNodeCountLabelPair.add(new Pair<>(dish, dishSectionInMenuController.getCountLabel()));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    private void finishOrder(){
 
+
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            if(canTheOrderBeMadeFromASingleBranch(dishesInOrder)){
+                Boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Finish Order?", (Stage) orderSection.getScene().getWindow());
+                if (isConfirmed != null && isConfirmed) {
+                    LocationInformation locationInfo = getLocationInformation();
+                    boolean isDelivery = getIsDelivery();
+                    PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    if (personalInformation != null) {
+                        CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                        if (creditInformation != null) {
+                            Boolean Confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Total price is:" + String.valueOf(getTotalPrice()) + ". Confirm Order?", (Stage) orderSection.getScene().getWindow());
+                            if (Confirmed != null && Confirmed) {
+                                OrderClient order = new OrderClient(getDishesCountPair(), isDelivery, locationInfo, personalInformation, creditInformation);
+                                sendOrder(order);
+                            }
+                        }
+                    }
+                }
+            }else {
+                popupDialogService.openPopup("InformationPopupWindow.fxml", "The order cant be made from a single branch", (Stage) orderSection.getScene().getWindow());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean canTheOrderBeMadeFromASingleBranch(ArrayList<DishClient> dishesInOrder){
+        String commonBranch = getCommonBranch(dishesInOrder);
+        if(commonBranch != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private String getCommonBranch(ArrayList<DishClient> dishes) {  // Changed to ArrayList<DishClient>
+        if (dishes == null || dishes.isEmpty()) {
+            return null;
+        }
+        Set<String> commonBranches = new HashSet<>(dishes.get(0).getAvailableBranches());
+        for (DishClient dish : dishes) {
+            commonBranches.retainAll(dish.getAvailableBranches());
+
+            if (commonBranches.isEmpty()) {
+                return null;
+            }
+        }
+        return commonBranches.iterator().next();
+    }
+
+    private double getTotalPrice(){
+        double totalPrice = 0;
+        for (DishClient dish : dishesInOrder) {
+            totalPrice += dish.getPrice();
+        }
+        return totalPrice;
+    }
+
+    private ArrayList<Pair<DishClient, Integer>> getDishesCountPair(){
+        ArrayList<Pair<DishClient, Integer>> pairList = new ArrayList<>();
+        for (Pair<DishClient, Label> pair : orderDishNodeCountLabelPair){
+            pairList.add(new Pair<>(pair.getKey(), Integer.parseInt(pair.getValue().getText())));
+        }
+        return pairList;
+    }
 
     private List<DishClient> getHardcodedDishes() {
         DishClient pizza = new DishClient(
@@ -347,5 +449,14 @@ public class MenuController {
     }
     public void EditDishPressed(DishClient dish) {
         editMenuController.EditDishPressed(dish);
+    }
+
+
+    private void sendOrder(OrderClient order) {
+        try{
+            App.setRoot("home-page");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

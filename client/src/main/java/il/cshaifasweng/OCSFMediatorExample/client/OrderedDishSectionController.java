@@ -58,4 +58,8 @@ public class OrderedDishSectionController {
     public void setDishDataInDishSection() {
         dishSectionController.setDishDataInDishSection();
     }
+
+    public Label getCountLabel() {
+        return countLabel;
+    }
 }

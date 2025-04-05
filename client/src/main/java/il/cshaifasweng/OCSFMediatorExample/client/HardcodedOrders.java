@@ -56,16 +56,25 @@ public class HardcodedOrders {
                 Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables")
         );
 
+        // Creating LocationInformation objects
+        LocationInformation location1 = new LocationInformation("New York", "Broadway", "123");
+        LocationInformation location2 = new LocationInformation("Los Angeles", "Sunset Boulevard", "456");
+        LocationInformation location3 = new LocationInformation("Chicago", "Michigan Avenue", "789");
+
+        // Dummy PersonalInformation and CreditInformation objects
+        PersonalInformation personalInfo = new PersonalInformation("John Doe", "john@example.com", "1234567890");
+        CreditInformation creditInfo = new CreditInformation("1234-5678-9012-3456", "12/27", "123");
+
         // Creating Orders (Immutable Lists)
         OrderClient order1 = new OrderClient(List.of(
                 new Pair<>(pizza, 2),
                 new Pair<>(burger, 1)
-        ));
+        ), true, location1, personalInfo, creditInfo);
 
         OrderClient order2 = new OrderClient(List.of(
                 new Pair<>(pasta, 1),
                 new Pair<>(salad, 3)
-        ));
+        ), false, location2, personalInfo, creditInfo);
 
         OrderClient order3 = new OrderClient(List.of(
                 new Pair<>(sushi, 2),
@@ -74,7 +83,7 @@ public class HardcodedOrders {
                 new Pair<>(pasta, 3),
                 new Pair<>(burger, 1),
                 new Pair<>(salad, 3)
-        ));
+        ), true, location3, personalInfo, creditInfo);
 
         orders.add(order1);
         orders.add(order2);

@@ -27,10 +27,6 @@ public class OrderDeliveryScreenController {
 
     }
 
-    @FXML
-    private void selectBranch(ActionEvent event) {
-
-    }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
