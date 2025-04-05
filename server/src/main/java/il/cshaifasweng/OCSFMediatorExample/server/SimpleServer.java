@@ -64,7 +64,9 @@ public class SimpleServer extends AbstractServer{
 			System.out.println(db.getBasicUsers());*/
 			System.out.println("hello there");
 			//db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
-			db_.save(new User("pp", "pp", UserType.Admin));
+			for (var o : db_.getAll(new User())) {
+				System.out.println(o.toString());
+			}
 			System.out.println("supposedly added into db");
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {

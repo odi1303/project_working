@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -41,13 +43,6 @@ public class ManualDatabase {
         Scanner userInput = new Scanner(System.in);
         System.out.print("Enter the database password: ");
         String password = userInput.nextLine();
-        /*Properties properties = new Properties();
-        properties.loadFromXML(new FileInputStream(
-                new File("src/main/resources/META-INF/persistence.xml")));
-
-        // Create Configuration
-        Configuration configuration = new Configuration()
-                .setProperties(properties);*/
         config.setProperty("hibernate.connection.password", password);
 
         config.addAnnotatedClass(User.class);
@@ -59,8 +54,6 @@ public class ManualDatabase {
         config.addAnnotatedClass(RestaurantTable.class);
         config.addAnnotatedClass(TableOrder.class);
         config.addAnnotatedClass(OpeningHours.class);
-        // config.addAnnotatedClass(Dish.class);
-
 
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         return config.buildSessionFactory(serviceRegistry);
@@ -91,17 +84,24 @@ public class ManualDatabase {
         }
     }
 
-    public void save(Object o) {
+    public void saveOrUpdate(Object o) {
         System.out.println("Saving " + o.getClass().getSimpleName());
         System.out.println(session);
         session.beginTransaction();
         System.out.println("a");
-        session.save(o);
+        session.saveOrUpdate(o);
         System.out.println("b");
         session.getTransaction().commit();
         System.out.println("c");
         session.flush();
         System.out.println("Finished saving " + o.getClass().getSimpleName());
+    }
+
+    public <T> List<T> getAll(T dummy) {
+        session.beginTransaction();
+        var result = session.createQuery("FROM " + dummy.getClass().getSimpleName()).getResultList();
+        session.getTransaction().commit();
+        return result;
     }
 
     public UserType getUserType(String name, String password) {
@@ -129,7 +129,6 @@ class UsersBL {
 }
 
 class ComplaintsBL {
-
     public static List<Complain> getAllComplains(Session session) {
         session.beginTransaction();
         var retval = session.createQuery("From Complain", Complain.class).getResultList();
@@ -224,7 +223,7 @@ class ComplaintsBL {
         session.getTransaction().commit();
     }
 }
-/*
+
 
 class AdminsBL {
     public static void deleteMenuItem(Session session, Long menuId, Long userId)
@@ -239,73 +238,139 @@ class AdminsBL {
             }
         });
         session.getTransaction().commit();
-        */
+
 /*Optional<User> user = usersRepository.findById(userId);
 
         if (user.map(User::isAdmin).orElse(false)) {
             return;
         }
 
-        menuRepository.deleteById(menuId);*//*
+        menuRepository.deleteById(menuId);*/
 
     }
-    public List<il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem> getAllMenuItems() {
-        var retval = new ArrayList<il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem>();
-        menuRepository.findAll().forEach(retval::add);
-        return retval;
-    }
-    public List<il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request> getRequests() {
-        var retval = new ArrayList<il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request>();
-        requestsRepository.findAll().forEach(retval::add);
-        return retval;
-    }
 
-        public void markRequestAsApproved(Long requestId, Long userId) {
-            Optional<User> user = usersRepository.findById(userId);
 
-            if (user.map(User::isAdmin).orElse(false)) {
-                return;
-            }
+    public static void markRequestAsApproved(Session session, Long requestId, Long userId) {
+        session.beginTransaction();
+        Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
+        /*Optional<User> user = usersRepository.findById(userId);
 
-            Optional<il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request> maybeRequest = requestsRepository.findById(requestId);
-            maybeRequest.ifPresent(request -> {
-                switch (request) {
-                    case DeleteRequest deleteRequest -> menuRepository.deleteById(deleteRequest.getMenuItem());
-                    case InsertRequest insertRequest ->
-                            menuRepository.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
-                    case UpdateRequest updateRequest ->
-                            menuRepository.findById(updateRequest.getMenuItem()).ifPresent(menu -> {
-                                if (updateRequest.getMenuItemPrice() != null) {
-                                    menu.setPrice(updateRequest.getMenuItemPrice());
-                                }
-                                if (updateRequest.getMenuItemDescription() != null) {
-                                    menu.setDescription(updateRequest.getMenuItemDescription());
-                                }
-                                menuRepository.save(menu);
-                            });
-                    default -> {
-                        // Unknown request
+        if (user.map(User::isAdmin).orElse(false)) {
+            return;
+        }*/
+        maybeUser.ifPresent(user -> {
+            if (user.isAdmin()) {
+                Optional<Request> maybeRequest = session.byId(Request.class).loadOptional(requestId);//requestsRepository.findById(requestId);
+                maybeRequest.ifPresent(request -> {
+                    switch (request) {
+                        case DeleteRequest deleteRequest -> session.createQuery("DELETE FROM MenuItem WHERE id = :id")
+                                .setParameter("id", deleteRequest.getMenuItem())
+                                .executeUpdate();
+                        //menuRepository.deleteById(deleteRequest.getMenuItem());
+                        case InsertRequest insertRequest ->
+                                session.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
+                                //menuRepository.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
+                        case UpdateRequest updateRequest ->
+                                //menuRepository.findById(updateRequest.getMenuItem())
+                                session.byId(MenuItem.class).loadOptional(updateRequest.getMenuItem())
+                                        .ifPresent(menu -> {
+                                    if (updateRequest.getMenuItemPrice() != null) {
+                                        menu.setPrice(updateRequest.getMenuItemPrice());
+                                    }
+                                    if (updateRequest.getMenuItemDescription() != null) {
+                                        menu.setDescription(updateRequest.getMenuItemDescription());
+                                    }
+                                    session.save(menu);
+                                });
+                        default -> {
+                            // Unknown request
+                        }
                     }
-                }
-                request.approve();
-                requestsRepository.save(request);
-
-
-            });
-        }
-        public void markRequestAsRejected(Long requestId, Long userId) {
-            Optional<User> user = usersRepository.findById(userId);
-
-            if (user.map(User::isAdmin).orElse(false)) {
-                return;
+                    request.approve();
+                    session.save(request);
+                });
             }
+        });
+        session.getTransaction().commit();
+        /*Optional<Request> maybeRequest = requestsRepository.findById(requestId);
+        maybeRequest.ifPresent(request -> {
+            switch (request) {
+                case DeleteRequest deleteRequest -> menuRepository.deleteById(deleteRequest.getMenuItem());
+                case InsertRequest insertRequest ->
+                        menuRepository.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
+                case UpdateRequest updateRequest ->
+                        menuRepository.findById(updateRequest.getMenuItem()).ifPresent(menu -> {
+                            if (updateRequest.getMenuItemPrice() != null) {
+                                menu.setPrice(updateRequest.getMenuItemPrice());
+                            }
+                            if (updateRequest.getMenuItemDescription() != null) {
+                                menu.setDescription(updateRequest.getMenuItemDescription());
+                            }
+                            menuRepository.save(menu);
+                        });
+                default -> {
+                    // Unknown request
+                }
+            }
+            request.approve();
+            requestsRepository.save(request);
 
-            Optional<Request> maybeRequest = requestsRepository.findById(requestId);
-            maybeRequest.ifPresent(request -> {
-                request.reject();
-                requestsRepository.save(request);
-            });
+
+        });
+    */}
+    public static void markRequestAsRejected(Session session, Long requestId, Long userId) {
+        session.beginTransaction();
+        Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
+
+        /*Optional<User> user = usersRepository.findById(userId);
+
+        if (user.map(User::isAdmin).orElse(false)) {
+            return;
+        }*/
+
+        maybeUser.ifPresent(user -> {
+            if (user.isAdmin()) {
+                Optional<Request> maybeRequest = session.byId(Request.class).loadOptional(requestId);//requestsRepository.findById(requestId);
+                // Optional<Request> maybeRequest = requestsRepository.findById(requestId);
+                maybeRequest.ifPresent(request -> {
+                    request.reject();
+                    session.save(request);
+                });
+            }
+        });
+        session.getTransaction().commit();
+    }
+}
+
+
+class DeliveriesBL {
+    /*public void createDelivery(Long userId, DeliveryAPI delivery) {
+        User user = usersRepository.findById(userId).get();
+
+        List<DeliveryItem> deliveryItems = delivery.getDeliveryItems().stream()
+                .map(d -> new DeliveryItem(menuRepository.findById(d.getMenuItemId()).get(), d.getAmount()))
+                .toList();
+
+        deliveriesRepository.insert(new Delivery(delivery.getArriavl(), user, deliveryItems));
+    }*/
+
+    public static void cancelDelivery(Session session, Long userId, Long deliveryId) {
+        User user = usersRepository.findById(userId).orElseThrow();
+        Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
+
+        Date now = new Date();
+        Date nowBeforeHour = Date.from(now.toInstant().minus(1, ChronoUnit.HOURS));
+
+        if (nowBeforeHour.after(delivery.getArravilDate())) {
+            // Can't cancel
+            return;
         }
 
+        deliveriesRepository.delete(delivery);
 
-}*/
+        Date nowBefore3Hour = Date.from(now.toInstant().minus(3, ChronoUnit.HOURS));
+        if (nowBefore3Hour.after(delivery.getArravilDate())) {
+            // return need to get money
+        }
+    }
+}
