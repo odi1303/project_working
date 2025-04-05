@@ -14,7 +14,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class RepositoryProducer {
     private static final AnnotationConfigApplicationContext context =
             new AnnotationConfigApplicationContext(SpringConfig.class);
-    @Autowired
+    //@Autowired
     private EntityManagerFactory entityManagerFactory; // Inject Spring’s EMF
 
     @Produces

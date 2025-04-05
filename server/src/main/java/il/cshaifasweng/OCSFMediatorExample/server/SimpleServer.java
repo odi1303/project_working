@@ -27,11 +27,13 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-	@Inject
-	Database db;
+	/*@Inject
+	Database db;*/
+
+	ManualDatabase db_;
 	/**
 	 * Constructs a new server.
 	 *
@@ -39,17 +41,7 @@ public class SimpleServer extends AbstractServer{
 	 */
 	public SimpleServer() {
 		super(3000);
-
-	}
-
-	private static SessionFactory getSessionFactory() throws HibernateException {
-		var config = new Configuration();
-		config.addAnnotatedClass(Dish.class);
-		config.addAnnotatedClass(Ingredient.class);
-		config.addAnnotatedClass(PersonalPreference.class);
-
-		var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
-		return config.buildSessionFactory(serviceRegistry);
+		db_ = new ManualDatabase();
 	}
 
 	@Override
@@ -68,10 +60,11 @@ public class SimpleServer extends AbstractServer{
 			SubscribedClient connection = new SubscribedClient(client);
 			SubscribersList.add(connection);
 			System.out.println(msgString);
-			System.out.println("Database pointer " + db);
-			System.out.println(db.getBasicUsers());
+			/*System.out.println("Database pointer " + db);
+			System.out.println(db.getBasicUsers());*/
 			System.out.println("hello there");
-			db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
+			//db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
+			db_.save(new User("pp", "pp", UserType.Admin));
 			System.out.println("supposedly added into db");
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
@@ -86,7 +79,7 @@ public class SimpleServer extends AbstractServer{
 			try {
 				System.out.println("new request: "+msgString);
 				System.out.println(getUserType.name + ", " + getUserType.password);
-				var retval = db.getBasicUsers().getUserType(getUserType.name, getUserType.password);
+				var retval = /*db.getBasicUsers()*/db_.getUserType(getUserType.name, getUserType.password);
 				System.out.println("method returned "+retval);
 				client.sendToClient(retval);
 			} catch (IOException e) {

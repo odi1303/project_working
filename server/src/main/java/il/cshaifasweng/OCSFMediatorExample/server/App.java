@@ -20,7 +20,7 @@ public class App {
     private static SimpleServer server;
 
     public static void main(String[] args) throws IOException {
-        AnnotationConfigApplicationContext springContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        /*AnnotationConfigApplicationContext springContext = new AnnotationConfigApplicationContext(SpringConfig.class);
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         // Get BeanManager
@@ -34,7 +34,8 @@ public class App {
         // Explicitly select BasicUserBL to test
         BasicUserBL basicUserBL = container.select(BasicUserBL.class).get();
         System.out.println("Manually selected BasicUserBL: " + basicUserBL);
-        server = container.select(SimpleServer.class).get();
+        server = container.select(SimpleServer.class).get();*/
+        server = new SimpleServer();
         System.out.println("Starting server...");
         server.listen();
     }
