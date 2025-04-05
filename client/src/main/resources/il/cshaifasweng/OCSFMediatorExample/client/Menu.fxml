@@ -33,6 +33,7 @@
             <Button text="Clear Filter" onAction="#clearFilter"/>
         </HBox>
     </HBox>
+    <Button onAction="#displayBranchesAndTheirOpeningTime"/>
 
     <!-- 🔹 Menu Section -->
     <VBox fx:id="menuSection" spacing="10" minHeight="250" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">

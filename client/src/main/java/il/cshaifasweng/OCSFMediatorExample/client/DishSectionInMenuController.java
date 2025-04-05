@@ -12,6 +12,7 @@ public class DishSectionInMenuController {
     @FXML private Label dishName;
     @FXML private Label dishDescription;
     @FXML private Label dishPrice;
+    @FXML private Label dishSale;
     @FXML private VBox availableBranches;
     @FXML private VBox ingredients;
 
@@ -26,6 +27,7 @@ public class DishSectionInMenuController {
         setDishName();
         setDishDescription();
         setDishPrice();
+        setDishSale();
         initializeAvailableBranches();
         initializeIngredients();
     }
@@ -44,6 +46,14 @@ public class DishSectionInMenuController {
 
     private void setDishPrice() {
         dishPrice.setText("Price: " + dish.getPrice());
+    }
+    private void setDishSale() {
+        if (dish.getSale() == 0) {
+            dishSale.setVisible(false);
+            dishSale.setManaged(false);
+        }else{
+            dishSale.setText("Sale: " + dish.getSale() + "%");
+        }
     }
 
     private void initializeAvailableBranches() {

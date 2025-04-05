@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Math.max;
+
 public class MenuController {
 
     @FXML
@@ -266,7 +268,7 @@ public class MenuController {
             List<String> preferences = popupDialogService.openPopup("PersonalPreferencesPopup.fxml", dish, (Stage) orderSection.getScene().getWindow());
 
             if (preferences != null && !preferences.isEmpty()) {
-                addDishToOrderSection(new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences));
+                addDishToOrderSection(new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
             }else{
                 addDishToOrderSection(dish);
             }
@@ -349,7 +351,7 @@ public class MenuController {
     private double getTotalPrice(){
         double totalPrice = 0;
         for (DishClient dish : dishesInOrder) {
-            totalPrice += dish.getPrice();
+            totalPrice += dish.getPrice() *((double) Math.max(100 - dish.getSale(), 0) / 100.0);
         }
         return totalPrice;
     }
@@ -370,7 +372,7 @@ public class MenuController {
                 "https://example.com/images/pizza.jpg",
                 List.of("Haifa", "Tel Aviv"),
                 List.of("Cheese", "Tomato", "Olives"),
-                new ArrayList<>()
+                10 // Sale: 10% off
         );
 
         DishClient burger = new DishClient(
@@ -380,7 +382,7 @@ public class MenuController {
                 "https://example.com/images/burger.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
                 List.of("Beef", "Lettuce", "Tomato", "Cheese"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         DishClient salad = new DishClient(
@@ -390,7 +392,7 @@ public class MenuController {
                 "https://example.com/images/salad.jpg",
                 List.of("Haifa", "Jerusalem"),
                 List.of("Cucumber", "Tomato", "Feta", "Olives"),
-                new ArrayList<>()
+                5 // Sale: 5% off
         );
 
         DishClient hummusPlate = new DishClient(
@@ -400,7 +402,7 @@ public class MenuController {
                 "https://example.com/images/hummus.jpg",
                 List.of("Haifa", "Tel Aviv"),
                 List.of("Hummus", "Tomato", "Onion", "Olives"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         DishClient falafelPlate = new DishClient(
@@ -410,7 +412,7 @@ public class MenuController {
                 "https://example.com/images/falafel.jpg",
                 List.of("Tel Aviv", "Haifa", "Jerusalem"),
                 List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
-                new ArrayList<>()
+                15 // Sale: 15% off
         );
 
         DishClient veggieBurger = new DishClient(
@@ -420,7 +422,7 @@ public class MenuController {
                 "https://example.com/images/veggie_burger.jpg",
                 List.of("Tel Aviv", "Haifa"),
                 List.of("Lettuce", "Tomato", "Cheese", "Onion"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         DishClient cheeseSandwich = new DishClient(
@@ -430,7 +432,7 @@ public class MenuController {
                 "https://example.com/images/cheese_sandwich.jpg",
                 List.of("Haifa", "Jerusalem"),
                 List.of("Cheese", "Tomato", "Lettuce"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         DishClient beefSalad = new DishClient(
@@ -440,7 +442,7 @@ public class MenuController {
                 "https://example.com/images/beef_salad.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
                 List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
-                new ArrayList<>()
+                20 // Sale: 20% off
         );
 
         DishClient falafelWrap = new DishClient(
@@ -450,7 +452,7 @@ public class MenuController {
                 "https://example.com/images/falafel_wrap.jpg",
                 List.of("Haifa", "Tel Aviv"),
                 List.of("Falafel", "Hummus", "Lettuce"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         DishClient mixedPlatter = new DishClient(
@@ -460,11 +462,12 @@ public class MenuController {
                 "https://example.com/images/mixed_platter.jpg",
                 List.of("Tel Aviv", "Jerusalem"),
                 List.of("Falafel", "Hummus", "Tomato", "Olives"),
-                new ArrayList<>()
+                0 // No Sale
         );
 
         return List.of(pizza, burger, salad, hummusPlate, falafelPlate, veggieBurger, cheeseSandwich, beefSalad, falafelWrap, mixedPlatter);
     }
+
 
 
 
@@ -474,6 +477,18 @@ public class MenuController {
     public void EditDishPressed(DishClient dish) {
         editMenuController.EditDishPressed(dish);
     }
+
+    @FXML
+    public void displayBranchesAndTheirOpeningTime() {
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            popupDialogService.openPopup("BranchesOpeningTimesPopup.fxml", fullMenu.getAllBranches(), (Stage) orderSection.getScene().getWindow());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     private void sendOrder(OrderClient order) {
