@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -27,6 +28,8 @@ public class OrderedDishSectionController {
         count = 1;
         countLabel.setText(String.valueOf(count));
         try {
+            EventBus.getDefault().register(this);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
             Node node = loader.load();
             dishSectionController = loader.getController(); // Properly access the controller
@@ -34,6 +37,10 @@ public class OrderedDishSectionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

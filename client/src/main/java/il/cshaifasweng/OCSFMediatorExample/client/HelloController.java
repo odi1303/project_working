@@ -1,18 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.GetUserType;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
-import il.cshaifasweng.OCSFMediatorExample.entities.VerifyPassword;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class HelloController {
     @FXML // fx:id="connectButton"
@@ -34,6 +29,18 @@ public class HelloController {
     private Label wrongDetails; // Value injected by FXMLLoader
 
 
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
 
     @FXML
         //check if the details are correct, if they not show an error
@@ -45,35 +52,36 @@ public class HelloController {
         String userName = username_field.getText();
         String password = password_field.getText();
 
-        boolean sent = false;
-        while (!sent) {
-            try {
-                SimpleClient.getClient().sendToServer(new GetUserType(userName, password));
-                sent = true;
-                System.out.println("sent to server");
-            } catch (Exception ignored) {
-            }
-        }
-    }
+        UsersRepository usersRepository=new UsersRepository();
+        int user_type = usersRepository.searchUser(userName, password);
 
-    @Subscribe
-    public void onUserType(UserType userType) {
-        EventBus.getDefault().unregister(this);
+        switch (user_type) {
+            case 1:
+                App.setRoot("client_personal_page");
+                break;
+            case 2:
+                App.setRoot("employee_personal_page");
+                break;
+            case 3:
+                App.setRoot("editMenuScreen");
+                break;
+            case 4:
+                App.setRoot("reports_view");
+                break;
+            case 5:
+                App.setRoot("manager_personal_page");
+                break;
+            default:
+                wrongDetails.setText("Incorrect username or password");
+        }
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
         App.setRoot("home-page");
-        EventBus.getDefault().unregister(this);
     }
 
     public void create_an_account(ActionEvent actionEvent) throws IOException {
         App.setRoot("SignUp");
-        EventBus.getDefault().unregister(this);
-    }
-
-    @FXML
-    public void initialize() {
-        EventBus.getDefault().register(this);
     }
 }

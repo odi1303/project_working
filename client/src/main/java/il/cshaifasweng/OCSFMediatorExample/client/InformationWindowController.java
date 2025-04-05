@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 
 public class InformationWindowController implements PopupController<String, String>{
@@ -13,6 +14,19 @@ public class InformationWindowController implements PopupController<String, Stri
 
     @FXML
     private Label informationLabel;
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
 
     @FXML

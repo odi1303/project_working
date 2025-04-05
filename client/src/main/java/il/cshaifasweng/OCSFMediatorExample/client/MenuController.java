@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,21 +45,31 @@ public class MenuController {
 
     @FXML
     public void initialize() {
-        isMain = true;
-        fullMenu = new MenuClient();
-        List<String> branches = List.of("Haifa", "Tel Aviv", "Jerusalem");
-        List<String> ingredients = List.of("Cheese", "Tomato", "Olives", "Onion", "Beef", "Lettuce", "Cucumber", "Feta", "Hummus", "Falafel");
-        putBranchCheckBoxesInFilter(branches);
-        putIngredientsCheckBoxesInFilter(ingredients);
+        try {
+            EventBus.getDefault().register(this);
+            isMain = true;
+            fullMenu = new MenuClient();
+            List<String> branches = fullMenu.getAllBranches();
+            List<String> ingredients = fullMenu.getAllIngredients();
+            putBranchCheckBoxesInFilter(branches);
+            putIngredientsCheckBoxesInFilter(ingredients);
 
-        List<DishClient> dishes = getHardcodedDishes();
-        fullMenu = new MenuClient(new ArrayList<>(dishes));
-        setMenuInMenuSection(fullMenu, false);
-        currentMenu = new MenuClient(new ArrayList<>(dishes));
+            List<DishClient> dishes = getHardcodedDishes();
+            fullMenu = new MenuClient(new ArrayList<>(dishes));
+            setMenuInMenuSection(fullMenu, false);
+            currentMenu = new MenuClient(new ArrayList<>(dishes));
+            updateFilter();
 
-        //for order section
-        dishesInOrder = new ArrayList<DishClient>();
-        isOrder = false;
+            //for order section
+            dishesInOrder = new ArrayList<DishClient>();
+            isOrder = false;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     public void reinitialize(boolean isOrder, boolean isMain) {
@@ -80,8 +91,16 @@ public class MenuController {
     public void setMenu(MenuClient menu) {
         if (!isMain) {
             fullMenu = menu;
-            clearFilter();
+            updateFilter();
         }
+    }
+
+    private void updateFilter() {
+        List<String> branches = fullMenu.getAllBranches();
+        List<String> ingredients = fullMenu.getAllIngredients();
+        putBranchCheckBoxesInFilter(branches);
+        putIngredientsCheckBoxesInFilter(ingredients);
+        clearFilter();
     }
 
     private void addOrderSupportToMenu() {

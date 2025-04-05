@@ -19,4 +19,10 @@ public class DeliveryItem {
         this.menuItem = menuItem;
         this.amount = amount;
     }
+    public long DeliveryItemPrice()
+    {
+        if(menuItem == null)
+            return 0;
+        return menuItem.price;
+    }
 }

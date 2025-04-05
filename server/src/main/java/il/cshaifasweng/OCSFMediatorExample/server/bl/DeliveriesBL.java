@@ -2,13 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.DeliveryItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -19,6 +17,8 @@ public class DeliveriesBL {
     public DeliveriesBL() {}
     @Inject
     UsersRepository usersRepository;
+    @Inject
+    RestaurantsRepository restaurantRepository;
 
     @Inject
     DeliveriesRepository deliveriesRepository;
@@ -26,33 +26,80 @@ public class DeliveriesBL {
     @Inject
     MenuRepository menuRepository;
 
-    /*public void createDelivery(Long userId, DeliveryAPI delivery) {
-        User user = usersRepository.findById(userId).get();
 
-        List<DeliveryItem> deliveryItems = delivery.getDeliveryItems().stream()
-                .map(d -> new DeliveryItem(menuRepository.findById(d.getMenuItemId()).get(), d.getAmount()))
-                .toList();
+    public Long createDelivery(Long userId, Long restaurantId, List<Long> menuItemIds, List<Long> amounts,boolean indoor) {
+        // בדיקת תקינות האורך של הרשימות
+        if (menuItemIds.size() != amounts.size()) {
+            return 0L;
+        }
 
-        deliveriesRepository.insert(new Delivery(delivery.getArriavl(), user, deliveryItems));
-    }*/
+        // שליפת המשתמש
+        Optional<User> userOpt = usersRepository.findById(userId);
+        if (userOpt.isEmpty()) return 0L;
+        User user = userOpt.get();
 
-    public void cancelDelivery(Long userId, Long deliveryId) {
-        User user = usersRepository.findById(userId).orElseThrow();
+        // שליפת המסעדה
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
+        if (restaurantOpt.isEmpty()) return 0L;
+        Restaurant restaurant = restaurantOpt.get();
+
+        // בניית רשימת פריטי משלוח
+        List<DeliveryItem> deliveryItems = new ArrayList<>();
+
+
+        for (int i = 0; i < menuItemIds.size(); i++) {
+            Long menuItemId = menuItemIds.get(i);
+            Long amount = amounts.get(i);
+
+            Optional<MenuItem> menuItemOpt = menuRepository.findById(menuItemId);
+            if (menuItemOpt.isEmpty()) return 0L;
+
+            MenuItem menuItem = menuItemOpt.get();
+            DeliveryItem deliveryItem = new DeliveryItem(menuItem, amount);
+
+            deliveryItems.add(deliveryItem);
+        }
+
+        // תאריך נוכחי
+        Date now = new Date();
+
+        // יצירת המשלוח ושמירה
+        Delivery delivery = new Delivery(now, user, deliveryItems, restaurant);
+        deliveriesRepository.save(delivery);
+
+        long cost = delivery.DeliveryPrice();
+        restaurant.add_money(cost);
+
+        return cost;
+    }
+
+// מחזיר כמה כסף מביאים ללקוח
+    public Long cancelDelivery(Long userId, Long deliveryId) {
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return 0L;
+
+        User user = Maybeuser.get();
+
         Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
 
+        Date delivery_date = delivery.getArravilDate();
         Date now = new Date();
-        Date nowBeforeHour = Date.from(now.toInstant().minus(1, ChronoUnit.HOURS));
+        Date delivery_dateBeforeHour = Date.from(delivery_date.toInstant().minus(1, ChronoUnit.HOURS));
 
-        if (nowBeforeHour.after(delivery.getArravilDate())) {
+        if (now.after(delivery_dateBeforeHour))
+        {
             // Can't cancel
-            return;
+            return 0L;
         }
-
-        deliveriesRepository.delete(delivery);
-
-        Date nowBefore3Hour = Date.from(now.toInstant().minus(3, ChronoUnit.HOURS));
-        if (nowBefore3Hour.after(delivery.getArravilDate())) {
+        long cost = delivery.DeliveryPrice();
+        Date delivery_dateBefore3Hour = Date.from(delivery_date.toInstant().minus(3, ChronoUnit.HOURS));
+        if (delivery_dateBefore3Hour.after(delivery.getArravilDate())) {
+            return delivery.restaurant.return_money(cost);
             // return need to get money
         }
+        long return_money = delivery.restaurant.return_money(cost/2);
+        deliveriesRepository.delete(delivery);
+        return return_money;
     }
 }

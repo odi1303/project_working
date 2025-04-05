@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EditMenuController"
             prefHeight="400.0" prefWidth="600.0">
@@ -16,6 +16,10 @@
                     <Button text="Add New Dish" onAction="#addNewDish"/>
                     <Button text="Add Dish From Database" onAction="#addDishFromDatabase"/>
                     <Button text="Save Changes" onAction="#saveChanges"/>
+                    <HBox spacing="10">
+                        <Label text="Menu name:"/>
+                        <TextField fx:id="menuName"/>
+                    </HBox>
                 </VBox>
                 <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="800">
                     <VBox fx:id="menuContainer" spacing="10"/>
@@ -26,4 +30,4 @@
             <Button text="Home Page" onAction="#goToHomePage"/>
         </VBox>
 
-</AnchorPane>
+</ScrollPane>

@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 
 import java.util.List;
@@ -88,17 +89,29 @@ public class TableOrderScreenController {
 
     @FXML
     private void initialize() {
-        // Disable past dates in the DatePicker
-        reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
-            @Override
-            public void updateItem(final LocalDate item, final boolean empty) {
-                super.updateItem(item, empty);
-                if (item.isBefore(LocalDate.now())) {
-                    setDisable(true);
+        try {
+            EventBus.getDefault().register(this);
+
+            // Disable past dates in the DatePicker
+            reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
+                @Override
+                public void updateItem(final LocalDate item, final boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item.isBefore(LocalDate.now())) {
+                        setDisable(true);
+                    }
                 }
-            }
-        });
+            });
+
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
     @FXML
     private void initializeComboBoxForBranch_Selection() {
         if (branch_selection.getItems().isEmpty())

@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import il.cshaifasweng.OCSFMediatorExample.entities.complaint_to_answer;
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 
@@ -68,9 +70,17 @@ public class FileAComplaint {
     }
     @FXML
     public void initialize() {
-        select_branch.accessibleTextProperty().set("Chose the relevant branch");
-        // Populate the ChoiceBox with options
-        select_branch.getItems().addAll("Kiryon", "Grand Kenyon");
+        try {
+            EventBus.getDefault().register(this);
+            select_branch.accessibleTextProperty().set("Chose the relevant branch");
+            // Populate the ChoiceBox with options
+            select_branch.getItems().addAll("Kiryon", "Grand Kenyon");
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 }

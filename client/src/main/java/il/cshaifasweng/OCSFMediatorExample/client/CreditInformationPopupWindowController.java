@@ -3,10 +3,11 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 public class CreditInformationPopupWindowController implements PopupController<String, CreditInformation> {
 
-    private CreditInformation creditInformation = new CreditInformation();
+    private final CreditInformation creditInformation = new CreditInformation();
     private boolean submitted = false;
 
     @FXML
@@ -17,6 +18,19 @@ public class CreditInformationPopupWindowController implements PopupController<S
 
     @FXML
     private TextField cvvField;
+
+    @FXML
+    public void initialize() {
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     @FXML
     private void submit() {

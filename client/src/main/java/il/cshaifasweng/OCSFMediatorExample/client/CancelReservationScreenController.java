@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +20,12 @@ public class CancelReservationScreenController {
 
     @FXML
     public void initialize() {
-        List<Reservation> reservations = HardcodedReservations.getSampleReservations();
-        ReservationListContainer.getChildren().clear();
+
         try {
+            EventBus.getDefault().register(this);
+            List<Reservation> reservations = HardcodedReservations.getSampleReservations();
+            ReservationListContainer.getChildren().clear();
+
             for (Reservation reservation : reservations) {
                 HBox hbox = new HBox();
                 Button cancelButton = createCancelButton();
@@ -39,6 +43,10 @@ public class CancelReservationScreenController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     private Button createCancelButton() {

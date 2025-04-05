@@ -14,8 +14,16 @@ import java.io.IOException;
 public class MenuReview {
     @FXML
     public void initialize() {
-        System.out.println("Initializing Secondary Controller");
-        EventBus.getDefault().register(this);
+        try {
+            System.out.println("Initializing Secondary Controller");
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     CompactMenu compactMenu= (CompactMenu) App.menu;

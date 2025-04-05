@@ -11,7 +11,7 @@
 
     <HBox spacing="10" layoutX="50" layoutY="50">
         <ComboBox fx:id="cityComboBox" promptText="Select a City" onAction="#selectCity"/>
-        <ComboBox fx:id="branchComboBox" promptText="SelectBranch" visible="false" onAction="#selectBranch"/>
+        <ComboBox fx:id="branchComboBox" promptText="SelectBranch" visible="false" onAction="#selectBranch" />
 
     </HBox>
 

@@ -5,7 +5,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import org.springframework.transaction.annotation.Transactional;
 
