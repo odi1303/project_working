@@ -20,7 +20,6 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-	private static Session session;
 
 	/**
 	 * Constructs a new server.
@@ -29,6 +28,7 @@ public class SimpleServer extends AbstractServer{
 	 */
 	public SimpleServer(int port) {
 		super(port);
+		Database.getInstance();
 	}
 
 	private static SessionFactory getSessionFactory() throws HibernateException {
@@ -62,12 +62,17 @@ public class SimpleServer extends AbstractServer{
 				for (SubscribedClient subscribedClient : SubscribersList) {
 					if (subscribedClient.getClient().equals(client)) {
 						SubscribersList.remove(subscribedClient);
-						session.close();
 						break;
 					}
 				}
 			}
-		} else System.out.println(msgString);
+		} else if (msg instanceof GetUserType getUserType) {
+			try {
+				client.sendToClient(Database.basicUsers.getUserType(getUserType.name, getUserType.password));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	public void sendToAllClients(String message) {
 		try {

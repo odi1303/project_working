@@ -8,6 +8,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 
@@ -21,7 +22,10 @@ public class ManagerPersonalPage {
 
     @FXML // fx:id="viewReportsButton"
     private Button viewReportsButton; // Value injected by FXMLLoader
-
+    @FXML
+    void home_page(MouseEvent event) throws IOException {
+        App.setRoot("home-page");
+    }
     @FXML
     void OpenSuggestions(ActionEvent event) throws IOException {
         App.setRoot("suggestion-view");
