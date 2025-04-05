@@ -354,7 +354,7 @@ class DeliveriesBL {
         deliveriesRepository.insert(new Delivery(delivery.getArriavl(), user, deliveryItems));
     }*/
 
-    public static void cancelDelivery(Session session, Long userId, Long deliveryId) {
+    /*public static void cancelDelivery(Session session, Long userId, Long deliveryId) {
         User user = usersRepository.findById(userId).orElseThrow();
         Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
 
@@ -373,4 +373,5 @@ class DeliveriesBL {
             // return need to get money
         }
     }
+*/
 }
