@@ -1,9 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
@@ -41,18 +39,27 @@ public class ManualDatabase {
     private static SessionFactory getSessionFactory() throws HibernateException, IOException {
         var config = new Configuration();
         Scanner userInput = new Scanner(System.in);
-        /*System.out.print("Enter the database password: ");
-        String password = userInput.nextLine();*/
-        Properties properties = new Properties();
+        System.out.print("Enter the database password: ");
+        String password = userInput.nextLine();
+        /*Properties properties = new Properties();
         properties.loadFromXML(new FileInputStream(
                 new File("src/main/resources/META-INF/persistence.xml")));
 
         // Create Configuration
         Configuration configuration = new Configuration()
-                .setProperties(properties);
-        //config.setProperty("hibernate.connection.password", password);
+                .setProperties(properties);*/
+        config.setProperty("hibernate.connection.password", password);
 
         config.addAnnotatedClass(User.class);
+        config.addAnnotatedClass(TableOrder.class);
+        config.addAnnotatedClass(Delivery.class);
+        config.addAnnotatedClass(DeliveryItem.class);
+        config.addAnnotatedClass(MenuItem.class);
+        config.addAnnotatedClass(Restaurant.class);
+        config.addAnnotatedClass(RestaurantTable.class);
+        config.addAnnotatedClass(TableOrder.class);
+        config.addAnnotatedClass(OpeningHours.class);
+        // config.addAnnotatedClass(Dish.class);
 
 
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
@@ -72,22 +79,29 @@ public class ManualDatabase {
 
             session.getTransaction().commit(); // Save everything*/
         } catch (Exception exception) {
-            /*if (session != null) {
+            if (session != null) {
                 session.getTransaction().rollback();
             }
             System.err.println("An error occurred, changes have been rolled back.");
-            exception.printStackTrace();*/
+            exception.printStackTrace();
         } finally {
-            if (session != null) {
+            /*if (session != null) {
                 session.close();
-            }
+            }*/
         }
     }
 
     public void save(Object o) {
+        System.out.println("Saving " + o.getClass().getSimpleName());
+        System.out.println(session);
         session.beginTransaction();
-        session.saveOrUpdate(o);
+        System.out.println("a");
+        session.save(o);
+        System.out.println("b");
         session.getTransaction().commit();
+        System.out.println("c");
+        session.flush();
+        System.out.println("Finished saving " + o.getClass().getSimpleName());
     }
 
     public UserType getUserType(String name, String password) {
@@ -105,6 +119,7 @@ class UsersBL {
                 .setParameter("password", password)
                 .getSingleResultOrNull();
         session.getTransaction().commit();
+        System.out.println("hello from the other side");
         if (MaybeUser == null) {
             return UserType.Empty;
         } else {
