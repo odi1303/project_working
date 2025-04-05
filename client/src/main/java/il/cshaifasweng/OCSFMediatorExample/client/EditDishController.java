@@ -3,23 +3,38 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
+import java.util.List;
+
 public class EditDishController {
+
+    @FXML
+    public VBox availableBranches;
+    @FXML
+    public VBox ingredients;
+
+    @FXML
+    public Button changeBranchesButton;
+    @FXML
+    public Button changeIngredientsButton;
 
     private DishClient originalDish;
     @FXML
-    public Pane editDishPane;
+    public AnchorPane editDishPane;
 
     @FXML
     public Button submitButton;
-    private double submitButtonHDistFromLRCorner = 30;
-    private double submitButtonWDistFromLRCorner = 30;
+//    private double submitButtonHDistFromLRCorner = 30;
+//    private double submitButtonWDistFromLRCorner = 30;
 
     //dish properties fields
     @FXML
@@ -42,16 +57,16 @@ public class EditDishController {
 //        editDishPane.heightProperty().addListener((observable, oldValue, newValue) -> positionButtons());
     }
 
-    private void positionButtons() {
-        double paneWidth = editDishPane.getWidth();
-        double paneHeight = editDishPane.getHeight();
-
-        //submitButton
-        double submitButtonWidth = submitButton.getWidth();
-        double submitButtonHeight = submitButton.getHeight();
-        submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
-        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
-    }
+//    private void positionButtons() {
+//        double paneWidth = editDishPane.getWidth();
+//        double paneHeight = editDishPane.getHeight();
+//
+//        //submitButton
+//        double submitButtonWidth = submitButton.getWidth();
+//        double submitButtonHeight = submitButton.getHeight();
+//        submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
+//        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
+//    }
 
     public void setDish(DishClient dish) {
         this.dish = dish;
@@ -68,6 +83,8 @@ public class EditDishController {
         priceTextField.setText(String.valueOf(dish.getPrice()));
         descriptionTextField.setText(dish.getDescription());
         imageUrlTextField.setText(dish.getImageUrl());
+        initializeAvailableBranches(dish.getAvailableBranches());
+        initializeIngredients(dish.getIngredients());
     }
     public DishClient getDish() {
         return dish;
@@ -102,5 +119,37 @@ public class EditDishController {
 
     }
 
+    private void initializeAvailableBranches(List<String> branches) {
+        availableBranches.getChildren().clear();
+        for (String branch : branches) {
+            Label label = new Label(branch);
+            availableBranches.getChildren().add(label);
+        }
+    }
+
+    private void initializeIngredients(List<String> ingredientsList) {
+        ingredients.getChildren().clear();
+        for (String ingredient : ingredientsList) {
+            Label label = new Label(ingredient);
+            ingredients.getChildren().add(label);
+        }
+    }
+
+    public void updateIngredients(List<String> ingredientsList) {
+        dish = new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), ingredientsList);
+        initializeIngredients(ingredientsList);
+    }
+
+    public void updateBranches(List<String> branchesList) {
+        dish = new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), branchesList, dish.getIngredients());
+        initializeAvailableBranches(branchesList);
+    }
+
+    public Button getChangeBranchesButton() {
+        return changeBranchesButton;
+    }
+    public Button getChangeIngredientsButton() {
+        return changeIngredientsButton;
+    }
 
 }

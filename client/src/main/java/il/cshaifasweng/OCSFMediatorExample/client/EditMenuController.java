@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,8 +13,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import javafx.collections.ListChangeListener;      // For adding ListChangeListener to ObservableList
+import javafx.collections.ObservableList;          // For the ObservableList type
 
 public class EditMenuController {
+
+    @FXML
+    public ScrollPane ChangeBranchesScrollPaneContainer;
+    @FXML
+    public ScrollPane ChangeIngredientsScrollPaneContainer;
+    @FXML
+    public VBox ChangeBranchesContainer;
+    @FXML
+    public VBox ChangeIngredientsContainer;
 
     private MenuClient menu;
 
@@ -23,7 +35,7 @@ public class EditMenuController {
     public VBox menuContainer;
 
     @FXML
-    public HBox editDishContainer;
+    public VBox editDishContainer;
 
     @FXML
     public TextField menuName;
@@ -31,6 +43,9 @@ public class EditMenuController {
     private MenuController menuController;
 
     private EditDishController editDishController;
+
+    private ChangeBranchesController changeBranchesController;
+    private ChangeIngredientsController changeIngredientsController;
 
     @FXML
     public void initialize() {
@@ -58,11 +73,82 @@ public class EditMenuController {
             editDishContainer.setManaged(false);
             editDishContainer.getChildren().clear();
             editDishContainer.getChildren().add(node);
+            editDishContainer.requestLayout();
             editDishController.isSubmitted.addListener((observable, oldValue, newValue) -> handleEditDishIsSubmittedChange(oldValue, newValue));
+            editDishController.getChangeBranchesButton().setOnAction(event -> changeBranches());
+            editDishController.getChangeIngredientsButton().setOnAction(event -> changeIngredients());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //dynamically create ChangeBranches section
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChangeBranches.fxml"));
+            Node node = loader.load();
+            changeBranchesController = loader.getController();
+            ChangeBranchesScrollPaneContainer.setVisible(false);
+            ChangeBranchesScrollPaneContainer.setManaged(false);
+            ChangeBranchesContainer.getChildren().clear();
+            ChangeBranchesContainer.getChildren().add(node);
+            changeBranchesController.getSubmittedBranches().addListener((ListChangeListener<String>) change -> {handelSubmittedBranches();});
+            changeBranchesController.getCancelButton().setOnAction(event -> hideChangeBranches());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Dynamically create ChangeIngredients section
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChangeIngredients.fxml"));
+            Node node = loader.load();
+            changeIngredientsController = loader.getController();
+            ChangeIngredientsScrollPaneContainer.setVisible(false);
+            ChangeIngredientsScrollPaneContainer.setManaged(false);
+            ChangeIngredientsContainer.getChildren().clear();
+            ChangeIngredientsContainer.getChildren().add(node);
+            changeIngredientsController.getSubmittedIngredients().addListener((ListChangeListener<String>) change -> {handleSubmittedIngredients();});
+            changeIngredientsController.getCancelButton().setOnAction(event -> hideChangeIngredients());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void hideChangeBranches(){
+        ChangeBranchesScrollPaneContainer.setVisible(false);
+        ChangeBranchesScrollPaneContainer.setManaged(false);
+    }
+
+    private void changeBranches() {
+        changeBranchesController.checkBranches(editDishController.getDish().getAvailableBranches());
+        ChangeBranchesScrollPaneContainer.setVisible(true);
+        ChangeBranchesScrollPaneContainer.setManaged(true);
+    }
+
+    private void handelSubmittedBranches(){
+        List<String> submittedBranches = changeBranchesController.getSubmittedBranches();
+        editDishController.updateBranches(submittedBranches);
+        ChangeBranchesScrollPaneContainer.setVisible(false);
+        ChangeBranchesScrollPaneContainer.setManaged(false);
+    }
+
+    private void hideChangeIngredients() {
+        ChangeIngredientsScrollPaneContainer.setVisible(false);
+        ChangeIngredientsScrollPaneContainer.setManaged(false);
+    }
+
+    private void changeIngredients() {
+        changeIngredientsController.checkIngredients(editDishController.getDish().getIngredients());
+        ChangeIngredientsScrollPaneContainer.setVisible(true);
+        ChangeIngredientsScrollPaneContainer.setManaged(true);
+    }
+
+    private void handleSubmittedIngredients() {
+        List<String> submittedIngredients = changeIngredientsController.getSubmittedIngredients();
+        editDishController.updateIngredients(submittedIngredients);
+        ChangeIngredientsScrollPaneContainer.setVisible(false);
+        ChangeIngredientsScrollPaneContainer.setManaged(false);
+    }
+
+
 
     public void deleteDishPressed(DishClient dish) {
         PopupDialogService popupDialogService = new PopupDialogService();

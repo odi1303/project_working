@@ -86,11 +86,13 @@ public class MenuController {
     }
 
     private void updateFilter() {
-        List<String> branches = fullMenu.getAllBranches();
-        List<String> ingredients = fullMenu.getAllIngredients();
-        putBranchCheckBoxesInFilter(branches);
-        putIngredientsCheckBoxesInFilter(ingredients);
-        clearFilter();
+        if(fullMenu != null) {
+            List<String> branches = fullMenu.getAllBranches();
+            List<String> ingredients = fullMenu.getAllIngredients();
+            putBranchCheckBoxesInFilter(branches);
+            putIngredientsCheckBoxesInFilter(ingredients);
+            clearFilter();
+        }
     }
 
     private void addOrderSupportToMenu() {
