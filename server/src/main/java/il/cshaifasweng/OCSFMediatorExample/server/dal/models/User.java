@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 import jakarta.persistence.*;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import lombok.Getter;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;
@@ -19,9 +20,6 @@ public class User {
     @Column(name="name", nullable=false)
     public String name;
 
-    @Column(name="password", nullable=false)
-    public String password;
-
     @Enumerated(EnumType.STRING)
     @Column(name="type", nullable=false)
     public UserType type;
@@ -29,6 +27,7 @@ public class User {
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
     public List<TableOrder> tableOrders = new ArrayList<>();
 
+    @Getter
     @Enumerated(EnumType.STRING)
 
     @Column(name="MailAddress", nullable=true)
@@ -40,7 +39,6 @@ public class User {
     public User() {}
     public User(String name, String password, UserType type) {
         this.name = name;
-        this.password = password;
         this.type = type;
     }
     public List<TableOrder> getTableOrders() {
@@ -58,4 +56,5 @@ public class User {
     public boolean isDietitian() {
         return type == UserType.Dietitian;
     }
+
 }

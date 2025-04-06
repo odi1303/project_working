@@ -3,11 +3,13 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.Getter;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,6 +26,8 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 import jakarta.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.stream.Collectors;
+
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -34,17 +38,22 @@ public class SimpleServer extends AbstractServer{
 	Database db;*/
 
 	ManualDatabase db_;
-	/**
+    // Add this method to ManualDatabase.java
+    /**
 	 * Constructs a new server.
 	 *
 	 * @param port the port number on which to listen.
 	 */
+
+	@Getter
+    private Session session;
+
 	public SimpleServer() {
 		super(3000);
 		db_ = new ManualDatabase();
 	}
 
-	@Override
+    @Override
 	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer" + " " + msgString);
@@ -88,7 +97,26 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		}
+		else if (msgString.startsWith("#getAllComplaints")) {
+			try {
+				List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+				List<complaint_to_answer> clientComplaints = complaints.stream()
+						.map(c -> new complaint_to_answer(
+								c.getComplainer().getMailAddress(),
+								"Complaint #" + c.getId(),
+								c.getDescription(),
+								String.valueOf(c.getBranch_id()),
+								c.getRegisteredAt()  // Added date parameter
+						))
+						.collect(Collectors.toList());
+				client.sendToClient(clientComplaints);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+
+
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {

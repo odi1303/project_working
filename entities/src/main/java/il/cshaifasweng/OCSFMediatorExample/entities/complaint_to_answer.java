@@ -1,84 +1,41 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
+public class complaint_to_answer {
+    private String email;
+    private String headline;
+    private String description;
+    private String branch;
+    private Date registeredAt;  // Added date field
 
-@Entity
-@Table(name = "Complaints_to_answer")
-public class complaint_to_answer implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int indentifier;
-    @OneToMany
-    //User user;
-    String email; //the email to respond to
-    String headline; //short description of the complaint
-    String body;// the full complaint
-    String branch;// the specific branch
-    Date date;// the date the complaint has been filed in
-    public complaint_to_answer(String email, String headline, String body, String branch, Date date) {
+    public complaint_to_answer(String email, String headline, String description, String branch) {
         this.email = email;
         this.headline = headline;
-        this.body = body;
+        this.description = description;
         this.branch = branch;
-        this.date = date;
+        this.registeredAt = new Date();  // Default to current date
     }
-    public complaint_to_answer(String email, String headline, String body, String branch) {
+
+    // Constructor used by server when converting from Complain
+    public complaint_to_answer(String email, String headline, String description, String branch, Date registeredAt) {
         this.email = email;
         this.headline = headline;
-        this.body = body;
+        this.description = description;
         this.branch = branch;
-        this.date= new Date();
-    }
-    public complaint_to_answer(User user,String email, String headline, String body, String branch, Date date) {
-        //this.user = user;
-        this.email=email;
-        this.headline = headline;
-        this.body = body;
-        this.branch = branch;
-        this.date = date;
-    }
-    public String getEmail() {
-        return email;
+        this.registeredAt = registeredAt;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getEmail() { return email; }
+    public String getHeadline() { return headline; }
+    public String getDescription() { return description; }
+    public String getBranch() { return branch; }
+    public String getDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(registeredAt);
     }
 
-    public String getHeadline() {
-        return headline;
-    }
-
-    public void setHeadline(String headline) {
-        this.headline = headline;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    // Additional getters if needed
+    public Date getRegisteredAt() { return registeredAt; }
 }
