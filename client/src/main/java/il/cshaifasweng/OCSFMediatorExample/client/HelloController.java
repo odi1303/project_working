@@ -13,35 +13,24 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 
 public class HelloController {
-    @FXML
-    private Button connectButton;
-
-    @FXML
-    private Hyperlink create_accont_button;
-
-    @FXML
-    private PasswordField password_field;
-
-    @FXML
-    private TextField username_field;
-
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    private Label wrongDetails;
+    @FXML private Button connectButton;
+    @FXML private Hyperlink create_accont_button;
+    @FXML private PasswordField password_field;
+    @FXML private TextField username_field;
+    @FXML private Label welcomeText;
+    @FXML private Label wrongDetails;
 
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     @FXML
     void onConnectButtonClick(ActionEvent event) throws IOException {
@@ -53,7 +42,6 @@ public class HelloController {
         String userName = username_field.getText();
         String password = password_field.getText();
 
-        // Send authentication request to server
         GetUserType authRequest = new GetUserType(userName, password);
         try {
             App.sendMessageToServer(authRequest);
@@ -71,7 +59,6 @@ public class HelloController {
                 return;
             }
 
-            // Fetch full user details (you'll need to implement this in SimpleServer)
             try {
                 App.sendMessageToServer("#getUserDetails:" + username_field.getText());
             } catch (IOException e) {
@@ -88,24 +75,11 @@ public class HelloController {
                 return;
             }
 
-            // Store the current user
             AppState.setCurrentUser(user);
 
-            // Navigate based on user type
+            // Always redirect to home-page after login
             try {
-                switch (user.getType()) {
-                    case Employee:
-                        App.setRoot("employee_personal_page");
-                        break;
-                    case Admin:
-                        App.setRoot("editMenuScreen");
-                        break;
-                    case BranchManager:
-                        App.setRoot("reports_view");
-                        break;
-                    default:
-                        wrongDetails.setText("Unknown user type");
-                }
+                App.setRoot("home-page");
             } catch (IOException e) {
                 e.printStackTrace();
             }
