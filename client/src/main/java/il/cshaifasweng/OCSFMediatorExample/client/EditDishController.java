@@ -49,8 +49,8 @@ public class EditDishController {
         //submitButton
         double submitButtonWidth = submitButton.getWidth();
         double submitButtonHeight = submitButton.getHeight();
-        submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
-        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
+        /*submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
+        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);*/
     }
 
     public void setDish(DishClient dish) {

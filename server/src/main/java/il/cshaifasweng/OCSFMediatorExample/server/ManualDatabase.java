@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
@@ -10,28 +9,16 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequ
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.InsertRequest;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.hibernate.Session;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
-import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
-import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 
-
-import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -54,7 +41,6 @@ public class ManualDatabase {
         config.addAnnotatedClass(RestaurantTable.class);
         config.addAnnotatedClass(TableOrder.class);
         config.addAnnotatedClass(OpeningHours.class);
-
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         return config.buildSessionFactory(serviceRegistry);
     }
@@ -63,24 +49,12 @@ public class ManualDatabase {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
-            /*session.beginTransaction();
-
-
-            generateSampleMeals();
-            printAllDishes();
-
-
-            session.getTransaction().commit(); // Save everything*/
         } catch (Exception exception) {
             if (session != null) {
                 session.getTransaction().rollback();
             }
             System.err.println("An error occurred, changes have been rolled back.");
             exception.printStackTrace();
-        } finally {
-            /*if (session != null) {
-                session.close();
-            }*/
         }
     }
 
@@ -374,4 +348,131 @@ class DeliveriesBL {
         }
     }
 */
+    /*
+    public Long createDelivery(Long userId, Long restaurantId, List<Long> menuItemIds, List<Long> amounts,boolean indoor) {
+        // בדיקת תקינות האורך של הרשימות
+        if (menuItemIds.size() != amounts.size()) {
+            return 0L;
+        }
+
+        // שליפת המשתמש
+        Optional<User> userOpt = usersRepository.findById(userId);
+        if (userOpt.isEmpty()) return 0L;
+        User user = userOpt.get();
+
+        // שליפת המסעדה
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
+        if (restaurantOpt.isEmpty()) return 0L;
+        Restaurant restaurant = restaurantOpt.get();
+
+        // בניית רשימת פריטי משלוח
+        List<DeliveryItem> deliveryItems = new ArrayList<>();
+
+
+        for (int i = 0; i < menuItemIds.size(); i++) {
+            Long menuItemId = menuItemIds.get(i);
+            Long amount = amounts.get(i);
+
+            Optional<MenuItem> menuItemOpt = menuRepository.findById(menuItemId);
+            if (menuItemOpt.isEmpty()) return 0L;
+
+            MenuItem menuItem = menuItemOpt.get();
+            DeliveryItem deliveryItem = new DeliveryItem(menuItem, amount);
+
+            deliveryItems.add(deliveryItem);
+        }
+
+        // תאריך נוכחי
+        Date now = new Date();
+
+        // יצירת המשלוח ושמירה
+        Delivery delivery = new Delivery(now, user, deliveryItems, restaurant);
+        deliveriesRepository.save(delivery);
+
+        long cost = delivery.DeliveryPrice();
+        restaurant.add_money(cost);
+
+        return cost;
+    }
+
+// מחזיר כמה כסף מביאים ללקוח
+    public Long cancelDelivery(Long userId, Long deliveryId) {
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return 0L;
+
+        User user = Maybeuser.get();
+
+        Delivery delivery = user.getDeliveries().stream().filter(d -> Objects.equals(d.getId(), deliveryId)).findFirst().orElseThrow();
+
+        Date delivery_date = delivery.getArravilDate();
+        Date now = new Date();
+        Date delivery_dateBeforeHour = Date.from(delivery_date.toInstant().minus(1, ChronoUnit.HOURS));
+
+        if (now.after(delivery_dateBeforeHour))
+        {
+            // Can't cancel
+            return 0L;
+        }
+        long cost = delivery.DeliveryPrice();
+        Date delivery_dateBefore3Hour = Date.from(delivery_date.toInstant().minus(3, ChronoUnit.HOURS));
+        if (delivery_dateBefore3Hour.after(delivery.getArravilDate())) {
+            return delivery.restaurant.return_money(cost);
+            // return need to get money
+        }
+        long return_money = delivery.restaurant.return_money(cost/2);
+        deliveriesRepository.delete(delivery);
+        return return_money;
+    }*/
+}
+
+class RestaurantsBL {
+    public static void pp(){}
+
+    public Stream<RestaurantTable> getAvailableTables(Session session, Long restaurantId, boolean inside, Date startDate, Date endDate) {
+        return session.byId(Restaurant.class).load(restaurantId)
+                .getTables()
+                .stream()
+                .filter(t -> t.isInside() == inside)
+                .filter(t -> t.getTableOrders().stream().allMatch(to -> endDate.before(to.getStartDate()) || startDate.after(to.getEndDate())));
+    }
+
+    Optional<int[]> optimal_allocation(int[] tables, int ppl) {
+        int total_tables = tables.length;
+        int upper = ppl + 4;
+        long[][] dp = new long[total_tables + 1][upper + 1];
+        int[][] opt = new int[total_tables + 1][upper + 1];
+        int[] count = new int[3];
+        for (int t : tables) ++count[t - 2];
+
+        Arrays.stream(opt).forEach(t -> Arrays.fill(t, -1));
+        Arrays.fill(dp[0], Integer.MAX_VALUE);
+        for (int c = 1; c <= total_tables; ++c) {
+            int table = tables[c - 1];
+            for (int r = 1; r <= ppl + 4; ++r) {
+                if (table == r) {
+                    dp[c][r] = 1;
+                    opt[c][r] = table;
+                } else if (table > r) dp[c][r] = dp[c - 1][r];
+                else if (dp[c - 1][r] < dp[c - 1][r - table] + 1) dp[c][r] = dp[c - 1][r];
+                else {
+                    dp[c][r] = dp[c - 1][r - table] + 1;
+                    opt[c][r] = table;
+                }
+            }
+        }
+
+        while (dp[total_tables][ppl] == Integer.MAX_VALUE && ppl < upper) ++ppl;
+        if (ppl == upper) return Optional.empty();
+        int[] optimal = new int[3];
+        int j = ppl;
+        for (int i = total_tables; i > 0; --i)
+            if (opt[i][j] != -1) {
+                ++optimal[opt[i][j] - 2];
+                j -= opt[i][j];
+            }
+        return Optional.of(optimal);
+    }
+
+
 }
