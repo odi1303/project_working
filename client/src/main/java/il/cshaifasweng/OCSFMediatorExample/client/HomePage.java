@@ -43,6 +43,9 @@ public class HomePage {
     private Button watchBranchesCapacity;
 
     @FXML
+    private Button viewReports;
+
+    @FXML
     private Label StatusLabel;
 
     @FXML
@@ -109,5 +112,10 @@ public class HomePage {
     @FXML
     void watchBranchesCapacity(ActionEvent event) throws IOException {
         App.setRoot("WatchBranchesCapacityScreen");
+    }
+
+    @FXML
+    void watchReports(ActionEvent event) throws IOException {
+        App.setRoot("reports-view");
     }
 }
