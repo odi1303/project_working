@@ -27,6 +27,6 @@
             <Image url="@home.png" />
          </image>
       </ImageView>
-      <TextField fx:id="compensation_sum" layoutX="35.0" layoutY="330.0" onAction="#edit_compensation" prefHeight="26.0" prefWidth="245.0" promptText="Enter compensation sum if needed" />
+      <TextField fx:id="compensation_sum" layoutX="35.0" layoutY="330.0" prefHeight="26.0" prefWidth="245.0" promptText="Enter compensation sum if needed" />
    </children>
 </AnchorPane>

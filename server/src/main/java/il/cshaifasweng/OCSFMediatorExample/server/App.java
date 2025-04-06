@@ -1,6 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.server.bl.BasicUserBL;
+//import il.cshaifasweng.OCSFMediatorExample.server.bl.BasicUserBL;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;

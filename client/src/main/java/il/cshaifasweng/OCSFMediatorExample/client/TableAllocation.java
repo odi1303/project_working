@@ -9,7 +9,6 @@ import org.apache.commons.collections4.queue.CircularFifoQueue;
 public class TableAllocation {
     CircularFifoQueue<ArrayList<Timeframe>> timeframes = new CircularFifoQueue<>(32); // allow orders up to 32 days in advance
     TableAllocation() {
-
     }
     public int[] getPossibleTimes(int time, int ppl, int inside) {
         return null;

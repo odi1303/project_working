@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" prefHeight="800.0" prefWidth="200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ChangeBranchesController">
+    <VBox spacing="10">
+        <TitledPane expanded="false" text="Branches">
+            <VBox fx:id="branchesContainer" />
+        </TitledPane>
+
+        <HBox  alignment="CENTER" spacing="10">
+            <Button onAction="#submitBranchesChange" text="Submit" />
+            <Button fx:id="cancelButton" text="Cancel" />
+        </HBox>
+    </VBox>
+
+</ScrollPane>

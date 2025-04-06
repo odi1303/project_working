@@ -1,8 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.GetUserType;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
-import il.cshaifasweng.OCSFMediatorExample.entities.VerifyPassword;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,30 +10,40 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class HelloController {
-    @FXML // fx:id="connectButton"
-    private Button connectButton; // Value injected by FXMLLoader
-
-    @FXML // fx:id="create_accont_button"
-    private Hyperlink create_accont_button; // Value injected by FXMLLoader
-
-    @FXML // fx:id="password"
-    private PasswordField password_field; // Value injected by FXMLLoader
-
-    @FXML // fx:id="username"
-    private TextField username_field; // Value injected by FXMLLoader
-
-    @FXML // fx:id="welcomeText"
-    private Label welcomeText; // Value injected by FXMLLoader
-
-    @FXML // fx:id="wrongDetails"
-    private Label wrongDetails; // Value injected by FXMLLoader
-
-
+    @FXML
+    private Button connectButton;
 
     @FXML
+    private Hyperlink create_accont_button;
+
+    @FXML
+    private PasswordField password_field;
+
+    @FXML
+    private TextField username_field;
+
+    @FXML
+    private Label welcomeText;
+
+    @FXML
+    private Label wrongDetails;
+
+    public void initialize() {
+        try {
+//            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
+
+    @FXML
+//<<<<<<< HEAD
         //check if the details are correct, if they not show an error
     void onConnectButtonClick(ActionEvent event) throws IllegalArgumentException {
         if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
@@ -45,36 +53,44 @@ public class HelloController {
         String userName = username_field.getText();
         String password = password_field.getText();
 
-        boolean sent = false;
-        while (!sent) {
-            try {
-                SimpleClient.getClient().sendToServer(new GetUserType(userName, password));
-                sent = true;
-                System.out.println("sent to server");
-            } catch (Exception ignored) {
-            }
-        }
+        UsersRepository usersRepository = new UsersRepository();
+        int user_type = usersRepository.searchUser(userName, password);
     }
-
     @Subscribe
     public void onUserType(UserType userType) {
         System.out.println("unregistered controller");
         EventBus.getDefault().unregister(this);
+        /*// Use Platform.runLater to handle UI updates and navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });*/
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
-        EventBus.getDefault().unregister(this);
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void create_an_account(ActionEvent actionEvent) throws IOException {
-        App.setRoot("SignUp");
-        EventBus.getDefault().unregister(this);
-    }
-
-    @FXML
-    public void initialize() {
-        EventBus.getDefault().register(this);
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("SignUp");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

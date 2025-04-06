@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -46,16 +47,16 @@ public class ManualDatabase {
     }
 
     public ManualDatabase() {
-        try {
-            SessionFactory sessionFactory = getSessionFactory();
-            session = sessionFactory.openSession();
-        } catch (Exception exception) {
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-            System.err.println("An error occurred, changes have been rolled back.");
-            exception.printStackTrace();
-        }
+//        try {
+//            SessionFactory sessionFactory = getSessionFactory();
+//            session = sessionFactory.openSession();
+//        } catch (Exception exception) {
+//            if (session != null) {
+//                session.getTransaction().rollback();
+//            }
+//            System.err.println("An error occurred, changes have been rolled back.");
+//            exception.printStackTrace();
+//        }
     }
 
     public void saveOrUpdate(Object o) {

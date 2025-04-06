@@ -33,6 +33,7 @@
             <Button text="Clear Filter" onAction="#clearFilter"/>
         </HBox>
     </HBox>
+    <Button text="watch branches opening times" onAction="#displayBranchesAndTheirOpeningTime"/>
 
     <!-- 🔹 Menu Section -->
     <VBox fx:id="menuSection" spacing="10" minHeight="250" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
@@ -48,6 +49,6 @@
         <ScrollPane fx:id="orderScrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
             <HBox fx:id="orderDishList" spacing="8" />
         </ScrollPane>
-        <Button text="Finish Order" />
+        <Button text="Finish Order" onAction="#finishOrder"/>
     </VBox>
 </VBox>
