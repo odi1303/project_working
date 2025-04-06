@@ -1,12 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import il.cshaifasweng.OCSFMediatorExample.entities.GetUserType;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
@@ -44,62 +46,74 @@ public class HelloController {
     @FXML
     void onConnectButtonClick(ActionEvent event) throws IOException {
         if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
-            throw new IllegalArgumentException("Please enter your username and password");
+            wrongDetails.setText("Please enter your username and password");
+            return;
         }
 
         String userName = username_field.getText();
         String password = password_field.getText();
 
-        UsersRepository usersRepository = new UsersRepository();
-        int user_type = usersRepository.searchUser(userName, password);
+        // Send authentication request to server
+        GetUserType authRequest = new GetUserType(userName, password);
+        try {
+            App.sendMessageToServer(authRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+            wrongDetails.setText("Connection error");
+        }
+    }
 
-        // Use Platform.runLater to handle UI updates and navigation
+    @Subscribe
+    public void onUserTypeReceived(UserType userType) {
         Platform.runLater(() -> {
-            switch (user_type) {
-                case 1:
-                    try {
-                        App.setRoot("client_personal_page");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 2:
-                    try {
+            if (userType == UserType.Empty) {
+                wrongDetails.setText("Incorrect username or password");
+                return;
+            }
+
+            // Fetch full user details (you'll need to implement this in SimpleServer)
+            try {
+                App.sendMessageToServer("#getUserDetails:" + username_field.getText());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Subscribe
+    public void onUserReceived(User user) {
+        Platform.runLater(() -> {
+            if (user == null) {
+                wrongDetails.setText("Error fetching user details");
+                return;
+            }
+
+            // Store the current user
+            AppState.setCurrentUser(user);
+
+            // Navigate based on user type
+            try {
+                switch (user.getType()) {
+                    case Employee:
                         App.setRoot("employee_personal_page");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 3:
-                    try {
+                        break;
+                    case Admin:
                         App.setRoot("editMenuScreen");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 4:
-                    try {
+                        break;
+                    case BranchManager:
                         App.setRoot("reports_view");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 5:
-                    try {
-                        App.setRoot("manager_personal_page");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    wrongDetails.setText("Incorrect username or password");
+                        break;
+                    default:
+                        wrongDetails.setText("Unknown user type");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");
@@ -110,7 +124,6 @@ public class HelloController {
     }
 
     public void create_an_account(ActionEvent actionEvent) throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("SignUp");

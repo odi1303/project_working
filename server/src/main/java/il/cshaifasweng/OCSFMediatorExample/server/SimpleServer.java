@@ -97,19 +97,23 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		}
-		else if (msgString.startsWith("#getAllComplaints")) {
+		else if (msgString.equals("#getAllComplaints"))
+		{
 			try {
-				List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
-				List<complaint_to_answer> clientComplaints = complaints.stream()
-						.map(c -> new complaint_to_answer(
-								c.getComplainer().getMailAddress(),
-								"Complaint #" + c.getId(),
-								c.getDescription(),
-								String.valueOf(c.getBranch_id()),
-								c.getRegisteredAt()  // Added date parameter
-						))
-						.collect(Collectors.toList());
-				client.sendToClient(clientComplaints);
+			List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+			client.sendToClient(complaints);
+			} catch (IOException e)
+			{ e.printStackTrace();
+			}
+		}
+
+		else if (msgString.startsWith("#getUserDetails:")) {
+			String username = msgString.split(":")[1];
+			try {
+				User user = db_.getSession().createQuery("FROM User WHERE name = :username", User.class)
+						.setParameter("username", username)
+						.getSingleResultOrNull();
+				client.sendToClient(user);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
