@@ -18,6 +18,9 @@ public class TableOrder {
     @Column(name="end_date")
     public Date endDate;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    public Restaurant restaurant;
+
     @Column(name="active")
     public Date active;
 
@@ -29,11 +32,13 @@ public class TableOrder {
 
     public TableOrder() {}
 
-    public TableOrder(Date startDate, Date endDate, User allocator, List<RestaurantTable> restaurantTables) {
+    public TableOrder(Date startDate, Date endDate, User allocator, Restaurant restaurant, List<RestaurantTable> restaurantTables) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.allocator = allocator;
+        this.restaurant = restaurant;
         this.restaurantTables = restaurantTables;
+
     }
 
      public Date getStartDate() {

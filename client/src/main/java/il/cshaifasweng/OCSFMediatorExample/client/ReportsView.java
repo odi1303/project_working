@@ -67,7 +67,7 @@ public class ReportsView {
                 List<Complain> branchComplaints = complaints.stream()
                         .filter(c -> c.getBranch_id() != null && c.getBranch_id().equals((long)branchManager.getBranchID()))
                         .toList();
-
+                
                 XYChart.Series<String, Number> series = createComplaintHistogram(branchComplaints);
                 chart.getData().clear();
                 chart.getData().add(series);
@@ -77,33 +77,9 @@ public class ReportsView {
     }
 
     private XYChart.Series<String, Number> createComplaintHistogram(List<Complain> complaints) {
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Complaints");
+        return null;
+    }
 
-        LocalDate now = LocalDate.now();
-        int daysInMonth = now.lengthOfMonth();
-        int[] complaintCounts = new int[daysInMonth];
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
-        for (Complain complaint : complaints) {
-            if (complaint.getRegisteredAt() != null) {
-                LocalDate complaintDate = complaint.getRegisteredAt().toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDate();
-
-                if (complaintDate.getMonth() == now.getMonth() &&
-                        complaintDate.getYear() == now.getYear()) {
-                    int day = complaintDate.getDayOfMonth() - 1;
-                    complaintCounts[day]++;
-                }
-            }
-        }
-
-        for (int i = 0; i < daysInMonth; i++) {
-            String day = String.valueOf(i + 1);
-            series.getData().add(new XYChart.Data<>(day, complaintCounts[i]));
-        }
-
-        return series;
+    public void chosing_report(ActionEvent actionEvent) {
     }
 }

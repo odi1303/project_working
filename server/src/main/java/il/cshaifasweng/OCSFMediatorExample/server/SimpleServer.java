@@ -119,8 +119,7 @@ public class SimpleServer extends AbstractServer{
 			}
 		}
 	}
-
-
+	
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {
