@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.CompactMenu;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +27,7 @@ public class MenuReview {
         EventBus.getDefault().unregister(this);
     }
 
-    CompactMenu compactMenu= (CompactMenu) App.menu;
+    CompactMenu compactMenu = (CompactMenu) App.menu;
 
     @FXML
     private ComboBox<String> MenuList;
@@ -43,9 +44,13 @@ public class MenuReview {
                 SimpleClient.getClient().sendToServer("GetDishInfo:" + choice);
                 sent = true;
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        statusLabel.setText("loading " + choice);
+        // Use Platform.runLater to update the statusLabel
+        Platform.runLater(() -> {
+            statusLabel.setText("loading " + choice);
+        });
         EventBus.getDefault().unregister(this);
     }
 
@@ -55,13 +60,22 @@ public class MenuReview {
             compactMenu = (CompactMenu) event;
             var list = FXCollections.observableList(compactMenu.dishes);
             System.out.println("the length of list is :" + list.size());
-            MenuList.setItems(list);
+            // Use Platform.runLater to update the MenuList items
+            Platform.runLater(() -> {
+                MenuList.setItems(list);
+            });
         }
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
-
 }

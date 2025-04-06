@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -14,7 +15,6 @@ public class OrderDeliveryScreenController {
 
     @FXML
     private ComboBox<String> cityComboBox;
-
 
     @FXML
     public void initialize() {
@@ -31,17 +31,24 @@ public class OrderDeliveryScreenController {
 
     @FXML
     private void selectCity(ActionEvent event) {
-        //add here
         String selectedCity = cityComboBox.getValue();
         if (selectedCity != null && !selectedCity.isEmpty()) {
-            branchComboBox.setVisible(true);
+            // Use Platform.runLater to update the visibility of branchComboBox
+            Platform.runLater(() -> {
+                branchComboBox.setVisible(true);
+            });
         }
     }
 
-
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
-
 }

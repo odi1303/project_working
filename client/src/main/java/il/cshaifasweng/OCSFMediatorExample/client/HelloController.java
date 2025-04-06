@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,24 +11,23 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 public class HelloController {
-    @FXML // fx:id="connectButton"
-    private Button connectButton; // Value injected by FXMLLoader
+    @FXML
+    private Button connectButton;
 
-    @FXML // fx:id="create_accont_button"
-    private Hyperlink create_accont_button; // Value injected by FXMLLoader
+    @FXML
+    private Hyperlink create_accont_button;
 
-    @FXML // fx:id="password"
-    private PasswordField password_field; // Value injected by FXMLLoader
+    @FXML
+    private PasswordField password_field;
 
-    @FXML // fx:id="username"
-    private TextField username_field; // Value injected by FXMLLoader
+    @FXML
+    private TextField username_field;
 
-    @FXML // fx:id="welcomeText"
-    private Label welcomeText; // Value injected by FXMLLoader
+    @FXML
+    private Label welcomeText;
 
-    @FXML // fx:id="wrongDetails"
-    private Label wrongDetails; // Value injected by FXMLLoader
-
+    @FXML
+    private Label wrongDetails;
 
     public void initialize() {
         try {
@@ -41,9 +41,7 @@ public class HelloController {
         EventBus.getDefault().unregister(this);
     }
 
-
     @FXML
-        //check if the details are correct, if they not show an error
     void onConnectButtonClick(ActionEvent event) throws IOException {
         if (username_field.getText().isEmpty() || password_field.getText().isEmpty()) {
             throw new IllegalArgumentException("Please enter your username and password");
@@ -52,36 +50,73 @@ public class HelloController {
         String userName = username_field.getText();
         String password = password_field.getText();
 
-        UsersRepository usersRepository=new UsersRepository();
+        UsersRepository usersRepository = new UsersRepository();
         int user_type = usersRepository.searchUser(userName, password);
 
-        switch (user_type) {
-            case 1:
-                App.setRoot("client_personal_page");
-                break;
-            case 2:
-                App.setRoot("employee_personal_page");
-                break;
-            case 3:
-                App.setRoot("editMenuScreen");
-                break;
-            case 4:
-                App.setRoot("reports_view");
-                break;
-            case 5:
-                App.setRoot("manager_personal_page");
-                break;
-            default:
-                wrongDetails.setText("Incorrect username or password");
-        }
+        // Use Platform.runLater to handle UI updates and navigation
+        Platform.runLater(() -> {
+            switch (user_type) {
+                case 1:
+                    try {
+                        App.setRoot("client_personal_page");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        App.setRoot("employee_personal_page");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    try {
+                        App.setRoot("editMenuScreen");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 4:
+                    try {
+                        App.setRoot("reports_view");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 5:
+                    try {
+                        App.setRoot("manager_personal_page");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    wrongDetails.setText("Incorrect username or password");
+            }
+        });
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void create_an_account(ActionEvent actionEvent) throws IOException {
-        App.setRoot("SignUp");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("SignUp");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
