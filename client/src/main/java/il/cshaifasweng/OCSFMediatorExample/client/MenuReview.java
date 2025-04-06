@@ -17,15 +17,15 @@ public class MenuReview {
     public void initialize() {
         try {
             System.out.println("Initializing Secondary Controller");
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     CompactMenu compactMenu = (CompactMenu) App.menu;
 
@@ -51,7 +51,7 @@ public class MenuReview {
         Platform.runLater(() -> {
             statusLabel.setText("loading " + choice);
         });
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe

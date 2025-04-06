@@ -22,15 +22,15 @@ public class DishSectionInMenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void setDish(DishClient dish) {
         this.dish = dish;

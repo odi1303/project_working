@@ -90,7 +90,7 @@ public class TableOrderScreenController {
     @FXML
     private void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
 
             // Disable past dates in the DatePicker
             reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
@@ -108,9 +108,9 @@ public class TableOrderScreenController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     @FXML
     private void initializeComboBoxForBranch_Selection() {

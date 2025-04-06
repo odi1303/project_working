@@ -24,7 +24,7 @@ public class CancelDeliveryScreenController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
             // Use Platform.runLater to add orders to orderTable
             Platform.runLater(() -> {
@@ -37,9 +37,9 @@ public class CancelDeliveryScreenController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     @FXML
     private void goToHomePage() throws IOException {

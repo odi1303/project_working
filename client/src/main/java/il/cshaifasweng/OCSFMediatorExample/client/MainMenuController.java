@@ -20,7 +20,7 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             Node node = loader.load();
             menuController = loader.getController();
@@ -33,9 +33,9 @@ public class MainMenuController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void reinitialize(boolean isOrder) {
         menuController.reinitialize(isOrder, true);
