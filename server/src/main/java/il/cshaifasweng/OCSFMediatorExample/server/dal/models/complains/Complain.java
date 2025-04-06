@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public abstract class Complain
 
     @Column(name = "compensation")
     public Long compensation;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    public Restaurant restaurant;
 
     @ManyToOne()
     public User complainer;
@@ -87,6 +91,10 @@ public abstract class Complain
         this.description = description;
         this.registeredAt = registeredAt;
         this.complainer = complainer;
+    }
+
+    public Long getRestaurantId() {
+        return restaurant.id;
     }
 }
 

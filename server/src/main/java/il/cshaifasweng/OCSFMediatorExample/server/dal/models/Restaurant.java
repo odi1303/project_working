@@ -88,5 +88,4 @@ public class Restaurant {
         this.tables = tables;
         this.sales = 0;
     }
-
 }

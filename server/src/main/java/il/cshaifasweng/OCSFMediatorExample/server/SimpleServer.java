@@ -3,6 +3,9 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -37,8 +40,7 @@ public class SimpleServer extends AbstractServer{
 	/**
 	 * Constructs a new server.
 	 *
-	 * @param port the port number on which to listen.
-	 */
+     */
 	public SimpleServer() {
 		super(3000);
 		db_ = new ManualDatabase();
@@ -84,6 +86,32 @@ public class SimpleServer extends AbstractServer{
 				var retval = /*db.getBasicUsers()*/db_.getUserType(getUserType.name, getUserType.password);
 				System.out.println("method returned "+retval);
 				client.sendToClient(retval);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (msgString.equals("#getAllComplaints")) {
+			try {
+				List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+				client.sendToClient(complaints);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (msgString.equals("#getAllDeliveries")) {
+			try {
+				List<Delivery> deliveries = db_.getSession()
+						.createQuery("FROM Delivery", Delivery.class)
+						.getResultList();
+				client.sendToClient(deliveries);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (msgString.equals("#getAllReservations")) {
+			try {
+				List<TableOrder> tableOrders = db_.getSession()
+						.createQuery("FROM TableOrder", TableOrder.class)
+						.getResultList();
+				client.sendToClient(tableOrders);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
