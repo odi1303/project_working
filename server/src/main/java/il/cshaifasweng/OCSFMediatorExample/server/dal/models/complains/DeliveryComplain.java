@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,10 +21,11 @@ public class DeliveryComplain extends Complain
     @Id
     public Long id;
 
-    public DeliveryComplain(String description, Date registeredAt, User complainer, Delivery delivery) {
+    public DeliveryComplain(String branch, String headline, String description, Date registeredAt, User complainer,String email, Delivery delivery) {
         super(description, registeredAt, complainer);
         this.delivery = delivery;
     }
+
 
     public void setId(Long id) {
         this.id = id;

@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,36 +19,26 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
+            //EventBus.getDefault().register(this);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             Node node = loader.load();
             menuController = loader.getController();
-            // Use Platform.runLater to add the node to menuContainer
-            Platform.runLater(() -> {
-                menuContainer.getChildren().add(node);
-            });
+            menuContainer.getChildren().add(node);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
-
-    public void reinitialize(boolean isOrder) {
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+    
+    public void reinitialize(boolean isOrder){
         menuController.reinitialize(isOrder, true);
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        // Use Platform.runLater to handle scene navigation
-        Platform.runLater(() -> {
-            try {
-                App.setRoot("home-page");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        App.setRoot("home-page");
     }
 }

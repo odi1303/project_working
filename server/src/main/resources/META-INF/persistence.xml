@@ -8,7 +8,7 @@
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/FinalProjectDB"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="9182736455"/>
+            <property name="jakarta.persistence.jdbc.password" value="1234"/>
 
             <!-- Hibernate Settings -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>

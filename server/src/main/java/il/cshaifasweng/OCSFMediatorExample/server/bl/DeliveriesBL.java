@@ -1,6 +1,6 @@
 /*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
-
+/*
 import jakarta.enterprise.context.ApplicationScoped;
 
 import jakarta.inject.Inject;
@@ -101,3 +101,4 @@ public class DeliveriesBL {
     }
 }
 */
+

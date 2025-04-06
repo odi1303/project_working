@@ -1,5 +1,4 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;

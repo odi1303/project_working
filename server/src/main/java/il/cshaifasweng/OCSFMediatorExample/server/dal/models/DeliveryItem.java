@@ -2,9 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "delivery_items")
-public class DeliveryItem {
+public class DeliveryItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

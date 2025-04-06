@@ -1,8 +1,11 @@
 /*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.ComplainsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.DeliveriesRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -64,7 +68,7 @@ public class ComplainsBL {
         }
         Delivery delivery= optionalDelivery.get();
 
-        complainsRepository.save(new DeliveryComplain(description, new Date(), user, delivery));
+        complainsRepository.insert(new DeliveryComplain(description, new Date(), user, delivery));
     }
 
     public void createRestaurantComplain(Long userId, Long restaurantId, String description) {
@@ -79,7 +83,7 @@ public class ComplainsBL {
         }
         Restaurant restaurant = optionalRestaurant.get();
 
-        complainsRepository.save(new RestaurantComplain(description, new Date(), user, restaurant));
+        complainsRepository.insert(new RestaurantComplain(description, new Date(), user, restaurant));
     }
 
     public void closeComplain(Long complainId) {
@@ -91,7 +95,7 @@ public class ComplainsBL {
 
         complain.setAnsweredAt(new Date());
 
-        complainsRepository.save(complain);
+        complainsRepository.update(complain);
     }
 
     public void compensateComplain(Long complainId, Long compensation) {
@@ -104,7 +108,7 @@ public class ComplainsBL {
         complain.setAnsweredAt(new Date());
         complain.setCompensation(compensation);
 
-        complainsRepository.save(complain);
+        complainsRepository.update(complain);
     }
 }
 */

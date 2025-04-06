@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ public class App extends Application {
     public static String username;
     public static String password;
     public static UserType userType;
+    public static User currentUser;
 
     public static void saveClientDetails(String username, String password, UserType type) throws IOException {
         assert type != UserType.Empty;

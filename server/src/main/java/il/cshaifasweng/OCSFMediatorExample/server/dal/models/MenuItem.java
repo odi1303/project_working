@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 

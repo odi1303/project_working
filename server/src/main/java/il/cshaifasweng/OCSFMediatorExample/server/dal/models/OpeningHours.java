@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "opening_hours")
 public class OpeningHours {

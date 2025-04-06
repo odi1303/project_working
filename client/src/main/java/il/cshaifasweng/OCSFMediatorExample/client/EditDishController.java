@@ -56,7 +56,7 @@ public class EditDishController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
             // Ensure initial positioning of buttons
             editDishPane.widthProperty().addListener((obs, oldVal, newVal) -> positionButtons());
             editDishPane.heightProperty().addListener((obs, oldVal, newVal) -> positionButtons());
@@ -65,9 +65,9 @@ public class EditDishController {
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     private void positionButtons() {
         double paneWidth = editDishPane.getWidth();

@@ -16,6 +16,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import jakarta.persistence.Query;
 
 
 import org.hibernate.HibernateException;
@@ -42,6 +43,10 @@ public class ManualDatabase {
         config.addAnnotatedClass(RestaurantTable.class);
         config.addAnnotatedClass(TableOrder.class);
         config.addAnnotatedClass(OpeningHours.class);
+        config.addAnnotatedClass(Complaint.class);
+        config.addAnnotatedClass(Complain.class);
+        config.addAnnotatedClass(RestaurantComplain.class);
+        config.addAnnotatedClass(DeliveryComplain.class);
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         return config.buildSessionFactory(serviceRegistry);
     }
@@ -64,7 +69,18 @@ public class ManualDatabase {
         System.out.println(session);
         session.beginTransaction();
         System.out.println("a");
-        session.saveOrUpdate(o);
+        try {
+            session.saveOrUpdate(o);
+        }
+        catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
+            if (existing == null) {
+                session.save(o);
+            } else {
+                session.merge(o);  // or manually update the fields
+            }
+        }
         System.out.println("b");
         session.getTransaction().commit();
         System.out.println("c");
@@ -94,10 +110,12 @@ class UsersBL {
     public static UserType getUserType(Session session, String name, String password) {
         System.out.println("hello from the database");
         session.beginTransaction();
-        var MaybeUser = session.createQuery("FROM User u WHERE u.name = :name AND u.password = :password", User.class)
+        List<User> results = session.createQuery("FROM User u WHERE u.name = :name AND u.password = :password", User.class)
                 .setParameter("name", name)
                 .setParameter("password", password)
-                .getSingleResultOrNull();
+                .getResultList();
+
+        User MaybeUser = results.isEmpty() ? null : results.get(0);
         session.getTransaction().commit();
         System.out.println("hello from the other side");
         if (MaybeUser == null) {
@@ -109,13 +127,15 @@ class UsersBL {
 }
 
 class ComplaintsBL {
-    public static List<Complain> getAllComplains(Session session) {
+    public static List<Complaint> getAllComplains(Session session) {
         session.beginTransaction();
-        var retval = session.createQuery("From Complain", Complain.class).getResultList();
+        var retval = session.createQuery("From Complaint", Complaint.class).getResultList();
+
         session.getTransaction().commit();
+        session.flush();
         return retval;
     }
-
+/*
     public static List<DeliveryComplain> getDeliveryComplaints(Session session) {
         return getAllComplains(session).stream()
                 .filter(c -> c instanceof DeliveryComplain)
@@ -129,7 +149,7 @@ class ComplaintsBL {
                 .map(c -> (RestaurantComplain) c)
                 .collect(Collectors.toList());
     }
-
+*/
     public static void createDeliveryComplain(Session session, Long userId, Long deliveryId, String description) {
         session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
@@ -146,7 +166,22 @@ class ComplaintsBL {
         }
         Delivery delivery = optionalDelivery.get();
         session.beginTransaction();
-        session.save(new DeliveryComplain(description, new Date(), user, delivery));
+        //session.save(new DeliveryComplain(description, new Date(), user, delivery));
+        session.getTransaction().commit();
+    }
+    public static void createDeliveryComplain(Session session,DeliveryComplain complain) {
+        session.beginTransaction();
+        //Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
+        session.getTransaction().commit();
+        session.beginTransaction();
+        //Optional<Delivery> optionalDelivery = session.byId(Delivery.class).loadOptional(deliveryId);
+        session.getTransaction().commit();
+        /*if (optionalDelivery.isEmpty()) {
+            return;
+        }
+        Delivery delivery = optionalDelivery.get();*/
+        session.beginTransaction();
+        session.save(complain);
         session.getTransaction().commit();
     }
 
@@ -174,11 +209,11 @@ class ComplaintsBL {
     public static void closeComplain(Session session, Long complainId) {
         //Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
         session.beginTransaction();
-        Optional<Complain> maybeComplain = session.byId(Complain.class).loadOptional(complainId);
+        Optional<Complaint> maybeComplain = session.byId(Complaint.class).loadOptional(complainId);
         if (maybeComplain.isEmpty()) {
             return;
         }
-        Complain complain = maybeComplain.get();
+        Complaint complain = maybeComplain.get();
 
         complain.setAnsweredAt(new Date());
 
@@ -296,8 +331,8 @@ class AdminsBL {
             requestsRepository.save(request);
 
 
-        });
-    */}
+        });*/
+    }
     public static void markRequestAsRejected(Session session, Long requestId, Long userId) {
         session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);

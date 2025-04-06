@@ -3,6 +3,8 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -10,6 +12,7 @@ import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class SimpleClient extends AbstractClient {
@@ -21,24 +24,25 @@ public class SimpleClient extends AbstractClient {
 	@FXML
 	public void initialize() {
 		try {
-//			EventBus.getDefault().register(this);
+			EventBus.getDefault().register(this);
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
 	}
 
-//	public void onDestroy() {
-//		EventBus.getDefault().unregister(this);
-//	}
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+	}
 
 	@Override
 	protected void handleMessageFromServer(Object msg) throws IOException {
+		System.out.println(msg);
 		if (msg instanceof Warning) {
-//			EventBus.getDefault().post("ERROR");
+			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
             System.out.println(message);
 			if (message.equals("added successfully")) {
-//				EventBus.getDefault().post("added");
+				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
 				EventBus.getDefault().post(message);
 			} else if (message.contains("the password is ok")) {
@@ -58,6 +62,11 @@ public class SimpleClient extends AbstractClient {
 			}
 		} else if (msg instanceof OpeningTimes){
 			EventBus.getDefault().post(msg);
+		} else if (msg instanceof List<?>) {
+			System.out.println("got the list from server");
+			List<Complaint> complains = (List<Complaint>) msg;
+			ViewComplaints.complaints=complains;
+			App.setRoot("view-complaints");
 		}
 	}
 

@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
@@ -41,9 +43,6 @@ public class HomePage {
 
     @FXML
     private Button watchBranchesCapacity;
-
-    @FXML
-    private Button viewReports;
 
     @FXML
     private Label StatusLabel;
@@ -101,7 +100,7 @@ public class HomePage {
 
     @FXML
     void fileComplaint(ActionEvent event) throws IOException {
-        App.setRoot("file-a-complaint");
+        App.setRoot("chose-kind-complaint");
     }
 
     @FXML
@@ -113,9 +112,10 @@ public class HomePage {
     void watchBranchesCapacity(ActionEvent event) throws IOException {
         App.setRoot("WatchBranchesCapacityScreen");
     }
+    @Subscribe
+    public void onEventDummy(Object ignored) {}
 
-    @FXML
-    void watchReports(ActionEvent event) throws IOException {
-        App.setRoot("reports-view");
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
-
-//import il.cshaifasweng.OCSFMediatorExample.server.bl.BasicUserBL;
+/*
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
@@ -8,7 +7,7 @@ import jakarta.enterprise.util.AnnotationLiteral;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+*/
 import java.io.IOException;
 
 /**

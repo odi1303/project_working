@@ -1,13 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
-import jakarta.persistence.*;
+//import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+import jakarta.persistence.*;
 @Entity
 @Table(name = "delivery")
-public class Delivery {
+public class Delivery implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

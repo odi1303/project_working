@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,13 @@ public class RestaurantComplain extends Complain
         this.restaurant = restaurant;
     }
 
+    public RestaurantComplain(String branch, String headline, String description, Date registeredAt, String email) {
+        this.branch = branch;
+        this.headline = headline;
+        this.description = description;
+        this.registeredAt = registeredAt;
+        this.email = email;
+    }
     public void setId(Long id) {
         this.id = id;
     }

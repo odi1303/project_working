@@ -20,8 +20,10 @@ public class AdminBL {
     @Inject
     MenuRepository menuRepository;
 
+    @Inject
     RequestsRepository requestsRepository;
 
+    @Inject
     UsersRepository usersRepository;
 
     public AdminBL(MenuRepository menuRepository, RequestsRepository requestsRepository, UsersRepository usersRepository) {
@@ -40,14 +42,10 @@ public class AdminBL {
         menuRepository.deleteById(menuId);
     }
     public List<MenuItem> getAllMenuItems() {
-        var retval = new ArrayList<MenuItem>();
-        menuRepository.findAll().forEach(retval::add);
-        return retval;
+        return menuRepository.findAll().toList();
     }
     public List<Request> getRequests() {
-        var retval = new ArrayList<Request>();
-        requestsRepository.findAll().forEach(retval::add);
-        return retval;
+        return requestsRepository.findAll().toList();
     }
 
     public void markRequestAsApproved(Long requestId, Long userId) {
@@ -62,7 +60,7 @@ public class AdminBL {
             switch (request) {
                 case DeleteRequest deleteRequest -> menuRepository.deleteById(deleteRequest.getMenuItem());
                 case InsertRequest insertRequest ->
-                        menuRepository.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
+                        menuRepository.insert(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
                 case UpdateRequest updateRequest ->
                         menuRepository.findById(updateRequest.getMenuItem()).ifPresent(menu -> {
                             if (updateRequest.getMenuItemPrice() != null) {
@@ -71,14 +69,14 @@ public class AdminBL {
                             if (updateRequest.getMenuItemDescription() != null) {
                                 menu.setDescription(updateRequest.getMenuItemDescription());
                             }
-                            menuRepository.save(menu);
+                            menuRepository.update(menu);
                         });
                 default -> {
                     // Unknown request
                 }
             }
             request.approve();
-            requestsRepository.save(request);
+            requestsRepository.update(request);
 
 
         });
@@ -93,7 +91,7 @@ public class AdminBL {
         Optional<Request> maybeRequest = requestsRepository.findById(requestId);
         maybeRequest.ifPresent(request -> {
             request.reject();
-            requestsRepository.save(request);
+            requestsRepository.update(request);
         });
     }
 }

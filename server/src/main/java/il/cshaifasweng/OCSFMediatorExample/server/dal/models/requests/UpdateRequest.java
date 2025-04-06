@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @DiscriminatorValue("UPDATE")
 public class UpdateRequest extends Request
 {
-    @Column(name="menu_item_id", nullable = false)
+    @Column(name="menu_item_id")
     public Long menuItemId;
 
     @Column(name="menu_item_description")

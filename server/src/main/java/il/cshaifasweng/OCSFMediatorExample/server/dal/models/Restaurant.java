@@ -1,7 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import jakarta.persistence.GenerationType;
 import lombok.NoArgsConstructor;
+//import org.hibernate.annotations.Table;
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "restaurant_id")
+    //why not String???
     public Long id;
 
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)

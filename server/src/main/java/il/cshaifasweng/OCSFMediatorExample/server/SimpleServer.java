@@ -2,15 +2,18 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,6 +28,8 @@ import java.util.Random;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 import jakarta.inject.Qualifier;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
@@ -40,7 +45,8 @@ public class SimpleServer extends AbstractServer{
 	/**
 	 * Constructs a new server.
 	 *
-     */
+	 * @param port the port number on which to listen.
+	 */
 	public SimpleServer() {
 		super(3000);
 		db_ = new ManualDatabase();
@@ -50,6 +56,7 @@ public class SimpleServer extends AbstractServer{
 	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer" + " " + msgString);
+		Session session = null;
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
 			try {
@@ -115,8 +122,24 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-	}
+		}else if (msgString.contains("send all complaints")) {
+			System.out.println("got in");
+			List<Complaint> openComplaints =new ArrayList<>();
+			List<Complaint> complaints = db_.getAll(new Complaint());
+			for (Complaint complain : complaints) {
+				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
+					openComplaints.add(complain);
+				}
+			}
+			System.out.println("num of open complaints=" + openComplaints.size());
+			client.sendToClient(openComplaints);
+		} else if (msg instanceof Complaint) {
+			System.out.println("saved complain");
+			System.out.println((Complaint)msg);
+			db_.saveOrUpdate((Complaint)msg);
+			List<Complaint> openComplaints =db_.getAll(new Complaint());
+			System.out.println("num of open complaints=" + openComplaints.size());
+		}}
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {

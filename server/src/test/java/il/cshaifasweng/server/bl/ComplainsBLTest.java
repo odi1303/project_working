@@ -1,19 +1,19 @@
+
 /*
 package il.cshaifasweng.server.bl;
-
-*/
-/*import il.cshaifasweng.server.dal.ComplainsRepository;
-import il.cshaifasweng.server.dal.DeliveriesRepository;
-import il.cshaifasweng.server.dal.RestaurantsRepository; // Fixed typo: "Repositroy" -> "Repository"
-import il.cshaifasweng.server.dal.UsersRepository;
-import il.cshaifasweng.server.dal.models.Delivery;
-import il.cshaifasweng.server.dal.models.Restaurant;
-import il.cshaifasweng.server.dal.models.User;
-import il.cshaifasweng.server.dal.models.complains.Complain;
-import il.cshaifasweng.server.dal.models.complains.DeliveryComplain;
-import il.cshaifasweng.server.dal.models.complains.RestaurantComplain;*//*
-
-
+/*
+import finalproject.dal.ComplainsRepository;
+import finalproject.dal.DeliveriesRepository;
+import finalproject.dal.RestaurantsRepositroy;
+import finalproject.dal.UsersRepository;
+import finalproject.dal.models.Delivery;
+import finalproject.dal.models.Restaurant;
+import finalproject.dal.models.User;
+import finalproject.dal.models.complains.Complain;
+import finalproject.dal.models.complains.DeliveryComplain;
+import finalproject.dal.models.complains.RestaurantComplain;
+>>>>>>>> 21281f543c56e50a61a44dd3e672f8622162f13f:server/src/test/java/il/cshaifasweng/server/bl/ComplainsBLTest.java
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +30,10 @@ import static org.mockito.Mockito.*;
 class ComplainsBLTest {
     private static final int EXISTING_USER_ID = 1;
     private static final long EXISTING_DELIVERY_ID = 1;
-    private static final long EXISTING_RESTAURANT_ID = 1; // Fixed typo: "RESTURANT" -> "RESTAURANT"
+    private static final long EXISTING_RESTURANT_ID = 1;
 
     @Captor
-    ArgumentCaptor<Complain> complainCapture; // Fixed typo: "complaindCapture" -> "complainCapture"
+    ArgumentCaptor<Complain> complaindCapture;
     private ComplainsBL tested;
 
     @BeforeEach
@@ -41,7 +41,7 @@ class ComplainsBLTest {
         tested = new ComplainsBL();
         tested.complainsRepository = mock(ComplainsRepository.class);
         tested.usersRepository = mock(UsersRepository.class);
-        tested.restaurantsRepository = mock(RestaurantsRepository.class);
+        tested.restaurantsRepository = mock(RestaurantsRepositroy.class);
         tested.deliveriesRepository = mock(DeliveriesRepository.class);
     }
 
@@ -58,8 +58,8 @@ class ComplainsBLTest {
         tested.createDeliveryComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository).insert(complainCapture.capture());
-        DeliveryComplain inserted = (DeliveryComplain) complainCapture.getValue();
+        verify(tested.complainsRepository).insert(complaindCapture.capture());
+        DeliveryComplain inserted = (DeliveryComplain) complaindCapture.getValue();
         assertEquals(user, inserted.getComplainer());
         assertEquals(description, inserted.getDescription());
         assertEquals(delivery, inserted.getDelivery());
@@ -75,7 +75,7 @@ class ComplainsBLTest {
         tested.createDeliveryComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository, never()).insert(complainCapture.capture());
+        verify(tested.complainsRepository, never()).insert(complaindCapture.capture());
     }
 
     @Test
@@ -90,7 +90,7 @@ class ComplainsBLTest {
         tested.createDeliveryComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository, never()).insert(complainCapture.capture());
+        verify(tested.complainsRepository, never()).insert(complaindCapture.capture());
     }
 
     @Test
@@ -100,14 +100,14 @@ class ComplainsBLTest {
         User user = new User();
         Restaurant restaurant = new Restaurant();
         when(tested.usersRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.of(user));
-        when(tested.restaurantsRepository.findById(EXISTING_RESTAURANT_ID)).thenReturn(Optional.of(restaurant));
+        when(tested.restaurantsRepository.findById(EXISTING_RESTURANT_ID)).thenReturn(Optional.of(restaurant));
 
         // Act
-        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_RESTAURANT_ID, description); // Fixed argument to use RESTAURANT_ID
+        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository).insert(complainCapture.capture());
-        RestaurantComplain inserted = (RestaurantComplain) complainCapture.getValue();
+        verify(tested.complainsRepository).insert(complaindCapture.capture());
+        RestaurantComplain inserted = (RestaurantComplain) complaindCapture.getValue();
         assertEquals(user, inserted.getComplainer());
         assertEquals(description, inserted.getDescription());
         assertEquals(restaurant, inserted.getRestaurant());
@@ -120,10 +120,10 @@ class ComplainsBLTest {
         when(tested.usersRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.empty());
 
         // Act
-        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_RESTAURANT_ID, description); // Fixed argument to use RESTAURANT_ID
+        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository, never()).insert(complainCapture.capture());
+        verify(tested.complainsRepository, never()).insert(complaindCapture.capture());
     }
 
     @Test
@@ -132,13 +132,13 @@ class ComplainsBLTest {
         String description = "example";
         User user = new User();
         when(tested.usersRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.of(user));
-        when(tested.restaurantsRepository.findById(EXISTING_RESTAURANT_ID)).thenReturn(Optional.empty());
+        when(tested.restaurantsRepository.findById(EXISTING_RESTURANT_ID)).thenReturn(Optional.empty());
 
         // Act
-        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_RESTAURANT_ID, description); // Fixed argument to use RESTAURANT_ID
+        tested.createRestaurantComplain(EXISTING_USER_ID, EXISTING_DELIVERY_ID, description);
 
         // Assert
-        verify(tested.complainsRepository, never()).insert(complainCapture.capture());
+        verify(tested.complainsRepository, never()).insert(complaindCapture.capture());
     }
 
     @Test

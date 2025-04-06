@@ -17,7 +17,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="chose_complaint" layoutX="35.0" layoutY="59.0" prefHeight="26.0" prefWidth="343.0" promptText="Pick a complaint to view" />
+      <ComboBox fx:id="chose_complaint" layoutX="37.0" layoutY="59.0" onAction="#show_complaint_chosen" prefHeight="26.0" prefWidth="343.0" promptText="Pick a complaint to view" />
       <ComboBox fx:id="chose_status" layoutX="397.0" layoutY="59.0" prefHeight="26.0" prefWidth="164.0" promptText="status to set" />
       <TextArea fx:id="complaint_text" editable="false" layoutX="37.0" layoutY="100.0" prefHeight="121.0" prefWidth="526.0" />
       <TextArea fx:id="respond_text" layoutX="36.0" layoutY="233.0" prefHeight="84.0" prefWidth="526.0" promptText="Write the respond here" />
@@ -27,6 +27,7 @@
             <Image url="@home.png" />
          </image>
       </ImageView>
-      <TextField fx:id="compensation_sum" layoutX="35.0" layoutY="330.0" prefHeight="26.0" prefWidth="245.0" promptText="Enter compensation sum if needed" />
+      <TextField fx:id="compensation_sum" layoutX="35.0" layoutY="330.0" onAction="#edit_compensation" prefHeight="26.0" prefWidth="245.0" promptText="Enter compensation sum if needed" />
+      <Label fx:id="warning" layoutX="37.0" layoutY="368.0" textFill="RED" />
    </children>
 </AnchorPane>

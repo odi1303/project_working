@@ -3,6 +3,9 @@ package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.RestaurantsRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.TableOrderRepository;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Restaurant;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.RestaurantTable;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
@@ -21,7 +24,6 @@ public class RestaurantsBL {
 
     @Inject
     TableOrderRepository tableOrderRepository;
-*/
 /*
     public List<RestaurantSummery> getAllRestaurantsSummeries()
     {
