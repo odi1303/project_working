@@ -92,16 +92,18 @@ public class TableOrderScreenController {
         try {
 //            EventBus.getDefault().register(this);
 
-            // Disable past dates in the DatePicker
-            reservationDate.setDayCellFactory((final DatePicker datePicker) -> new javafx.scene.control.DateCell() {
-                @Override
-                public void updateItem(final LocalDate item, final boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item.isBefore(LocalDate.now())) {
-                        setDisable(true);
-                    }
-                }
-            });
+//             Disable past dates in the DatePicker
+//            reservationDate.setDayCellFactory(datePicker -> new javafx.scene.control.DateCell() {
+//                @Override
+//                public void updateItem(LocalDate item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    if (item == null || empty) {
+//                        setDisable(true);
+//                    } else if (item.isBefore(LocalDate.now())) {
+//                        setDisable(true);
+//                    }
+//                }
+//            });
 
         } catch (Exception e) {
             throw new RuntimeException();
