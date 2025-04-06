@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
@@ -24,6 +25,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class ManualDatabase {
     private Session session;
+
     private static SessionFactory getSessionFactory() throws HibernateException, IOException {
         var config = new Configuration();
         Scanner userInput = new Scanner(System.in);
@@ -80,6 +82,11 @@ public class ManualDatabase {
     public UserType getUserType(String name, String password) {
         return UsersBL.getUserType(session, name, password);
     }
+
+    public Session getSession() {
+        return session;
+    }
+
 }
 
 

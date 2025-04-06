@@ -1,40 +1,109 @@
-/**
- * Sample Skeleton for 'reports-view.fxml' Controller Class
- */
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.BranchManager;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class ReportsView {
 
-    @FXML // fx:id="back_button"
-    private Button back_button; // Value injected by FXMLLoader
+    @FXML private Button back_button;
+    @FXML private AnchorPane ch;
+    @FXML private LineChart<String, Number> chart;
+    @FXML private ComboBox<String> report_list;
 
-    @FXML // fx:id="ch"
-    private AnchorPane ch; // Value injected by FXMLLoader
+    @FXML
+    public void initialize() {
+        EventBus.getDefault().register(this);
+        report_list.setItems(FXCollections.observableArrayList("Monthly Complaints"));
+        report_list.getSelectionModel().selectFirst();
+        loadComplaints();
+    }
 
-    @FXML // fx:id="chart"
-    private LineChart<?, ?> chart; // Value injected by FXMLLoader
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
-    @FXML // fx:id="report_list"
-    private ComboBox<?> report_list; // Value injected by FXMLLoader
+    private void loadComplaints() {
+        try {
+            App.sendMessageToServer("#getAllComplaints");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void choosing_report(ActionEvent event) {
-
+        if (report_list.getValue().equals("Monthly Complaints")) {
+            loadComplaints();
+        }
     }
+
     @FXML
     void to_go_back(ActionEvent event) throws IOException {
         App.setRoot("manager_personal_page");
     }
 
-}
+    @Subscribe
+    public void onComplaintsReceived(List<Complain> complaints) {
+        Platform.runLater(() -> {
+            User currentUser = AppState.getCurrentUser();
+            if (complaints != null && currentUser instanceof BranchManager branchManager) {
+                List<Complain> branchComplaints = complaints.stream()
+                        .filter(c -> c.getBranch_id() != null && c.getBranch_id().equals((long)branchManager.getBranchID()))
+                        .toList();
 
+                XYChart.Series<String, Number> series = createComplaintHistogram(branchComplaints);
+                chart.getData().clear();
+                chart.getData().add(series);
+                chart.setTitle("Complaints by Day - " + LocalDate.now().getMonth());
+            }
+        });
+    }
+
+    private XYChart.Series<String, Number> createComplaintHistogram(List<Complain> complaints) {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Complaints");
+
+        LocalDate now = LocalDate.now();
+        int daysInMonth = now.lengthOfMonth();
+        int[] complaintCounts = new int[daysInMonth];
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+        for (Complain complaint : complaints) {
+            if (complaint.getRegisteredAt() != null) {
+                LocalDate complaintDate = complaint.getRegisteredAt().toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate();
+
+                if (complaintDate.getMonth() == now.getMonth() &&
+                        complaintDate.getYear() == now.getYear()) {
+                    int day = complaintDate.getDayOfMonth() - 1;
+                    complaintCounts[day]++;
+                }
+            }
+        }
+
+        for (int i = 0; i < daysInMonth; i++) {
+            String day = String.valueOf(i + 1);
+            series.getData().add(new XYChart.Data<>(day, complaintCounts[i]));
+        }
+
+        return series;
+    }
+}

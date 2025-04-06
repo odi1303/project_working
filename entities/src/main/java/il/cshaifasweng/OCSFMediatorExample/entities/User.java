@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -33,14 +33,4 @@ class User {
         return type;
     }
 
-}
-
-
-class BranchManager extends User {
-    private int branchID;
-
-    public BranchManager(int id, String password, int branchID, String userName) {
-        super(password, UserType.BranchManager);
-        this.branchID = branchID;
-    }
 }

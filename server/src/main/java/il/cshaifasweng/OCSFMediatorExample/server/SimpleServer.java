@@ -26,8 +26,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
+
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
@@ -46,7 +45,7 @@ public class SimpleServer extends AbstractServer{
 	}
 
 	@Override
-	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
+	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer" + " " + msgString);
 		if (msgString.startsWith("#warning")) {
@@ -65,10 +64,10 @@ public class SimpleServer extends AbstractServer{
 			System.out.println(db.getBasicUsers());*/
 			System.out.println("hello there");
 			//db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
-//			for (var o : db_.getAll(new User())) {
-//				System.out.println(o.toString());
-//			}
-//			System.out.println("supposedly added into db");
+			for (var o : db_.getAll(new User())) {
+				System.out.println(o.toString());
+			}
+			System.out.println("supposedly added into db");
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
 				for (SubscribedClient subscribedClient : SubscribersList) {
@@ -88,14 +87,6 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (msg instanceof GetBranchOpeningTimes request) {
-			String branchName = request.getBranchName();
-
-			// Dummy response, replace this with your database or logic lookup
-			String openingTime = "09:00";
-
-			OpeningTimes response = new OpeningTimes(branchName, openingTime);
-			client.sendToClient(response);
 		}
 	}
 	public void sendToAllClients(String message) {
