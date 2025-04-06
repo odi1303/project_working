@@ -3,13 +3,11 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.Getter;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,8 +24,6 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 import jakarta.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.stream.Collectors;
-
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -38,22 +34,17 @@ public class SimpleServer extends AbstractServer{
 	Database db;*/
 
 	ManualDatabase db_;
-    // Add this method to ManualDatabase.java
-    /**
+	/**
 	 * Constructs a new server.
 	 *
 	 * @param port the port number on which to listen.
 	 */
-
-	@Getter
-    private Session session;
-
 	public SimpleServer() {
 		super(3000);
 		db_ = new ManualDatabase();
 	}
 
-    @Override
+	@Override
 	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer" + " " + msgString);
@@ -97,29 +88,7 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		}
-		else if (msgString.equals("#getAllComplaints"))
-		{
-			try {
-			List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
-			client.sendToClient(complaints);
-			} catch (IOException e)
-			{ e.printStackTrace();
-			}
-		}
-
-		else if (msgString.startsWith("#getUserDetails:")) {
-			String username = msgString.split(":")[1];
-			try {
-				User user = db_.getSession().createQuery("FROM User WHERE name = :username", User.class)
-						.setParameter("username", username)
-						.getSingleResultOrNull();
-				client.sendToClient(user);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
-	
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {

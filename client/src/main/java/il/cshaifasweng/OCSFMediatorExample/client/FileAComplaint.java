@@ -87,7 +87,7 @@ public class FileAComplaint {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             // Use Platform.runLater to update the select_branch ComboBox
             Platform.runLater(() -> {
                 select_branch.accessibleTextProperty().set("Chose the relevant branch");
@@ -98,7 +98,7 @@ public class FileAComplaint {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 }

@@ -28,7 +28,7 @@ public class OrderedDishSectionController {
         count = 1;
         countLabel.setText(String.valueOf(count));
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
             Node node = loader.load();
@@ -39,9 +39,9 @@ public class OrderedDishSectionController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     @FXML
     public void increasCount() {

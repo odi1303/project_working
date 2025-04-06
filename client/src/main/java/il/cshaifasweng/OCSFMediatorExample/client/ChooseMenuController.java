@@ -30,7 +30,7 @@ public class ChooseMenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             List<MenuClient> menuList = MenuFactory.getMenus();
             // Use Platform.runLater to update menuListContainer
             Platform.runLater(() -> {
@@ -44,9 +44,9 @@ public class ChooseMenuController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void setCreateCopy(boolean createCopy) {
         isCreateCopy = createCopy;

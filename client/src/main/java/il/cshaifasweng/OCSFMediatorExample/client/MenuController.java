@@ -55,7 +55,7 @@ public class MenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             isMain = true;
             fullMenu = new MenuClient();
             List<String> branches = fullMenu.getAllBranches();
@@ -77,9 +77,9 @@ public class MenuController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     private LocationInformation getLocationInformation() {
         LocationInformation locationInformation;

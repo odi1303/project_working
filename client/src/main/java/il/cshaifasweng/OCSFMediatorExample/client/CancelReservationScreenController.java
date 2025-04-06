@@ -22,7 +22,7 @@ public class CancelReservationScreenController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             List<Reservation> reservations = HardcodedReservations.getSampleReservations();
             // Use Platform.runLater to update ReservationListContainer
             Platform.runLater(() -> {
@@ -50,9 +50,9 @@ public class CancelReservationScreenController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     private Button createCancelButton(Reservation reservation) {
         Button button = new Button();

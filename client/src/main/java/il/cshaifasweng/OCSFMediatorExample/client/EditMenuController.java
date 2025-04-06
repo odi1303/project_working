@@ -52,7 +52,7 @@ public class EditMenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
 
             // Dynamically create menu section
             FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("Menu.fxml"));
@@ -172,9 +172,9 @@ public class EditMenuController {
         });
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void deleteDishPressed(DishClient dish) {
         PopupDialogService popupDialogService = new PopupDialogService();

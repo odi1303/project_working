@@ -28,9 +28,9 @@ public class OrderableDishSectionInMenuController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void reinitialize(MenuController menuController) {
         setMainMenuController(menuController);
