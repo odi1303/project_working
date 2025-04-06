@@ -37,28 +37,44 @@ public class App extends Application {
         App.password = password;
         userType = type;
 
-        switch (type) {
-            case Admin:
-                setRoot("manager_personal_page");
-                break;
-            case User:
-                break;
-            case Employee:
-                break;
-            case Dietitian:
-                break;
-            case ChainManager:
-                break;
-            case CustomerServiceWorker:
-                break;
-            case BranchManager:
-                break;
-        }
+        // Use Platform.runLater to ensure UI updates are thread-safe
+        Platform.runLater(() -> {
+            try {
+                switch (type) {
+                    case Admin:
+                        setRoot("manager_personal_page");
+                        break;
+                    case User:
+                        // Optionally update UI elements instead of changing the scene
+                        System.out.println("User logged in: " + username);
+                        break;
+                    case Employee:
+                        System.out.println("Employee logged in: " + username);
+                        break;
+                    case Dietitian:
+                        System.out.println("Dietitian logged in: " + username);
+                        break;
+                    case ChainManager:
+                        System.out.println("Chain Manager logged in: " + username);
+                        break;
+                    case CustomerServiceWorker:
+                        System.out.println("Customer Service Worker logged in: " + username);
+                        break;
+                    case BranchManager:
+                        System.out.println("Branch Manager logged in: " + username);
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static <T> T setRootAndGetController(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        scene.setRoot(fxmlLoader.load());
+        Parent root = fxmlLoader.load();
+        // Use Platform.runLater to set the scene root
+        Platform.runLater(() -> scene.setRoot(root));
         return fxmlLoader.getController();
     }
 
@@ -67,8 +83,6 @@ public class App extends Application {
         EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
-        client.sendToServer("add client"); // לא באמת יודע איפה לשים את השורה הזו, באב טיפוס שמנו אותה בINIT של הCONTROLLER הראשון
-
         scene = new Scene(loadFXML("home-page"), 640, 480);
         stage.setScene(scene);
         stage.show();
@@ -88,45 +102,45 @@ public class App extends Application {
     }
 
     static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        Parent root = loadFXML(fxml);
+        // Use Platform.runLater to set the scene root
+        Platform.runLater(() -> scene.setRoot(root));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-    public static void setMenu(ObservableList<String> list){
+
+    public static void setMenu(ObservableList<String> list) {
         menu = list;
     }
-    
 
     @Override
-	public void stop() throws Exception {
-		// TODO Auto-generated method stub
-    	EventBus.getDefault().unregister(this);
+    public void stop() throws Exception {
+        EventBus.getDefault().unregister(this);
         client.sendToServer("remove client");
         client.closeConnection();
-		super.stop();
-	}
-    
+        super.stop();
+    }
+
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
-    	Platform.runLater(() -> {
-    		Alert alert = new Alert(AlertType.WARNING,
-        			String.format("Message: %s\nTimestamp: %s\n",
-        					event.getWarning().getMessage(),
-        					event.getWarning().getTime().toString())
-        	);
-        	alert.show();
-    	});
-    	
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.WARNING,
+                    String.format("Message: %s\nTimestamp: %s\n",
+                            event.getWarning().getMessage(),
+                            event.getWarning().getTime().toString())
+            );
+            alert.show();
+        });
     }
+
     public static void sendMessageToServer(Object message) throws IOException {
         client.sendToServer(message);
     }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         launch();
     }
-
 }

@@ -1,14 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -48,10 +49,17 @@ public class EditDishController {
     private boolean isEdit = false;
     private DishClient dish;
 
+    // Define the distances for button positioning
+    private final double submitButtonHDistFromLRCorner = 10.0; // Horizontal distance from the right corner
+    private final double submitButtonWDistFromLRCorner = 10.0; // Vertical distance from the bottom corner
+
     @FXML
     public void initialize() {
         try {
             EventBus.getDefault().register(this);
+            // Ensure initial positioning of buttons
+            editDishPane.widthProperty().addListener((obs, oldVal, newVal) -> positionButtons());
+            editDishPane.heightProperty().addListener((obs, oldVal, newVal) -> positionButtons());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -65,11 +73,14 @@ public class EditDishController {
         double paneWidth = editDishPane.getWidth();
         double paneHeight = editDishPane.getHeight();
 
-        //submitButton
-        double submitButtonWidth = submitButton.getWidth();
-        double submitButtonHeight = submitButton.getHeight();
-        submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
-        submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
+        // Use Platform.runLater to update button position
+        Platform.runLater(() -> {
+            // submitButton
+            double submitButtonWidth = submitButton.getWidth();
+            double submitButtonHeight = submitButton.getHeight();
+            submitButton.setLayoutX(paneWidth - submitButtonWidth - submitButtonHDistFromLRCorner);
+            submitButton.setLayoutY(paneHeight - submitButtonHeight - submitButtonWDistFromLRCorner);
+        });
     }
 
     public void setDish(DishClient dish) {
@@ -84,11 +95,16 @@ public class EditDishController {
     }
 
     private void updateVisibleDishProperties() {
-        nameTextField.setText(dish.getName());
-        priceTextField.setText(String.valueOf(dish.getPrice()));
-        descriptionTextField.setText(dish.getDescription());
-        imageUrlTextField.setText(dish.getImageUrl());
-        SaleTextField.setText(String.valueOf(dish.getSale()));
+        // Use Platform.runLater to update text fields
+        Platform.runLater(() -> {
+            nameTextField.setText(dish.getName());
+            priceTextField.setText(String.valueOf(dish.getPrice()));
+            descriptionTextField.setText(dish.getDescription());
+            imageUrlTextField.setText(dish.getImageUrl());
+            SaleTextField.setText(String.valueOf(dish.getSale()));
+        });
+
+        // Update available branches and ingredients separately
         initializeAvailableBranches(dish.getAvailableBranches());
         initializeIngredients(dish.getIngredients());
     }
@@ -144,19 +160,25 @@ public class EditDishController {
     }
 
     private void initializeAvailableBranches(List<String> branches) {
-        availableBranches.getChildren().clear();
-        for (String branch : branches) {
-            Label label = new Label(branch);
-            availableBranches.getChildren().add(label);
-        }
+        // Use Platform.runLater to update the availableBranches VBox
+        Platform.runLater(() -> {
+            availableBranches.getChildren().clear();
+            for (String branch : branches) {
+                Label label = new Label(branch);
+                availableBranches.getChildren().add(label);
+            }
+        });
     }
 
     private void initializeIngredients(List<String> ingredientsList) {
-        ingredients.getChildren().clear();
-        for (String ingredient : ingredientsList) {
-            Label label = new Label(ingredient);
-            ingredients.getChildren().add(label);
-        }
+        // Use Platform.runLater to update the ingredients VBox
+        Platform.runLater(() -> {
+            ingredients.getChildren().clear();
+            for (String ingredient : ingredientsList) {
+                Label label = new Label(ingredient);
+                ingredients.getChildren().add(label);
+            }
+        });
     }
 
     public void updateIngredients(List<String> ingredientsList) {

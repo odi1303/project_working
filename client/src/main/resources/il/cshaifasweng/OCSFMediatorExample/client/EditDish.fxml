@@ -10,7 +10,8 @@
 
 <AnchorPane fx:id="editDishPane" prefHeight="220.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.EditDishController">
 
-    <Button fx:id="submitButton" layoutX="32.0" layoutY="28.0" onAction="#submitDish" text="Submit" />
+    <Button fx:id="submitButton" onAction="#submitDish" text="Submit"
+            AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" />
 
     <HBox layoutX="50" layoutY="70" spacing="10">
         <Label text="Name:" />
@@ -50,7 +51,5 @@
         </TitledPane>
         <Button fx:id="changeIngredientsButton" text="Change Ingredients" />
     </HBox>
-
-
 
 </AnchorPane>
