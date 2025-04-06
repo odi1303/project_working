@@ -54,7 +54,7 @@ public class TableOrderScreenController {
     @FXML
     private ComboBox<String> time;
 
-    private ObservableList<String> spaces = FXCollections.observableArrayList("Kiryon-Kiryat Bialik", "Grand Kenyon-Haifa");
+    private ObservableList<String> spaces = FXCollections.observableArrayList("Outdoors", "Indoors");
 
     @FXML
     private DatePicker reservationDate;
@@ -89,21 +89,22 @@ public class TableOrderScreenController {
 
     @FXML
     private void initialize() {
+        reservationDate.setValue(LocalDate.now());
         try {
 //            EventBus.getDefault().register(this);
 
 //             Disable past dates in the DatePicker
-//            reservationDate.setDayCellFactory(datePicker -> new javafx.scene.control.DateCell() {
-//                @Override
-//                public void updateItem(LocalDate item, boolean empty) {
-//                    super.updateItem(item, empty);
-//                    if (item == null || empty) {
-//                        setDisable(true);
-//                    } else if (item.isBefore(LocalDate.now())) {
-//                        setDisable(true);
-//                    }
-//                }
-//            });
+            reservationDate.setDayCellFactory(datePicker -> new javafx.scene.control.DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setDisable(true);
+                    } else if (item.isBefore(LocalDate.now())) {
+                        setDisable(true);
+                    }
+                }
+            });
 
         } catch (Exception e) {
             throw new RuntimeException();
