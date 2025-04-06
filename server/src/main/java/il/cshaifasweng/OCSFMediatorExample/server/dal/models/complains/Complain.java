@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
 import java.util.Date;
-//האם צריך שכל אחת מהמחלקות היורשות יהיו טבלה בפני עצמה? או שכולם תחת המחלקה הזאת? צריך לחשוב על זה ולהחליט
-// לדעתי צריך להוסיף לפה @etinity אבל זה תלוי בתכנון
+
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="origin", discriminatorType = DiscriminatorType.STRING)
 @Data()
