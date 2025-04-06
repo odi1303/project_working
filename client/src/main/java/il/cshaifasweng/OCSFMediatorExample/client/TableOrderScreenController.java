@@ -89,6 +89,7 @@ public class TableOrderScreenController {
 
     @FXML
     private void initialize() {
+        initializeComboBoxForBranch();
         reservationDate.setValue(LocalDate.now());
         try {
 //            EventBus.getDefault().register(this);
