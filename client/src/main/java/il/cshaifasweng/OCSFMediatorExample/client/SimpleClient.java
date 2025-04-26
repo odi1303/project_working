@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -17,15 +18,27 @@ public class SimpleClient extends AbstractClient {
 		super(host, port);
 	}
 
+	@FXML
+	public void initialize() {
+		try {
+//			EventBus.getDefault().register(this);
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
+//	public void onDestroy() {
+//		EventBus.getDefault().unregister(this);
+//	}
 
 	@Override
 	protected void handleMessageFromServer(Object msg) throws IOException {
 		if (msg instanceof Warning) {
-			EventBus.getDefault().post("ERROR");
+//			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
             System.out.println(message);
 			if (message.equals("added successfully")) {
-				EventBus.getDefault().post("added");
+//				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
 				EventBus.getDefault().post(message);
 			} else if (message.contains("the password is ok")) {
@@ -43,6 +56,8 @@ public class SimpleClient extends AbstractClient {
 			if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
 			}
+		} else if (msg instanceof OpeningTimes){
+			EventBus.getDefault().post(msg);
 		}
 	}
 

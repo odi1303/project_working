@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,53 +21,80 @@ public class CancelReservationScreenController {
 
     @FXML
     public void initialize() {
-        List<Reservation> reservations = HardcodedReservations.getSampleReservations();
-        ReservationListContainer.getChildren().clear();
         try {
-            for (Reservation reservation : reservations) {
-                HBox hbox = new HBox();
-                Button cancelButton = createCancelButton();
-                hbox.getChildren().add(cancelButton);
+//            EventBus.getDefault().register(this);
+            List<Reservation> reservations = HardcodedReservations.getSampleReservations();
+            // Use Platform.runLater to update ReservationListContainer
+            Platform.runLater(() -> {
+                ReservationListContainer.getChildren().clear();
+                for (Reservation reservation : reservations) {
+                    HBox hbox = new HBox();
+                    Button cancelButton = createCancelButton(reservation);
+                    hbox.getChildren().add(cancelButton);
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReservationCard.fxml"));
-                Node dishNode = fxmlLoader.load();
-                ReservationCardController reservationCardController = fxmlLoader.getController();
-                reservationCardController.setData(reservation);
-                hbox.getChildren().add(dishNode);
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReservationCard.fxml"));
+                        Node dishNode = fxmlLoader.load();
+                        ReservationCardController reservationCardController = fxmlLoader.getController();
+                        reservationCardController.setData(reservation);
+                        hbox.getChildren().add(dishNode);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                ReservationListContainer.getChildren().add(hbox);
-            }
-
+                    ReservationListContainer.getChildren().add(hbox);
+                }
+            });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Button createCancelButton() {
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
+
+    private Button createCancelButton(Reservation reservation) {
         Button button = new Button();
         button.setText("Cancel Reservation");
-        button.setOnAction(event -> {cancelReservation(button);});
+        button.setOnAction(event -> {
+            cancelReservation(reservation, button);
+        });
         return button;
     }
 
-    private void cancelReservation(Button button) {
+    private void cancelReservation(Reservation reservation, Button button) {
         HBox hbox = (HBox) button.getParent();
         PopupDialogService popupDialogService = new PopupDialogService();
-        try {
-            boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you shure you want to cancel the reservation?", (Stage) ReservationListContainer.getScene().getWindow());
-            if (isConfirmed) {
-                boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay ___.", (Stage) ReservationListContainer.getScene().getWindow());
-                if (confirmed) {
-                    ReservationListContainer.getChildren().remove(hbox);
+        // Use Platform.runLater to handle popup and UI updates
+        Platform.runLater(() -> {
+            try {
+                boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to cancel the reservation?", (Stage) ReservationListContainer.getScene().getWindow());
+                if (isConfirmed) {
+                    boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredReservationCancelationFee(reservation)), (Stage) ReservationListContainer.getScene().getWindow());
+                    if (confirmed) {
+                        ReservationListContainer.getChildren().remove(hbox);
+                    }
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-        }catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        });
     }
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        App.setRoot("home-page");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private double getRequiredReservationCancelationFee(Reservation reservations) {
+        return 10.0;
     }
 }

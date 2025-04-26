@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="il.cshaifasweng.OCSFMediatorExample.client.BranchesOpeningTimesPopupController"
+      alignment="CENTER"
+      spacing="10.0">
+    <Label text="Branches and Their Opening Times" style="-fx-font-size: 16px;"/>
+    <ScrollPane fitToWidth="true" prefHeight="400.0" prefWidth="300.0">
+        <VBox fx:id="branchesContainer" spacing="10.0" alignment="CENTER"/>
+    </ScrollPane>
+    <Button fx:id="close" text="Close" onAction="#close"/>
+</VBox>

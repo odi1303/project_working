@@ -1,9 +1,8 @@
+/*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 
 import java.util.List;
@@ -28,3 +27,4 @@ public class MenuItemsBL {
         return items.toList();
     }
 }
+*/

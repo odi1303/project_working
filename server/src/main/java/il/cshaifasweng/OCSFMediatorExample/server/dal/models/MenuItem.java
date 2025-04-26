@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "menu_items")
@@ -14,6 +15,10 @@ public class MenuItem
 
     @Column(name = "description", nullable=false)
     public String description;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "preferences")
+    public List<String> Preferences;
 
     @Column(name = "price", nullable=false)
     public Long price;

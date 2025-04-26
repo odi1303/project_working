@@ -1,11 +1,8 @@
+/*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.MenuRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestsRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequest;
@@ -23,10 +20,8 @@ public class AdminBL {
     @Inject
     MenuRepository menuRepository;
 
-    @Inject
     RequestsRepository requestsRepository;
 
-    @Inject
     UsersRepository usersRepository;
 
     public AdminBL(MenuRepository menuRepository, RequestsRepository requestsRepository, UsersRepository usersRepository) {
@@ -102,3 +97,4 @@ public class AdminBL {
         });
     }
 }
+*/

@@ -1,10 +1,8 @@
+/*
 package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import jakarta.data.repository.Repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.TableOrderRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 
@@ -22,12 +20,20 @@ public class TableOrdersBL {
     TableOrderRepository tableOrderRepository;
 
     public List<TableOrder> getTableOrders(Long userId) {
-        User user = usersRepository.findById(userId).get();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return null;
+
+        User user = Maybeuser.get();
         return user.getTableOrders();
     }
 
     public void cancelTableOrder(Long userId, Long tableOrderId) {
-        User user = usersRepository.findById(userId).get();
+        Optional<User> Maybeuser = usersRepository.findById(userId);
+        if(Maybeuser.isEmpty())
+            return;
+
+        User user = Maybeuser.get();
         TableOrder tableOrder = user.getTableOrders().stream().filter(to -> Objects.equals(to.getId(), tableOrderId)).findFirst().get();
 
         Date now = new Date();
@@ -45,3 +51,4 @@ public class TableOrdersBL {
         }
     }
 }
+*/

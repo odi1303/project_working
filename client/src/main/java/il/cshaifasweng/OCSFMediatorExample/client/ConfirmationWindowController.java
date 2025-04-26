@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 public class ConfirmationWindowController implements PopupController<String, Boolean> {
 
@@ -29,6 +30,19 @@ public class ConfirmationWindowController implements PopupController<String, Boo
         Stage stage = (Stage) confirmationLabel.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    public void initialize() {
+        try {
+//            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     @Override
     public void reInitialize(String message) {

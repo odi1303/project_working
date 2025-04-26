@@ -13,15 +13,10 @@ class User {
     @Column(name = "type")
     private UserType type;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "password")
-    String password;
-
     @Column(name = "username")
     private String userName;
 
     public User(String password, UserType type) {
-        this.password = password;
         this.type = type;
         System.out.println(id);
     }
@@ -30,8 +25,8 @@ class User {
         return type == UserType.Admin;
     }
 
-    public boolean correctPassword(String password) {
-        return this.password.equals(password);
+    public boolean correctPassword(int password) {
+        return this.id == password;
     }
 
     public UserType getType() {

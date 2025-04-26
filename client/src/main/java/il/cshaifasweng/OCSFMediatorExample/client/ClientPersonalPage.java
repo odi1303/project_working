@@ -1,9 +1,6 @@
-/**
- * Sample Skeleton for 'client_personal_page.fxml' Controller Class
- */
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,48 +12,55 @@ import java.io.IOException;
 
 public class ClientPersonalPage {
 
-    @FXML // fx:id="address"
-    private TextField address; // Value injected by FXMLLoader
+    @FXML
+    private TextField address;
 
-    @FXML // fx:id="cart"
-    private ImageView cart; // Value injected by FXMLLoader
+    @FXML
+    private ImageView cart;
 
-    @FXML // fx:id="complaint"
-    private Button complaint; // Value injected by FXMLLoader
+    @FXML
+    private Button complaint;
 
-    @FXML // fx:id="complaint_status"
-    private Button complaint_status; // Value injected by FXMLLoader
+    @FXML
+    private Button complaint_status;
 
-    @FXML // fx:id="home_icon"
-    private ImageView home_icon; // Value injected by FXMLLoader
+    @FXML
+    private ImageView home_icon;
 
-    @FXML // fx:id="menu"
-    private ImageView menu; // Value injected by FXMLLoader
+    @FXML
+    private ImageView menu;
 
-    @FXML // fx:id="my_orders"
-    private Button my_orders; // Value injected by FXMLLoader
+    @FXML
+    private Button my_orders;
 
-    @FXML // fx:id="my_reservations"
-    private Button my_reservations; // Value injected by FXMLLoader
+    @FXML
+    private Button my_reservations;
 
     @FXML
     void edit_address(ActionEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
 
     @FXML
     void home_page(MouseEvent event) throws IOException {
-        App.setRoot("home-page");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("home-page");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     void new_complaint(ActionEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
 
     @FXML
     void show_cart(MouseEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
 
     @FXML
@@ -69,22 +73,28 @@ public class ClientPersonalPage {
             } catch (Exception ignored) {
             }
         }
-        App.setRoot("menu-review");
+        // Use Platform.runLater to handle scene navigation
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("menu-review");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     void view_complaint_status(ActionEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
 
     @FXML
     void view_orders(ActionEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
 
     @FXML
     void view_reservations(ActionEvent event) {
-
+        // Placeholder method; no UI updates currently
     }
-
 }
