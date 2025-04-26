@@ -6,4 +6,5 @@ public enum UserType {
     Dietitian,
     CustomerServiceWorker,
     Empty,
+    BranchManager
 }

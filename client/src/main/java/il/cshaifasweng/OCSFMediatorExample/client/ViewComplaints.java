@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 import java.io.IOException;
@@ -47,9 +49,12 @@ public class ViewComplaints {
     }
     @FXML
     void initialize() throws IOException {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+            chose_status.getItems().addAll("Approved", "Denied");
+        }
         //chose_complaint.getItems().add("there are no complaints today");
-        chose_status.getItems().addAll("Approved", "Denied");
-        if (complaints==null) {
+        if (complaints==null||complaints.isEmpty()) {
             new Thread(() -> {
                 try {
                     System.out.println("requesting all the complaints");
@@ -59,20 +64,26 @@ public class ViewComplaints {
                 }
             }).start();
         }
-        else {
-            System.out.println("showing all the complaints");
-            List<String>strings=new ArrayList<>();
+
+    }
+
+    @Subscribe
+    public void on_respond(List<?> list) throws IOException {
+        complaints = (List<Complaint>) list;
+        System.out.println("got the list, new way");
+
+        if (complaints != null && !complaints.isEmpty()) {
+            List<String> strings = new ArrayList<>();
             for (Complaint complaint : complaints) {
-                String head=complaint.getHeadline() +"||"+(complaint.getDate()).toString();
+                String head = complaint.getHeadline() + "||" + (complaint.getDate()).toString();
                 strings.add(head);
                 System.out.println(head);
             }
             Platform.runLater(() -> {
+                chose_complaint.getItems().clear();  // clear previous if any
                 chose_complaint.getItems().addAll(strings);
             });
-
         }
-
     }
 
 
@@ -111,7 +122,7 @@ public class ViewComplaints {
             }
 
             current_complaint = null;
-            if (complaints.isEmpty())
+            if (!complaints.isEmpty())
                 complaints = null;
 
             App.setRoot("home-page");

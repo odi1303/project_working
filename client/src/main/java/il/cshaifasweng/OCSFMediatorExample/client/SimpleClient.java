@@ -60,13 +60,12 @@ public class SimpleClient extends AbstractClient {
 			if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
 			}
-		} else if (msg instanceof OpeningTimes){
-			EventBus.getDefault().post(msg);
+			/*} /else if (msg instanceof OpeningTimes){
+			EventBus.getDefault().post(msg);*/
 		} else if (msg instanceof List<?>) {
 			System.out.println("got the list from server");
 			List<Complaint> complains = (List<Complaint>) msg;
-			ViewComplaints.complaints=complains;
-			App.setRoot("view-complaints");
+			EventBus.getDefault().post(complains);
 		}
 	}
 

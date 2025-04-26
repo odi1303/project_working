@@ -1,7 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
-
+/*
 import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OpeningHours;
+import il
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -85,3 +87,4 @@ public class BranchesOpeningTimesPopupController implements PopupController<List
         stage.close();
     }
 }
+*/

@@ -3,6 +3,8 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
@@ -53,7 +55,7 @@ public class SimpleServer extends AbstractServer{
 	}
 
 	@Override
-	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer" + " " + msgString);
 		Session session = null;
@@ -99,7 +101,7 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.equals("#getAllComplaints")) {
 			try {
-				List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+				List<Complaint> complaints = ComplaintsBL.getAllComplains(db_.getSession());
 				client.sendToClient(complaints);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -125,6 +127,7 @@ public class SimpleServer extends AbstractServer{
 		}else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
 			List<Complaint> openComplaints =new ArrayList<>();
+			System.out.println(db_);
 			List<Complaint> complaints = db_.getAll(new Complaint());
 			for (Complaint complain : complaints) {
 				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
