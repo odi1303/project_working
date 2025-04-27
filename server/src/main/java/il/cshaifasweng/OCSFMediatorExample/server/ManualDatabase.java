@@ -55,14 +55,41 @@ public class ManualDatabase {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
+            initializeDataIfEmpty();
         } catch (Exception exception) {
-            if (session != null) {
+            if (session != null && session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
             System.err.println("An error occurred, changes have been rolled back.");
             exception.printStackTrace();
         }
     }
+
+    private void initializeDataIfEmpty() {
+        try {
+            // Begin transaction
+            session.beginTransaction();
+
+            // Check if the database is empty (e.g., by querying the User table)
+            Long com[-ount = (Long) session.createQuery("SELECT COUNT(*) FROM Complaint ").uniqueResult();
+            if (userCount > 0) {
+                System.out.println("Database already contains data. Skipping initialization.");
+                session.getTransaction().commit();
+                return;
+            }
+
+            session.getTransaction().commit();
+            System.out.println("Database initialized with default data.");
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            System.err.println("Failed to initialize data.");
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize data", e);
+        }
+    }
+
 
     public void saveOrUpdate(Object o) {
         System.out.println("Saving " + o.getClass().getSimpleName());
