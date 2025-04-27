@@ -71,8 +71,8 @@ public class ManualDatabase {
             session.beginTransaction();
 
             // Check if the database is empty (e.g., by querying the User table)
-            Long com[-ount = (Long) session.createQuery("SELECT COUNT(*) FROM Complaint ").uniqueResult();
-            if (userCount > 0) {
+            Long complaintCount = (Long) session.createQuery("SELECT COUNT(*) FROM Complaint ").uniqueResult();
+            if (complaintCount  > 0) {
                 System.out.println("Database already contains data. Skipping initialization.");
                 session.getTransaction().commit();
                 return;
