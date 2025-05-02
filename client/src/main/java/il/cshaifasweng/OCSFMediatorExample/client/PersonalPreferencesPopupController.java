@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -11,7 +12,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalPreferencesPopupController implements PopupController<DishClient, List<String>> {
+public class PersonalPreferencesPopupController implements PopupController<MenuItem, List<String>> {
 
     @FXML
     private Label dishNameLabel;
@@ -19,7 +20,7 @@ public class PersonalPreferencesPopupController implements PopupController<DishC
     @FXML
     private VBox preferencesContainer;
 
-    private DishClient dish;
+    private MenuItem dish;
     private List<String> selectedPreferences = new ArrayList<>();
     private boolean submitted = false;
 
@@ -55,7 +56,7 @@ public class PersonalPreferencesPopupController implements PopupController<DishC
     }
 
     @Override
-    public void reInitialize(DishClient input) {
+    public void reInitialize(MenuItem input) {
         this.dish = input;
         dishNameLabel.setText("Preferences for: " + dish.getName());
 
@@ -85,6 +86,7 @@ public class PersonalPreferencesPopupController implements PopupController<DishC
             preferencesContainer.getChildren().add(ingredientBox);
         }
     }
+
 
     @Override
     public List<String> getOutput() {

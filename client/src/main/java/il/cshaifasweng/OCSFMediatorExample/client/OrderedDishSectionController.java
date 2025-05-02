@@ -1,13 +1,12 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -59,14 +58,14 @@ public class OrderedDishSectionController {
         }
     }
 
-    public void setDishInDishSection(DishClient dish){
+    public void setDishInDishSection(MenuItem dish){
         dishSectionController.setDish(dish);
     }
     public void setDishDataInDishSection() {
         dishSectionController.setDishDataInDishSection();
     }
 
-    public Label getCountLabel() {
-        return countLabel;
+    public String getCountLabel() {
+        return countLabel.getText();
     }
 }

@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Reservation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,37 +24,41 @@ public class CancelReservationScreenController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
-            List<Reservation> reservations = HardcodedReservations.getSampleReservations();
+            EventBus.getDefault().register(this);
+            App.sendMessageToServer("send all reservations");
+            //List<Reservation> reservations = HardcodedReservations.getSampleReservations();
             // Use Platform.runLater to update ReservationListContainer
-            Platform.runLater(() -> {
-                ReservationListContainer.getChildren().clear();
-                for (Reservation reservation : reservations) {
-                    HBox hbox = new HBox();
-                    Button cancelButton = createCancelButton(reservation);
-                    hbox.getChildren().add(cancelButton);
-
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReservationCard.fxml"));
-                        Node dishNode = fxmlLoader.load();
-                        ReservationCardController reservationCardController = fxmlLoader.getController();
-                        reservationCardController.setData(reservation);
-                        hbox.getChildren().add(dishNode);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ReservationListContainer.getChildren().add(hbox);
-                }
-            });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+    @Subscribe
+    public void on_respond(List<Reservation> reservations) {
+        Platform.runLater(() -> {
+            ReservationListContainer.getChildren().clear();
+            for (Reservation reservation : reservations) {
+                HBox hbox = new HBox();
+                Button cancelButton = createCancelButton(reservation);
+                hbox.getChildren().add(cancelButton);
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReservationCard.fxml"));
+                    Node dishNode = fxmlLoader.load();
+                    ReservationCardController reservationCardController = fxmlLoader.getController();
+                    reservationCardController.setData(reservation);
+                    hbox.getChildren().add(dishNode);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ReservationListContainer.getChildren().add(hbox);
+            }
+        });
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     private Button createCancelButton(Reservation reservation) {
         Button button = new Button();

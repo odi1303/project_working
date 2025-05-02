@@ -2,9 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @DiscriminatorValue("UPDATE")
-public class UpdateRequest extends Request
+public class UpdateRequest extends Request implements Serializable
 {
     @Column(name="menu_item_id")
     public Long menuItemId;

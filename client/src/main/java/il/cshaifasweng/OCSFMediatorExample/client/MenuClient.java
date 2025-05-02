@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 
 public class MenuClient {
-    private ArrayList<DishClient> menu;
+    private ArrayList<MenuItem> menu;
     private String menuName;
 
     @FXML
@@ -31,7 +32,7 @@ public class MenuClient {
         menuName = "";
     }
 
-    public MenuClient(ArrayList<DishClient> dishes) {
+    public MenuClient(ArrayList<MenuItem> dishes) {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
@@ -40,7 +41,7 @@ public class MenuClient {
         menuName = "";
     }
 
-    public MenuClient(String menuName, ArrayList<DishClient> dishes) {
+    public MenuClient(String menuName, ArrayList<MenuItem> dishes) {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
@@ -56,7 +57,7 @@ public class MenuClient {
         return menuName;
     }
 
-    public ArrayList<DishClient> getMenu() {
+    public ArrayList<MenuItem> getMenu() {
         if (menu == null){
             return new ArrayList<>();
         }else {
@@ -64,18 +65,18 @@ public class MenuClient {
         }
     }
 
-    public void addDish(DishClient dish) {
+    public void addDish(MenuItem dish) {
         menu.add(dish);
     }
     //public void removeDish(DishClient dish) {
 //        menu.remove(dish);
 //    }
 
-    public boolean removeDish(DishClient dish) {
+    public boolean removeDish(MenuItem dish) {
         if (menu.contains(dish)){
             menu.remove(dish);
         }else{
-            for (DishClient dishInMenu : menu){
+            for (MenuItem dishInMenu : menu){
                 if (dishInMenu.equals(dish)){
                     menu.remove(dishInMenu);
                     return true;
@@ -85,8 +86,8 @@ public class MenuClient {
         return false;
     }
 
-    public boolean isContainsDish(DishClient dish) {
-        for (DishClient dishInMenu : menu){
+    public boolean isContainsDish(MenuItem dish) {
+        for (MenuItem dishInMenu : menu){
             if (dishInMenu.equals(dish)){
                 return true;
             }
@@ -97,7 +98,7 @@ public class MenuClient {
     public List<String> getAllBranches() {
         Set<String> branchesSet = new HashSet<>(); // Using a Set to avoid duplicates
 
-        for (DishClient dish : menu) {
+        for (MenuItem dish : menu) {
             branchesSet.addAll(dish.getAvailableBranches());
         }
 
@@ -107,7 +108,7 @@ public class MenuClient {
     public List<String> getAllIngredients() {
         Set<String> IngredientsSet = new HashSet<>(); // Using a Set to avoid duplicates
 
-        for (DishClient dish : menu) {
+        for (MenuItem dish : menu) {
             IngredientsSet.addAll(dish.getIngredients());
         }
 

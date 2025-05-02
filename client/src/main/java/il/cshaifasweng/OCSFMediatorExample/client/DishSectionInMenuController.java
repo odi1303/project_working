@@ -3,9 +3,11 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+//import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.greenrobot.eventbus.EventBus;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 
 public class DishSectionInMenuController {
 
@@ -17,7 +19,7 @@ public class DishSectionInMenuController {
     @FXML private VBox availableBranches;
     @FXML private VBox ingredients;
 
-    private DishClient dish;
+    private MenuItem dish;
 
     @FXML
     public void initialize() {
@@ -32,7 +34,7 @@ public class DishSectionInMenuController {
 //        EventBus.getDefault().unregister(this);
 //    }
 
-    public void setDish(DishClient dish) {
+    public void setDish(MenuItem dish) {
         this.dish = dish;
     }
 
@@ -86,7 +88,7 @@ public class DishSectionInMenuController {
         }
     }
 
-    public DishClient getDishClient() {
+    public MenuItem getDishClient() {
         return dish;
     }
 

@@ -1,8 +1,17 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.LocationInformation;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationInformationPopupWindowController implements PopupController<String, LocationInformation> {
 
@@ -17,7 +26,12 @@ public class LocationInformationPopupWindowController implements PopupController
 
     @FXML
     private TextField houseNumberField;
-
+    @FXML
+    public void initialize() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
     @FXML
     private void submit() {
         locationInformation = new LocationInformation(
@@ -25,11 +39,18 @@ public class LocationInformationPopupWindowController implements PopupController
                 streetField.getText(),
                 houseNumberField.getText()
         );
-
+        new Thread(()->{
+            try {
+                App.sendMessageToServer(locationInformation);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
         if (!locationInformation.isValid()) {
             return;
         }
         submitted = true;
+
 
         // Close the pop-up window after submission
         Stage stage = (Stage) (cityField.getScene().getWindow());
@@ -40,7 +61,11 @@ public class LocationInformationPopupWindowController implements PopupController
     public void reInitialize(String input) {
         // Optionally use input to pre-populate fields if needed.
     }
-
+    @Subscribe
+    public void on_respond(LocationInformation locationInformation) throws IOException {
+        this.locationInformation=locationInformation;
+        System.out.println("got the location from server");
+    }
     @Override
     public LocationInformation getOutput() {
         if (submitted) {

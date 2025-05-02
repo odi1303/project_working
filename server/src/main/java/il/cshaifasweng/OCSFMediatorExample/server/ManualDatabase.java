@@ -10,6 +10,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequ
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.InsertRequest;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
+import jakarta.transaction.Transactional;
+import javafx.util.Pair;
 import org.hibernate.Session;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 
@@ -47,6 +50,13 @@ public class ManualDatabase {
         config.addAnnotatedClass(Complain.class);
         config.addAnnotatedClass(RestaurantComplain.class);
         config.addAnnotatedClass(DeliveryComplain.class);
+        config.addAnnotatedClass(LocationInformation.class);
+        config.addAnnotatedClass(PersonalInformation.class);
+        config.addAnnotatedClass(Reservation.class);
+        config.addAnnotatedClass(OrderClient.class);
+        config.addAnnotatedClass(OrderItem.class);
+        config.addAnnotatedClass(ReservationDetails.class);
+        config.addAnnotatedClass(CreditInformation.class);
         var serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         return config.buildSessionFactory(serviceRegistry);
     }
@@ -55,14 +65,244 @@ public class ManualDatabase {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
+            initializeDataIfEmpty();
         } catch (Exception exception) {
-            if (session != null) {
+            if (session != null && session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-           System.err.println("An error occurred, changes have been rolled back.");
+            System.err.println("An error occurred, changes have been rolled back.");
             exception.printStackTrace();
-       }
+        }
     }
+
+    private void initializeDataIfEmpty() {
+        try {
+            // Begin transaction
+            session.beginTransaction();
+
+            // Check if the database is empty (e.g., by querying the User table)
+            Long complaintCount = (Long) session.createQuery("SELECT COUNT(*) FROM Complaint ").uniqueResult();
+            if (complaintCount  > 0) {
+                System.out.println("Database already contains data. Skipping initialization.");
+                session.getTransaction().commit();
+                return;
+            }
+
+            session.getTransaction().commit();
+            System.out.println("Database initialized with default data.");
+            generateOrders();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            System.err.println("Failed to initialize data.");
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize data", e);
+        }
+    }
+    @Transactional
+    public void generateOrders(){
+        session.beginTransaction();
+        session.flush();
+        MenuItem pizza = new MenuItem(
+                "Pizza",
+                "Cheese pizza with tomato sauce",
+                35,
+                "images/pizza.jpg",
+                Arrays.asList("Branch A", "Branch B", "Branch C"),
+                Arrays.asList("Cheese", "Tomato Sauce", "Dough"),
+                new ArrayList<>(),
+                10
+        );
+        session.save(pizza);
+
+        MenuItem burger = new MenuItem(
+                "Burger",
+                "Beef burger with lettuce and tomato",
+                40,
+                "images/burger.jpg",
+                Arrays.asList("Branch A", "Branch D"),
+                Arrays.asList("Beef Patty", "Lettuce", "Tomato", "Bun"),
+                new ArrayList<>(),
+                0
+        );
+        session.save(burger);
+        MenuItem pasta = new MenuItem(
+                "Pasta",
+                "Spaghetti with meatballs",
+                30,
+                "images/pasta.jpg",
+                Arrays.asList("Branch B", "Branch C"),
+                Arrays.asList("Spaghetti", "Meatballs", "Tomato Sauce"),
+                new ArrayList<>(),
+                5
+        );
+        session.save(pasta);
+        MenuItem salad = new MenuItem(
+                "Salad",
+                "Fresh vegetable salad",
+                25,
+                "images/salad.jpg",
+                Arrays.asList("Branch A", "Branch C"),
+                Arrays.asList("Lettuce", "Tomato", "Cucumber", "Dressing"),
+                new ArrayList<>(),
+                15
+        );
+        session.save(salad);
+        MenuItem sushi = new MenuItem(
+                "Sushi",
+                "Assorted sushi platter",
+                55,
+                "images/sushi.jpg",
+                Arrays.asList("Branch D"),
+                Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables"),
+                new ArrayList<>(),
+                0
+        );
+        session.save(sushi);
+        MenuItem hummusPlate = new MenuItem(
+                "Hummus Plate",
+                "Creamy hummus served with vegetables and pita.",
+                25,
+                "https://example.com/images/hummus.jpg",
+                List.of("Haifa", "Tel Aviv"),
+                List.of("Hummus", "Tomato", "Onion", "Olives"),
+                new ArrayList<>(),
+                0 // No Sale
+        );
+        session.save(hummusPlate);
+        MenuItem falafelPlate = new MenuItem(
+                "Falafel Plate",
+                "Delicious falafel balls served with hummus and salad.",
+                22,
+                "https://example.com/images/falafel.jpg",
+                List.of("Tel Aviv", "Haifa", "Jerusalem"),
+                List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
+                new ArrayList<>(),
+                15 // Sale: 15% off
+        );
+        session.save(falafelPlate);
+        MenuItem cheeseSandwich = new MenuItem(
+                "Cheese Sandwich",
+                "A simple cheese sandwich with tomato and lettuce.",
+                20,
+                "https://example.com/images/cheese_sandwich.jpg",
+                List.of("Haifa", "Jerusalem"),
+                List.of("Cheese", "Tomato", "Lettuce"),
+                new ArrayList<>(),
+                0 // No Sale
+        );
+        session.save(cheeseSandwich);
+        MenuItem beefSalad = new MenuItem(
+                "Beef Salad",
+                "Salad with grilled beef, lettuce, tomato, and cucumber.",
+                40,
+                "https://example.com/images/beef_salad.jpg",
+                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
+                new ArrayList<>(),
+                20 // Sale: 20% off
+        );
+        session.save(beefSalad);
+        MenuItem falafelWrap = new MenuItem(
+                "Falafel Wrap",
+                "Falafel served in pita bread with lettuce and hummus.",
+                24,
+                "https://example.com/images/falafel_wrap.jpg",
+                List.of("Haifa", "Tel Aviv"),
+                List.of("Falafel", "Hummus", "Lettuce"),
+                new ArrayList<>(),
+                0 // No Sale
+        );
+        session.save(falafelWrap);
+        MenuItem mixedPlatter = new MenuItem(
+                "Mixed Platter",
+                "Combination of falafel, hummus, tomato, and olives.",
+                30,
+                "https://example.com/images/mixed_platter.jpg",
+                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Falafel", "Hummus", "Tomato", "Olives"),
+                new ArrayList<>(),
+                0 // No Sale
+        );
+        session.save(mixedPlatter);
+        LocationInformation location1 = new LocationInformation("New York", "Broadway", "123");
+        session.save(location1);
+        LocationInformation location2 = new LocationInformation("Los Angeles", "Sunset Boulevard", "456");
+        session.save(location2);
+        LocationInformation location3 = new LocationInformation("Chicago", "Michigan Avenue", "789");
+        session.save(location3);
+
+        PersonalInformation personalInfo = new PersonalInformation("John Doe", "john@example.com", "1234567890");
+        session.save(personalInfo);
+        CreditInformation creditInfo = new CreditInformation("1234-5678-9012-3456", "12/27", "123");
+        session.save(creditInfo);
+        OrderClient order1 = new OrderClient(List.of(
+                new OrderItem(pizza, 2),
+                new OrderItem(burger, 1)
+        ), true, location1, personalInfo, creditInfo);
+        session.save(order1);
+        OrderClient order2 = new OrderClient(List.of(
+                new OrderItem(pasta, 1),
+                new OrderItem(salad, 3)
+        ), false, location2, personalInfo, creditInfo);
+        session.save(order2);
+        OrderClient order3 = new OrderClient(List.of(
+                new OrderItem(sushi, 2),
+                new OrderItem(pizza, 1),
+                new OrderItem(salad, 1),
+                new OrderItem(pasta, 3),
+                new OrderItem(burger, 1),
+                new OrderItem(salad, 3)
+        ), true, location3, personalInfo, creditInfo);
+        session.save(order3);
+
+        ReservationDetails reservationDetails1 = new ReservationDetails(
+                "Haifa Branch", "5", "Private Room", "2025-04-05", "18:00"
+        );
+        session.save(reservationDetails1);
+        PersonalInformation personalInformation1 = new PersonalInformation(
+                "Alice Johnson", "0521234567", "alice.johnson@example.com"
+        );
+        session.save(personalInformation1);
+        CreditInformation creditInformation1 = new CreditInformation(
+                "1234567812345678", "12/26", "123"
+        );
+        session.save(creditInformation1);
+        Reservation reservation1 = new Reservation(reservationDetails1, personalInformation1, creditInformation1);
+        session.save(reservation1);
+        ReservationDetails reservationDetails2 = new ReservationDetails(
+                "Tel Aviv Branch", "3", "Outdoor Area", "2025-04-06", "20:00"
+        );
+        session.save(reservationDetails2);
+        PersonalInformation personalInformation2 = new PersonalInformation(
+                "Bob Smith", "0549876543", "bob.smith@example.com"
+        );
+        session.save(personalInformation2);
+        CreditInformation creditInformation2 = new CreditInformation(
+                "8765432187654321", "05/27", "456"
+        );
+        session.save(creditInformation2);
+        Reservation reservation2 = new Reservation(reservationDetails2, personalInformation2, creditInformation2);
+        session.save(reservation2);
+        ReservationDetails reservationDetails3 = new ReservationDetails(
+                "Jerusalem Branch", "2", "VIP Lounge", "2025-04-07", "19:30"
+        );
+        session.save(reservationDetails3);
+        PersonalInformation personalInformation3 = new PersonalInformation(
+                "Charlie Brown", "0535556677", "charlie.brown@example.com"
+        );
+        session.save(personalInformation3);
+        CreditInformation creditInformation3 = new CreditInformation(
+                "4567891245678912", "08/28", "789"
+        );
+        session.save(creditInformation3);
+        Reservation reservation3 = new Reservation(reservationDetails3, personalInformation3, creditInformation3);
+        session.save(reservation3);
+        session.flush();
+        session.getTransaction().commit();
+    }
+
 
     public void saveOrUpdate(Object o) {
         System.out.println("Saving " + o.getClass().getSimpleName());

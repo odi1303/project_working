@@ -1,5 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
-
+/*
 public class LocationInformation {
     private final String city;
     private final String street;
@@ -31,3 +31,4 @@ public class LocationInformation {
                 && houseNumber != null && !houseNumber.trim().isEmpty();
     }
 }
+*/

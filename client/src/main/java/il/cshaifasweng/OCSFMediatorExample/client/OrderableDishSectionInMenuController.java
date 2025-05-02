@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -47,7 +48,7 @@ public class OrderableDishSectionInMenuController {
         }
     }
 
-    public void setDishInDishSection(DishClient dish){
+    public void setDishInDishSection(MenuItem dish){
         dishSectionController.setDish(dish);
     }
     public void setDishDataInDishSection(){

@@ -82,9 +82,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
+        client.sendToServer("add client");
         scene = new Scene(loadFXML("home-page"), 640, 480);
         stage.setScene(scene);
         stage.show();
@@ -93,9 +94,9 @@ public class App extends Application {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+            //EventBus.getDefault().register(this);
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
     }
 
@@ -120,9 +121,19 @@ public class App extends Application {
 
     @Override
     public void stop() throws Exception {
+        if (client != null && client.isConnected()) {
+            try {
+                System.out.println("Attempting to send 'remove client' to server..."); // Add this log
+                client.sendToServer("remove client");
+                System.out.println("'remove client' message sent."); // Add this log
+            } catch (IOException e) {
+                System.err.println("Error sending 'remove client': " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Client is not connected or is null, skipping 'remove client'."); // Add this log
+        }
         EventBus.getDefault().unregister(this);
-        client.sendToServer("remove client");
-        client.closeConnection();
         super.stop();
     }
 

@@ -1,5 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,12 +12,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import javafx.scene.Node;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class CancelDeliveryScreenController {
 
@@ -24,22 +27,27 @@ public class CancelDeliveryScreenController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
-            ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
+            EventBus.getDefault().register(this);
+            App.sendMessageToServer("send all orders");
+            //ArrayList<OrderClient> orders = HardcodedOrders.createHardcodedOrders();
             // Use Platform.runLater to add orders to orderTable
-            Platform.runLater(() -> {
-                for (OrderClient order : orders) {
-                    addOrderToVBox(order);
-                }
-            });
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
+    @Subscribe
+    public void on_respond(List<OrderClient> orders) {
+        Platform.runLater(() -> {
+            for (OrderClient order : orders) {
+                addOrderToVBox(order);
+            }
+        });
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
+    }
+
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     @FXML
     private void goToHomePage() throws IOException {
@@ -62,9 +70,9 @@ public class CancelDeliveryScreenController {
         cancelButton.setOnAction(event -> removeOrder(order, scrollPane));
         hBox.getChildren().add(cancelButton);
 
-        for (Pair<DishClient, Integer> pair : order.getOrderDishesList()) {
-            DishClient dish = pair.getKey();
-            int count = pair.getValue();
+        for (OrderItem pair : order.getOrderItems()) {
+            MenuItem dish = pair.getMenuItem();
+            int count = pair.getQuantity();
             Node node = createDishCountFxmlNode(dish, count);
             hBox.getChildren().add(node);
         }
@@ -81,7 +89,7 @@ public class CancelDeliveryScreenController {
         });
     }
 
-    private Node createDishCountFxmlNode(DishClient dish, int count) {
+    private Node createDishCountFxmlNode(MenuItem dish, int count) {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label dishCountLabel = new Label("count: " + count);

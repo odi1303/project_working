@@ -1,17 +1,33 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
-/*
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
-public class Reservation {
-    private final ReservationDetails reservationDetails;
-    private final PersonalInformation personalInformation;
-    private final CreditInformation creditInformation;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
+
+@Entity
+@Table(name = "Reservations")
+public class Reservation implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private int id;
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private  ReservationDetails reservationDetails;
+    @JoinColumn
+    @ManyToOne
+    private PersonalInformation personalInformation;
+    @ManyToOne
+    @JoinColumn(name = "credit_information_id")
+    private CreditInformation creditInformation;
     public Reservation(ReservationDetails reservationDetails, PersonalInformation personalInformation, CreditInformation creditInformation) {
         this.reservationDetails = reservationDetails;
         this.personalInformation = personalInformation;
         this.creditInformation = creditInformation;
+    }
+
+    public Reservation() {
+
     }
 
     public ReservationDetails getReservationDetails() {
@@ -34,4 +50,4 @@ public class Reservation {
                 reservationDetails.isValid() &&
                 creditInformation.isValid();
     }
-}*/
+}

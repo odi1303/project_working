@@ -6,18 +6,19 @@ import jakarta.persistence.GenerationType;
 import lombok.NoArgsConstructor;
 //import org.hibernate.annotations.Table;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor()
 @Entity
 @Table(name = "restaurants")
-public class Restaurant {
+public class Restaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "restaurant_id")
     //why not String???
     public Long id;
-
+    public String name;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours sundayOpeningHours;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
@@ -40,6 +41,7 @@ public class Restaurant {
     public Long getId() {
         return id;
     }
+
 
     public Long return_money(long amount_to_return)
     {
@@ -91,5 +93,21 @@ public class Restaurant {
         this.saturdayOpeningHours = saturdayOpeningHours;
         this.tables = tables;
         this.sales = 0;
+    }
+    public Restaurant getRestaurant(int id){
+        if (this.id.equals(id)){
+            return this;
+        }
+        else{
+            return null;
+        }
+    }
+    public Restaurant getRestaurant(String name){
+        if (this.name.equals(name)){
+            return this;
+        }
+        else{
+            return null;
+        }
     }
 }

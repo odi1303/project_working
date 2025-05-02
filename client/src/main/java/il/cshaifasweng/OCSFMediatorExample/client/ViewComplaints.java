@@ -60,7 +60,7 @@ public class ViewComplaints {
                     System.out.println("requesting all the complaints");
                     App.sendMessageToServer("send all complaints");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }).start();
         }

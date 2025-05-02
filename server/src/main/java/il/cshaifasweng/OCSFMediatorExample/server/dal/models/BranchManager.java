@@ -3,7 +3,9 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.UserType;
 
-public class BranchManager extends il.cshaifasweng.OCSFMediatorExample.server.dal.models.User {
+import java.io.Serializable;
+
+public class BranchManager extends il.cshaifasweng.OCSFMediatorExample.server.dal.models.User implements Serializable {
     private int branchID;
 
     public BranchManager(int id, String password, int branchID, String userName) {

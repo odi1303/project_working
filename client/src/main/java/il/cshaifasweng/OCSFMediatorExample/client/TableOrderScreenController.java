@@ -7,6 +7,10 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.HashMap;
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.ReservationDetails;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -2,9 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @DiscriminatorValue("DELETE")
-public class DeleteRequest extends Request
+public class DeleteRequest extends Request implements Serializable
 {
     @Column(name="menu_item_id", nullable=false)
     public Long menuItemId;

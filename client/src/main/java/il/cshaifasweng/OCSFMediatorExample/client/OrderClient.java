@@ -1,8 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
-
+/*
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import javafx.util.Pair;
 
 public class OrderClient {
@@ -24,7 +26,7 @@ public class OrderClient {
         this.creditInformation = creditInformation;
     }
 
-    public List<Pair<DishClient, Integer>> getOrderDishesList() {
+    public OrderItem getOrderDishesList() {
         return order;
     }
 
@@ -45,3 +47,4 @@ public class OrderClient {
 //        this.isDelivery = isDelivery;
 //    }
 }
+*/

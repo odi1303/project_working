@@ -1,11 +1,24 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
-/*
-public class CreditInformation {
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "Credit information")
+public class CreditInformation implements Serializable {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+    @Column(name = "Card number")
     private String cardNumber;
-    private String expirationDate; // Format: MM/YY
+    @Column(name = "Expiration date")
+    private String expirationDate;
+    @Column(name = "cvv")
     private String cvv;
-
     public CreditInformation() {}
 
     public CreditInformation(String cardNumber, String expirationDate, String cvv) {
@@ -53,4 +66,5 @@ public class CreditInformation {
     public boolean isCvvValid() {
         return cvv != null && cvv.matches("\\d{3}"); // 3-digit CVV
     }
-}*/
+
+}

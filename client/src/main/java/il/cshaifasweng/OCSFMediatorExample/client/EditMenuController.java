@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -176,7 +177,7 @@ public class EditMenuController {
 //        EventBus.getDefault().unregister(this);
 //    }
 
-    public void deleteDishPressed(DishClient dish) {
+    public void deleteDishPressed(MenuItem dish) {
         PopupDialogService popupDialogService = new PopupDialogService();
         // Use Platform.runLater to handle popup and UI updates
         Platform.runLater(() -> {
@@ -192,7 +193,7 @@ public class EditMenuController {
         });
     }
 
-    public void EditDishPressed(DishClient dish) {
+    public void EditDishPressed(MenuItem dish) {
         EditDish(dish);
     }
 
@@ -234,7 +235,7 @@ public class EditMenuController {
     private void addNewDish() {
         // Use Platform.runLater to update UI
         Platform.runLater(() -> {
-            editDishController.setDish(new DishClient());
+            editDishController.setDish(new MenuItem());
             editDishController.setEdit(false);
             editDishContainer.setVisible(true);
             editDishContainer.setManaged(true);
@@ -246,7 +247,7 @@ public class EditMenuController {
         // Placeholder method; no UI updates currently
     }
 
-    private void EditDish(DishClient dish) {
+    private void EditDish(MenuItem dish) {
         // Use Platform.runLater to update UI
         Platform.runLater(() -> {
             editDishController.setDish(dish);
@@ -272,7 +273,7 @@ public class EditMenuController {
         });
     }
 
-    private void addDishToMenu(DishClient dish) {
+    private void addDishToMenu(MenuItem dish) {
         menu.addDish(dish);
         menuController.setMenu(menu);
     }

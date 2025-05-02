@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+
 import java.util.List;
 
 public class MenuFilter {
@@ -24,7 +26,7 @@ public class MenuFilter {
         if (filteredBranches == null || filteredIngredients == null || menu.getMenu() == null) {
             return filteredMenu;
         }
-        for (DishClient dish : menu.getMenu()){
+        for (MenuItem dish : menu.getMenu()){
             boolean isAtListOneNotFilterAvailableBranch = dish.getAvailableBranches().stream().anyMatch(filteredBranches::contains);
             boolean areAllIngredientsContainedInFilteredIngredients = dish.getIngredients().stream().allMatch(filteredIngredients::contains);
             if (isAtListOneNotFilterAvailableBranch && areAllIngredientsContainedInFilteredIngredients) {
