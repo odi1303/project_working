@@ -38,6 +38,7 @@ public class SimpleClient extends AbstractClient {
 
     private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
+		//EventBus.getDefault().register(this);
 	}
 
 	@FXML
@@ -62,7 +63,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-            System.out.println(message);
+            //System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {

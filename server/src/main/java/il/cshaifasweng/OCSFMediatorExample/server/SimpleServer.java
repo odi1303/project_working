@@ -58,7 +58,7 @@ public class SimpleServer extends AbstractServer{
 	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
 		String msgString = msg.toString();
 		System.out.println("SimpleServer " + msgString);
-		client.sendToClient("received: " + msgString);
+		//client.sendToClient("received: " + msgString);
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
 			try {

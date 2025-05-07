@@ -153,7 +153,11 @@ public class MenuController {
 
     }
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
-        Platform.runLater(()->menuDishList.getChildren().clear());
+        System.out.println("hello from set menu");
+        Platform.runLater(()->{
+            menuDishList.getChildren().clear();
+            System.out.println("check if got in and deleted the items"+menuDishList.getChildren().size());
+
         //menuDishList.getChildren().clear();
         if (menuClient != null){
             int i=0;
@@ -167,7 +171,7 @@ public class MenuController {
         }else{
             currentMenu = null;
         }
-
+    });
     }
 
     private void putBranchCheckBoxesInFilter(List<String> branches){
@@ -400,24 +404,29 @@ public class MenuController {
         App.sendMessageToServer("send all MenuItems");
     }*/
     @Subscribe
-    public void on_respond(List<MenuItem> dishes){
-        System.out.println("got the menu");
-        ArrayList<MenuItem> dishes1= (ArrayList<MenuItem>) dishes;
-        fullMenu = new MenuClient(dishes1);
-        setMenuInMenuSection(fullMenu, false);
-        currentMenu = new MenuClient(new ArrayList<>(dishes));
-        updateFilter();
+    public void on_respond(List<?> dishes)
+    {
+        if (dishes.isEmpty()) return;
+        if (dishes.getFirst() instanceof MenuItem) {
+            dishes = (List<MenuItem>) dishes;
+            System.out.println("got the menu");
+            ArrayList<MenuItem> dishes1 = (ArrayList<MenuItem>) dishes;
+            fullMenu = new MenuClient(dishes1);
+            //setMenuInMenuSection(fullMenu, false);
+            currentMenu = new MenuClient((ArrayList<MenuItem>) new ArrayList<>(dishes));
+            updateFilter();
 
-        //for order section
-        dishesInOrder = new ArrayList<MenuItem>();
+            //for order section
+        /*dishesInOrder = new ArrayList<MenuItem>();
         isOrder = false;
         for (MenuItem item:dishes1)
-            Platform.runLater(()->addDishToMenuSection(item,isOrder));
+            Platform.runLater(()->addDishToMenuSection(item,isOrder));*/
             //addDishToMenuSection(item,isOrder);
-        List<String> branches = fullMenu.getAllBranches();
+       /* List<String> branches = fullMenu.getAllBranches();
         List<String> ingredients = fullMenu.getAllIngredients();
         putBranchCheckBoxesInFilter(branches);
-        putIngredientsCheckBoxesInFilter(ingredients);
+        putIngredientsCheckBoxesInFilter(ingredients);*/
+        }
     }
 
 

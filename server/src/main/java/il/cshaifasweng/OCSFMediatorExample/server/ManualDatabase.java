@@ -81,16 +81,18 @@ public class ManualDatabase {
             session.beginTransaction();
 
             // Check if the database is empty (e.g., by querying the User table)
-            Long complaintCount = (Long) session.createQuery("SELECT COUNT(*) FROM Complaint ").uniqueResult();
+            Long complaintCount = (Long) session.createQuery("SELECT COUNT(*) FROM MenuItem ").uniqueResult();
             if (complaintCount  > 0) {
                 System.out.println("Database already contains data. Skipping initialization.");
                 session.getTransaction().commit();
-                return;
+            }
+            else{
+                session.getTransaction().commit();
+                System.out.println("Database initialized with default data.");
+                generateOrders();
             }
 
-            session.getTransaction().commit();
-            System.out.println("Database initialized with default data.");
-            generateOrders();
+
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
