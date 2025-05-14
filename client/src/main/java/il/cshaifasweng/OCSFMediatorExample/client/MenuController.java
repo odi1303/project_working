@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MenuController {
 
@@ -43,7 +45,7 @@ public class MenuController {
     private MenuClient fullMenu;
 
     private MenuClient currentMenu;
-
+    private PersonalInformation personalInformation;
     private ArrayList<MenuItem> dishesInOrder;
     private boolean isOrder;
     private boolean isDelete = false;
@@ -60,11 +62,13 @@ public class MenuController {
             isMain = true;
             if (fullMenu == null) {
                 try {
+                    dishesInOrder = new ArrayList<>();
                     System.out.println("requesting menu");
                     App.sendMessageToServer("send all MenuItems");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 /*new Thread(() -> {
                     try {
                         System.out.println("requesting menu");
@@ -89,10 +93,12 @@ public class MenuController {
         PopupDialogService popupDialogService = new PopupDialogService();
         try {
             locationInformation = popupDialogService.openPopup("LocationInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+            //App.sendMessageToServer(locationInformation);
             return locationInformation;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     private boolean getIsDelivery(){
@@ -341,9 +347,19 @@ public class MenuController {
                 if (isConfirmed != null && isConfirmed) {
                     LocationInformation locationInfo = getLocationInformation();
                     boolean isDelivery = getIsDelivery();
-                    PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    /*ExecutorService executor = Executors.newFixedThreadPool(1);
+                    executor.submit(() -> {
+                        try {
+                            App.sendMessageToServer(personalInformation);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    executor.shutdown();*/
                     if (personalInformation != null) {
                         CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                        //App.sendMessageToServer(creditInformation);
                         if (creditInformation != null) {
                             Boolean Confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Total price is:" + String.valueOf(getTotalPrice()) + ". Confirm Order?", (Stage) orderSection.getScene().getWindow());
                             if (Confirmed != null && Confirmed) {
@@ -428,6 +444,18 @@ public class MenuController {
         putIngredientsCheckBoxesInFilter(ingredients);*/
         }
     }
+    @Subscribe
+    public void on_respond(OrderClient order) throws IOException {
+        System.out.println("got into on respond for order");
+        if (order != null){
+            EmailSender emailSender=new EmailSender();
+            emailSender.send_email_respond(personalInformation.getEmail(),"Your Order from Mama's Restaurant no."+order.id,order.toString());
+            App.setRoot("home-page");
+        }
+        else {
+            System.out.println("the order is empty, it didn't work");
+        }
+    }
 
 
 
@@ -455,8 +483,8 @@ public class MenuController {
 
     private void sendOrder(OrderClient order) {
         try{
-
-            App.setRoot("home-page");
+            System.out.println("is the order null?"+order==null);
+            App.sendMessageToServer(order);
         }catch(Exception e){
             e.printStackTrace();
         }

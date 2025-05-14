@@ -309,9 +309,15 @@ public class ManualDatabase {
     public void saveOrUpdate(Object o) {
         System.out.println("Saving " + o.getClass().getSimpleName());
         System.out.println(session);
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         System.out.println("a");
         try {
+            if (o instanceof OrderClient){
+                session.saveOrUpdate(((OrderClient) o).getCreditInformation());
+                session.saveOrUpdate(((OrderClient) o).getLocationInformation());
+                session.saveOrUpdate(((OrderClient) o).getPersonalInformation());
+            }
             session.saveOrUpdate(o);
         }
         catch (Exception exception) {
@@ -320,18 +326,35 @@ public class ManualDatabase {
             if (existing == null) {
                 session.save(o);
             } else {
-                session.merge(o);  // or manually update the fields
+                session.merge(o);// or manually update the fields
             }
         }
         System.out.println("b");
-        session.getTransaction().commit();
+        try{
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+        }
         System.out.println("c");
-        session.flush();
+        try{
+            if(session.getTransaction().isActive())
+                session.flush();
+            else {
+                session.beginTransaction();
+                session.flush();
+            }
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
         System.out.println("Finished saving " + o.getClass().getSimpleName());
     }
 
     public <T> List<T> getAll(T dummy) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         var result = session.createQuery("FROM " + dummy.getClass().getSimpleName()).getResultList();
         session.getTransaction().commit();
         return result;
@@ -351,7 +374,8 @@ public class ManualDatabase {
 class UsersBL {
     public static UserType getUserType(Session session, String name, String password) {
         System.out.println("hello from the database");
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         List<User> results = session.createQuery("FROM User u WHERE u.name = :name AND u.password = :password", User.class)
                 .setParameter("name", name)
                 .setParameter("password", password)
@@ -370,7 +394,8 @@ class UsersBL {
 
 class ComplaintsBL {
     public static List<Complaint> getAllComplains(Session session) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         var retval = session.createQuery("From Complaint", Complaint.class).getResultList();
 
         session.getTransaction().commit();
@@ -393,29 +418,34 @@ class ComplaintsBL {
     }
 */
     public static void createDeliveryComplain(Session session, Long userId, Long deliveryId, String description) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         session.getTransaction().commit();
         if (maybeUser.isEmpty()) {
             return;
         }
         User user = maybeUser.get();
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<Delivery> optionalDelivery = session.byId(Delivery.class).loadOptional(deliveryId);
         session.getTransaction().commit();
         if (optionalDelivery.isEmpty()) {
             return;
         }
         Delivery delivery = optionalDelivery.get();
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         //session.save(new DeliveryComplain(description, new Date(), user, delivery));
         session.getTransaction().commit();
     }
     public static void createDeliveryComplain(Session session,DeliveryComplain complain) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         //Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         session.getTransaction().commit();
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         //Optional<Delivery> optionalDelivery = session.byId(Delivery.class).loadOptional(deliveryId);
         session.getTransaction().commit();
         /*if (optionalDelivery.isEmpty()) {
@@ -428,14 +458,16 @@ class ComplaintsBL {
     }
 
     public static void createRestaurantComplain(Session session, Long userId, Long restaurantId, String description) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         session.getTransaction().commit();
         if (maybeUser.isEmpty()) {
             return;
         }
         User user = maybeUser.get();
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<Restaurant> optionalRestaurant = session.byId(Restaurant.class).loadOptional(restaurantId);
         session.getTransaction().commit();
         if (optionalRestaurant.isEmpty()) {
@@ -443,14 +475,16 @@ class ComplaintsBL {
         }
         Restaurant restaurant = optionalRestaurant.get();
 
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         session.save(new RestaurantComplain(description, new Date(), user, restaurant));
         session.getTransaction().commit();
     }
 
     public static void closeComplain(Session session, Long complainId) {
         //Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<Complaint> maybeComplain = session.byId(Complaint.class).loadOptional(complainId);
         if (maybeComplain.isEmpty()) {
             return;
@@ -465,7 +499,8 @@ class ComplaintsBL {
 
     public static void compensateComplain(Session session, Long complainId, Long compensation) {
         //Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<Complain> maybeComplain = session.byId(Complain.class).loadOptional(complainId);
         if (maybeComplain.isEmpty()) {
             return;
@@ -485,7 +520,8 @@ class ComplaintsBL {
 class AdminsBL {
     public static void deleteMenuItem(Session session, Long menuId, Long userId)
     {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         maybeUser.ifPresent(user -> {
             if (user.isAdmin()) {
@@ -508,7 +544,8 @@ class AdminsBL {
 
 
     public static void markRequestAsApproved(Session session, Long requestId, Long userId) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         /*Optional<User> user = usersRepository.findById(userId);
 
@@ -576,7 +613,8 @@ class AdminsBL {
         });*/
     }
     public static void markRequestAsRejected(Session session, Long requestId, Long userId) {
-        session.beginTransaction();
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
 
         /*Optional<User> user = usersRepository.findById(userId);

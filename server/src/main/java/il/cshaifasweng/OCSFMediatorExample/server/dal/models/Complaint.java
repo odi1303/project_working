@@ -34,14 +34,18 @@ public class Complaint implements Serializable {
     int compensation=0;
     @Column
     Date answerdAt=null;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    Delivery delivery=null;
 
-    public Complaint(String branch, String headline, String description,Date date, String email) {
+    public Complaint(String branch, String headline, String description,Date date, String email,Delivery delivery) {
         this.branch = branch;
         this.description = description;
         this.email = email;
         this.headline = headline;
         this.handled = false;
         this.date = date;
+        this.delivery=delivery;
     }
 
     public Complaint() {

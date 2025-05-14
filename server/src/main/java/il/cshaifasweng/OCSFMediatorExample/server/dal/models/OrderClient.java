@@ -18,13 +18,13 @@ public class OrderClient implements Serializable {
     @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     private boolean isDelivery;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_information_id")
     private LocationInformation locationInformation;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personal_information_id")
     private PersonalInformation personalInformation;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credit_information_id")
     private CreditInformation creditInformation;
     public OrderClient() {}
@@ -68,5 +68,9 @@ public class OrderClient implements Serializable {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

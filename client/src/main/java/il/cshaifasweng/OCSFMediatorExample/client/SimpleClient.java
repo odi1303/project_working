@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -102,6 +103,10 @@ public class SimpleClient extends AbstractClient {
 					EventBus.getDefault().post(items);
 				}
 			}
+		}
+		else if (msg instanceof OrderClient order){
+			System.out.println("gor the order");
+			EventBus.getDefault().post(order);
 		}
 
 

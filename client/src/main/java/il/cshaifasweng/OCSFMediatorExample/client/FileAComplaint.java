@@ -65,7 +65,7 @@ public class FileAComplaint {
         }
         else {
             Date today=new Date();
-            Complaint complaint=new Complaint(select_branch.getValue(),headline.getText(),description.getText(),today,email.getText());
+            Complaint complaint=new Complaint(select_branch.getValue(),headline.getText(),description.getText(),today,email.getText(),null);
             emailSender.send_email_respond(email.getText(),headline.getText(),acceptedComplaint+description.getText());
             new Thread(() -> {
                 try {
