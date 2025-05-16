@@ -1,18 +1,19 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
+
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -21,8 +22,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.lang.Math.max;
 
 public class MenuController {
 
@@ -45,38 +44,38 @@ public class MenuController {
 
     private MenuClient currentMenu;
 
-    private ArrayList<DishClient> dishesInOrder;
+    private ArrayList<MenuItem> dishesInOrder;
     private boolean isOrder;
     private boolean isDelete = false;
     private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu
 
-    private List<Pair<DishClient, Label>> orderDishNodeCountLabelPair = new ArrayList<>();
+    private List<OrderItem> orderDishNodeCountLabelPair = new ArrayList<>();
     private EditMenuController editMenuController;
 
 
     @FXML
     public void initialize() {
         try {
-
-            //EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
             isMain = true;
-            fullMenu = new MenuClient();
-            List<String> branches = fullMenu.getAllBranches();
-            List<String> ingredients = fullMenu.getAllIngredients();
-            putBranchCheckBoxesInFilter(branches);
-            putIngredientsCheckBoxesInFilter(ingredients);
-
-            List<DishClient> dishes = getHardcodedDishes();
-            fullMenu = new MenuClient(new ArrayList<>(dishes));
-            setMenuInMenuSection(fullMenu, false);
-            currentMenu = new MenuClient(new ArrayList<>(dishes));
-            updateFilter();
-
-            //for order section
-            dishesInOrder = new ArrayList<DishClient>();
-            isOrder = false;
+            if (fullMenu == null) {
+                try {
+                    System.out.println("requesting menu");
+                    App.sendMessageToServer("send all MenuItems");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*new Thread(() -> {
+                    try {
+                        System.out.println("requesting menu");
+                        App.sendMessageToServer("send all MenuItems");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();*/
+            }
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
     }
 
@@ -154,10 +153,15 @@ public class MenuController {
 
     }
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
-        menuDishList.getChildren().clear();
+        Platform.runLater(()->menuDishList.getChildren().clear());
+        //menuDishList.getChildren().clear();
         if (menuClient != null){
-            for (DishClient dish : menuClient.getMenu()) {
+            int i=0;
+            for (MenuItem dish : menuClient.getMenu()) {
+                System.out.println(i);
                 addDishToMenuSection(dish, isOrder);
+                i++;
+                //Platform.runLater(()->addDishToMenuSection(dish, isOrder));
             }
             currentMenu = new MenuClient(menuClient.getMenu());
         }else{
@@ -169,12 +173,14 @@ public class MenuController {
     private void putBranchCheckBoxesInFilter(List<String> branches){
         branchCheckboxContainerForFilter.setVisible(false);
         branchCheckboxContainerForFilter.setManaged(false);
+        Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().clear());
 
-        branchCheckboxContainerForFilter.getChildren().clear();
+        //   branchCheckboxContainerForFilter.getChildren().clear();
         for (String branch : branches){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            branchCheckboxContainerForFilter.getChildren().add(checkBox);
+            Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().add(checkBox));
+            //branchCheckboxContainerForFilter.getChildren().add(checkBox);
         }
         branchCheckboxContainerForFilter.setVisible(true);
         branchCheckboxContainerForFilter.setManaged(true);
@@ -183,12 +189,13 @@ public class MenuController {
     private void putIngredientsCheckBoxesInFilter(List<String> ingredients){
         IngredientsCheckboxContainerForFilter.setVisible(false);
         IngredientsCheckboxContainerForFilter.setManaged(false);
-
-        IngredientsCheckboxContainerForFilter.getChildren().clear();
+        Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().clear());
+        ;
         for (String branch : ingredients){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            IngredientsCheckboxContainerForFilter.getChildren().add(checkBox);
+            Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().add(checkBox));
+            ;
         }
         IngredientsCheckboxContainerForFilter.setVisible(true);
         IngredientsCheckboxContainerForFilter.setManaged(true);
@@ -199,6 +206,17 @@ public class MenuController {
         List<String> filteredBranches = getSelectedValuesFromVBox(branchCheckboxContainerForFilter);
         List<String> filteredIngredients = getSelectedValuesFromVBox(IngredientsCheckboxContainerForFilter);
         MenuFilter menuFilter = new MenuFilter(filteredBranches, filteredIngredients);
+        MenuClient filteredMenu = new MenuClient();
+        if (filteredBranches != null && filteredIngredients != null && currentMenu != null) {
+            for (MenuItem dish :fullMenu.getMenu()){
+                boolean isAtListOneNotFilterAvailableBranch = dish.getAvailableBranches().stream().anyMatch(filteredBranches::contains);
+                boolean areAllIngredientsContainedInFilteredIngredients = dish.getIngredients().stream().allMatch(filteredIngredients::contains);
+                if (isAtListOneNotFilterAvailableBranch && areAllIngredientsContainedInFilteredIngredients) {
+                    filteredMenu.addDish(dish);
+                }
+            }
+        }
+        currentMenu = filteredMenu;
         MenuClient newMenu = menuFilter.filterMenu(fullMenu);
         setMenuInMenuSection(newMenu, isOrder);
     }
@@ -238,7 +256,7 @@ public class MenuController {
 
 
 
-    private void addDishToMenuSection(DishClient dish, boolean isOrder){
+    private void addDishToMenuSection(MenuItem dish, boolean isOrder){
         try {
             if (!isOrder && !isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
@@ -246,8 +264,8 @@ public class MenuController {
                 DishSectionInMenuController dishSectionInMenuController = fxmlLoader.getController();
                 dishSectionInMenuController.setDish(dish);
                 dishSectionInMenuController.setDishDataInDishSection();
-
-                menuDishList.getChildren().add(dishNode);
+                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                //menuDishList.getChildren().add(dishNode);
             }else if (!isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderableDishSectionInMenu.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -255,7 +273,7 @@ public class MenuController {
                 orderableDishSectionInMenuController.reinitialize(this);
                 orderableDishSectionInMenuController.setDishInDishSection(dish);
                 orderableDishSectionInMenuController.setDishDataInDishSection();
-                menuDishList.getChildren().add(dishNode);
+                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
             }else{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DeletableDishSection.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -263,7 +281,7 @@ public class MenuController {
                 DeletableDishSectionController.reinitialize(this);
                 DeletableDishSectionController.setDishInDishSection(dish);
                 DeletableDishSectionController.setDishDataInDishSection();
-                menuDishList.getChildren().add(dishNode);
+                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
 
 
             }
@@ -273,14 +291,14 @@ public class MenuController {
     }
 
 
-    public void orderDish(DishClient dish){
+    public void orderDish(MenuItem dish){
         PopupDialogService popupDialogService = new PopupDialogService();
 
         try {
             List<String> preferences = popupDialogService.openPopup("PersonalPreferencesPopup.fxml", dish, (Stage) orderSection.getScene().getWindow());
 
             if (preferences != null && !preferences.isEmpty()) {
-                addDishToOrderSection(new DishClient(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
+                addDishToOrderSection(new MenuItem(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
             }else{
                 addDishToOrderSection(dish);
             }
@@ -290,17 +308,19 @@ public class MenuController {
         }
     }
 
-    private void addDishToOrderSection(DishClient dish){
+    private void addDishToOrderSection(MenuItem dish){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderedDishSection.fxml"));
             Node dishNode = fxmlLoader.load();
             OrderedDishSectionController dishSectionInMenuController = fxmlLoader.getController();
             dishSectionInMenuController.setDishInDishSection(dish);
             dishSectionInMenuController.setDishDataInDishSection();
+            Platform.runLater(()->{
+                orderDishList.getChildren().add(dishNode);
+                dishesInOrder.add(dish);
+                orderDishNodeCountLabelPair.add(new OrderItem(dish, Integer.parseInt(dishSectionInMenuController.getCountLabel())));
+            });
 
-            orderDishList.getChildren().add(dishNode);
-            dishesInOrder.add(dish);
-            orderDishNodeCountLabelPair.add(new Pair<>(dish, dishSectionInMenuController.getCountLabel()));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -337,7 +357,7 @@ public class MenuController {
         }
     }
 
-    private boolean canTheOrderBeMadeFromASingleBranch(ArrayList<DishClient> dishesInOrder){
+    private boolean canTheOrderBeMadeFromASingleBranch(ArrayList<MenuItem> dishesInOrder){
         String commonBranch = getCommonBranch(dishesInOrder);
         if(commonBranch != null){
             return true;
@@ -345,12 +365,12 @@ public class MenuController {
             return false;
         }
     }
-    private String getCommonBranch(ArrayList<DishClient> dishes) {  // Changed to ArrayList<DishClient>
+    private String getCommonBranch(ArrayList<MenuItem> dishes) {  // Changed to ArrayList<DishClient>
         if (dishes == null || dishes.isEmpty()) {
             return null;
         }
         Set<String> commonBranches = new HashSet<>(dishes.get(0).getAvailableBranches());
-        for (DishClient dish : dishes) {
+        for (MenuItem dish : dishes) {
             commonBranches.retainAll(dish.getAvailableBranches());
 
             if (commonBranches.isEmpty()) {
@@ -362,131 +382,51 @@ public class MenuController {
 
     private double getTotalPrice(){
         double totalPrice = 0;
-        for (DishClient dish : dishesInOrder) {
+        for (MenuItem dish : dishesInOrder) {
             totalPrice += dish.getPrice() *((double) Math.max(100 - dish.getSale(), 0) / 100.0);
         }
         return totalPrice;
     }
 
-    private ArrayList<Pair<DishClient, Integer>> getDishesCountPair(){
-        ArrayList<Pair<DishClient, Integer>> pairList = new ArrayList<>();
-        for (Pair<DishClient, Label> pair : orderDishNodeCountLabelPair){
-            pairList.add(new Pair<>(pair.getKey(), Integer.parseInt(pair.getValue().getText())));
+    private ArrayList<OrderItem> getDishesCountPair(){
+        ArrayList<OrderItem> pairList = new ArrayList<>();
+        for (OrderItem pair : orderDishNodeCountLabelPair){
+            pairList.add(new OrderItem(pair.getMenuItem(), pair.getQuantity()));
         }
         return pairList;
     }
+/*
+    private void getHardcodedDishes() throws IOException {
+        App.sendMessageToServer("send all MenuItems");
+    }*/
+    @Subscribe
+    public void on_respond(List<MenuItem> dishes){
+        System.out.println("got the menu");
+        ArrayList<MenuItem> dishes1= (ArrayList<MenuItem>) dishes;
+        fullMenu = new MenuClient(dishes1);
+        setMenuInMenuSection(fullMenu, false);
+        currentMenu = new MenuClient(new ArrayList<>(dishes));
+        updateFilter();
 
-    private List<DishClient> getHardcodedDishes() {
-        DishClient pizza = new DishClient(
-                "Pizza Margherita",
-                "Classic pizza with tomato, cheese, and olives.",
-                35.0f,
-                "https://example.com/images/pizza.jpg",
-                List.of("Haifa", "Tel Aviv"),
-                List.of("Cheese", "Tomato", "Olives"),
-                10 // Sale: 10% off
-        );
-
-        DishClient burger = new DishClient(
-                "Beef Burger",
-                "Juicy beef patty with lettuce, tomato, and cheese.",
-                42.5f,
-                "https://example.com/images/burger.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
-                List.of("Beef", "Lettuce", "Tomato", "Cheese"),
-                0 // No Sale
-        );
-
-        DishClient salad = new DishClient(
-                "Greek Salad",
-                "Fresh vegetables with feta cheese and olives.",
-                28.0f,
-                "https://example.com/images/salad.jpg",
-                List.of("Haifa", "Jerusalem"),
-                List.of("Cucumber", "Tomato", "Feta", "Olives"),
-                5 // Sale: 5% off
-        );
-
-        DishClient hummusPlate = new DishClient(
-                "Hummus Plate",
-                "Creamy hummus served with vegetables and pita.",
-                25.0f,
-                "https://example.com/images/hummus.jpg",
-                List.of("Haifa", "Tel Aviv"),
-                List.of("Hummus", "Tomato", "Onion", "Olives"),
-                0 // No Sale
-        );
-
-        DishClient falafelPlate = new DishClient(
-                "Falafel Plate",
-                "Delicious falafel balls served with hummus and salad.",
-                22.0f,
-                "https://example.com/images/falafel.jpg",
-                List.of("Tel Aviv", "Haifa", "Jerusalem"),
-                List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
-                15 // Sale: 15% off
-        );
-
-        DishClient veggieBurger = new DishClient(
-                "Veggie Burger",
-                "A healthy burger with tomato, lettuce, and cheese.",
-                38.0f,
-                "https://example.com/images/veggie_burger.jpg",
-                List.of("Tel Aviv", "Haifa"),
-                List.of("Lettuce", "Tomato", "Cheese", "Onion"),
-                0 // No Sale
-        );
-
-        DishClient cheeseSandwich = new DishClient(
-                "Cheese Sandwich",
-                "A simple cheese sandwich with tomato and lettuce.",
-                20.0f,
-                "https://example.com/images/cheese_sandwich.jpg",
-                List.of("Haifa", "Jerusalem"),
-                List.of("Cheese", "Tomato", "Lettuce"),
-                0 // No Sale
-        );
-
-        DishClient beefSalad = new DishClient(
-                "Beef Salad",
-                "Salad with grilled beef, lettuce, tomato, and cucumber.",
-                40.0f,
-                "https://example.com/images/beef_salad.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
-                List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
-                20 // Sale: 20% off
-        );
-
-        DishClient falafelWrap = new DishClient(
-                "Falafel Wrap",
-                "Falafel served in pita bread with lettuce and hummus.",
-                24.0f,
-                "https://example.com/images/falafel_wrap.jpg",
-                List.of("Haifa", "Tel Aviv"),
-                List.of("Falafel", "Hummus", "Lettuce"),
-                0 // No Sale
-        );
-
-        DishClient mixedPlatter = new DishClient(
-                "Mixed Platter",
-                "Combination of falafel, hummus, tomato, and olives.",
-                30.0f,
-                "https://example.com/images/mixed_platter.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
-                List.of("Falafel", "Hummus", "Tomato", "Olives"),
-                0 // No Sale
-        );
-
-        return List.of(pizza, burger, salad, hummusPlate, falafelPlate, veggieBurger, cheeseSandwich, beefSalad, falafelWrap, mixedPlatter);
+        //for order section
+        dishesInOrder = new ArrayList<MenuItem>();
+        isOrder = false;
+        for (MenuItem item:dishes1)
+            Platform.runLater(()->addDishToMenuSection(item,isOrder));
+            //addDishToMenuSection(item,isOrder);
+        List<String> branches = fullMenu.getAllBranches();
+        List<String> ingredients = fullMenu.getAllIngredients();
+        putBranchCheckBoxesInFilter(branches);
+        putIngredientsCheckBoxesInFilter(ingredients);
     }
 
 
 
 
-    public void deleteDishPressed(DishClient dish) {
+    public void deleteDishPressed(MenuItem dish) {
         editMenuController.deleteDishPressed(dish);
     }
-    public void EditDishPressed(DishClient dish) {
+    public void EditDishPressed(MenuItem dish) {
         editMenuController.EditDishPressed(dish);
     }
 
@@ -506,6 +446,7 @@ public class MenuController {
 
     private void sendOrder(OrderClient order) {
         try{
+
             App.setRoot("home-page");
         }catch(Exception e){
             e.printStackTrace();

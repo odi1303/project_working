@@ -2,7 +2,8 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
@@ -50,13 +51,14 @@ public class SimpleServer extends AbstractServer{
 	public SimpleServer() {
 		super(3000);
 		db_ = new ManualDatabase();
+
 	}
 
 	@Override
-	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
 		String msgString = msg.toString();
-		System.out.println("SimpleServer" + " " + msgString);
-		Session session = null;
+		System.out.println("SimpleServer " + msgString);
+		client.sendToClient("received: " + msgString);
 		if (msgString.startsWith("#warning")) {
 			Warning warning = new Warning("Warning from server!");
 			try {
@@ -66,17 +68,19 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		} else if (msgString.startsWith("add client")) {
-			SubscribedClient connection = new SubscribedClient(client);
-			SubscribersList.add(connection);
-			System.out.println(msgString);
-			/*System.out.println("Database pointer " + db);
-			System.out.println(db.getBasicUsers());*/
-			System.out.println("hello there");
+			SubscribedClient connection = new SubscribedClient(client); // User is null for now
+			if (!SubscribersList.contains(connection)) {
+				SubscribersList.add(connection);
+				System.out.println("Client " + client.getId() + " added to SubscribersList.");
+				client.sendToClient("added successfully");
+			} else {
+				System.out.println("Client " + client.getId() + " already in SubscribersList.");
+			}
 			//db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
-			for (var o : db_.getAll(new User())) {
+			/*for (var o : db_.getAll(new User())) {
 				System.out.println(o.toString());
 			}
-			System.out.println("supposedly added into db");
+			System.out.println("supposedly added into db");*/
 		} else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
 				for (SubscribedClient subscribedClient : SubscribersList) {
@@ -99,7 +103,7 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.equals("#getAllComplaints")) {
 			try {
-				List<Complain> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+				List<Complaint> complaints = ComplaintsBL.getAllComplains(db_.getSession());
 				client.sendToClient(complaints);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -125,6 +129,7 @@ public class SimpleServer extends AbstractServer{
 		}else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
 			List<Complaint> openComplaints =new ArrayList<>();
+			System.out.println(db_);
 			List<Complaint> complaints = db_.getAll(new Complaint());
 			for (Complaint complain : complaints) {
 				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
@@ -133,13 +138,35 @@ public class SimpleServer extends AbstractServer{
 			}
 			System.out.println("num of open complaints=" + openComplaints.size());
 			client.sendToClient(openComplaints);
+		} else if (msgString.equals("send all reservation")) {
+			List<OrderClient>orders = db_.getAll(new OrderClient());
+			System.out.println("num of orders=" + orders.size());
+			client.sendToClient(orders);
+		}
+		else if (msgString.equals("send all orders")) {
+			List<OrderClient>orders = db_.getAll(new OrderClient());
+			System.out.println("num of orders=" + orders.size());
+			client.sendToClient(orders);
+
+		} else if (msgString.equals("send all MenuItems")) {
+			List<?> items = db_.getAll(new MenuItem());
+			System.out.println("num of items=" + items.size());
+			client.sendToClient("sending menu items soon");
+			client.sendToClient(items);
+			System.out.println("sent all items");
 		} else if (msg instanceof Complaint) {
 			System.out.println("saved complain");
 			System.out.println((Complaint)msg);
 			db_.saveOrUpdate((Complaint)msg);
 			List<Complaint> openComplaints =db_.getAll(new Complaint());
 			System.out.println("num of open complaints=" + openComplaints.size());
-		}}
+		}
+		else if (msg instanceof LocationInformation) {
+			System.out.println("saved location");
+			db_.saveOrUpdate((LocationInformation)msg);
+
+		}
+	}
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {

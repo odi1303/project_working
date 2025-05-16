@@ -1,8 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
-
+/*
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
 import javafx.util.Pair;
 
 public class HardcodedOrders {
@@ -97,4 +100,4 @@ public class HardcodedOrders {
 
         return orders;
     }
-}
+}*/

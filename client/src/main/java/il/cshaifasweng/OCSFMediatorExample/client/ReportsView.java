@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.BranchManager;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -72,11 +73,11 @@ public class ReportsView {
     void to_go_back(ActionEvent event) throws IOException {
         App.setRoot("manager_personal_page");
     }
-
+/*
     @Subscribe
     public void onComplaintsReceived(List<Complain> complaints) {
         handleReportData(complaints, "Complaints", Complain::getRegisteredAt, Complain::getRestaurantId);
-    }
+    }*/
 
     @Subscribe
     public void onDeliveriesReceived(List<Delivery> deliveries) {
@@ -92,7 +93,7 @@ public class ReportsView {
                                       java.util.function.Function<T, Date> dateExtractor,
                                       java.util.function.Function<T, Long> branchIdExtractor) {
         Platform.runLater(() -> {
-            il.cshaifasweng.OCSFMediatorExample.entities.User currentUser = AppState.getCurrentUser();
+            User currentUser = AppState.getCurrentUser();
             if (data != null && currentUser instanceof BranchManager branchManager) {
                 List<T> branchData = data.stream()
                         .filter(d -> branchIdExtractor.apply(d) != null &&

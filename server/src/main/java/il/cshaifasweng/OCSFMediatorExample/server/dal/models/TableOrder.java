@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 
 //import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "table_orders")
-public class TableOrder {
+public class TableOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

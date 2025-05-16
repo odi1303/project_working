@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,7 +29,7 @@ public class EditDishController {
     @FXML
     public TextField SaleTextField;
 
-    private DishClient originalDish;
+    private MenuItem originalDish;
     @FXML
     public AnchorPane editDishPane;
 
@@ -47,7 +48,7 @@ public class EditDishController {
     public final BooleanProperty isSubmitted = new SimpleBooleanProperty(false);
 
     private boolean isEdit = false;
-    private DishClient dish;
+    private MenuItem dish;
 
     // Define the distances for button positioning
     private final double submitButtonHDistFromLRCorner = 10.0; // Horizontal distance from the right corner
@@ -83,14 +84,14 @@ public class EditDishController {
         });
     }
 
-    public void setDish(DishClient dish) {
+    public void setDish(MenuItem dish) {
         this.dish = dish;
         isSubmitted.set(false);
         updateVisibleDishProperties();
         originalDish = dish;
     }
 
-    public DishClient getOriginalDish() {
+    public MenuItem getOriginalDish() {
         return originalDish;
     }
 
@@ -109,20 +110,21 @@ public class EditDishController {
         initializeIngredients(dish.getIngredients());
     }
 
-    public DishClient getDish() {
+    public MenuItem getDish() {
         return dish;
     }
 
     @FXML
     public void submitDish() {
         if (checkValidFields() && !isSubmitted.get()) {
-            dish = new DishClient(
+            dish = new MenuItem(
                     nameTextField.getText(),
                     descriptionTextField.getText(),
-                    Float.parseFloat(priceTextField.getText()),
+                    Long.parseLong(priceTextField.getText()),
                     imageUrlTextField.getText(),
                     dish.getAvailableBranches(),
                     dish.getIngredients(),
+                    dish.getPersonalPreferences(),
                     Integer.parseInt(SaleTextField.getText())
             );
             isSubmitted.set(true);
@@ -182,26 +184,28 @@ public class EditDishController {
     }
 
     public void updateIngredients(List<String> ingredientsList) {
-        dish = new DishClient(
+        dish = new MenuItem(
                 dish.getName(),
                 dish.getDescription(),
                 dish.getPrice(),
                 dish.getImageUrl(),
                 dish.getAvailableBranches(),
                 ingredientsList,
+                dish.getPersonalPreferences(),
                 dish.getSale()
         );
         initializeIngredients(ingredientsList);
     }
 
     public void updateBranches(List<String> branchesList) {
-        dish = new DishClient(
+        dish = new MenuItem(
                 dish.getName(),
                 dish.getDescription(),
                 dish.getPrice(),
                 dish.getImageUrl(),
                 branchesList,
                 dish.getIngredients(),
+                dish.getPersonalPreferences(),
                 dish.getSale()
         );
         initializeAvailableBranches(branchesList);

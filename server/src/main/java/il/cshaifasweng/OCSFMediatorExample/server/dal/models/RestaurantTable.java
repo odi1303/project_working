@@ -3,12 +3,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "tables")
 @Data
-public class RestaurantTable {
+public class RestaurantTable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

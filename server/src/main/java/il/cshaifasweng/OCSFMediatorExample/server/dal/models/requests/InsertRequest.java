@@ -2,9 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @DiscriminatorValue("INSERT")
-public class InsertRequest extends Request
+public class InsertRequest extends Request implements Serializable
 {
     @Column(name="menu_item_description", nullable=false)
     public String menuItemDescription;

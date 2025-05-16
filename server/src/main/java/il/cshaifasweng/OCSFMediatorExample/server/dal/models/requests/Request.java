@@ -2,10 +2,13 @@ package il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests;
 
 import jakarta.persistence.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.RequestStatus;
+
+import java.io.Serializable;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="action", discriminatorType = DiscriminatorType.STRING)
-public abstract class Request
+public abstract class Request implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

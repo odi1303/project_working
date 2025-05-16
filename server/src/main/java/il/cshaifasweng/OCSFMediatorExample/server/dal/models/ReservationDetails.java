@@ -1,18 +1,37 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
-/*
-public class ReservationDetails {
-    String branch;
-    String guestNumber;
-    String reservationSpace;
-    String reservationDate;
-    String time;
+package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+@Entity
+@Table(name = "Reservation Details")
+public class ReservationDetails implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column
+    String branch;
+    @Column
+    String guestNumber;
+    @Column
+    String reservationSpace;
+    @Column
+    String reservationDate;
+    @Column
+    String time;
     public ReservationDetails(String branch,String guestNumber, String reservationSpace, String reservationDate, String time) {
         this.branch = branch;
         this.guestNumber = guestNumber;
         this.reservationSpace = reservationSpace;
         this.reservationDate = reservationDate;
         this.time = time;
+    }
+
+    public ReservationDetails() {
+
     }
 
     public String getBranch() {
@@ -42,4 +61,6 @@ public class ReservationDetails {
     private boolean isNonEmpty(String value) {
         return value != null && !value.trim().isEmpty();
     }
-}*/
+
+
+}

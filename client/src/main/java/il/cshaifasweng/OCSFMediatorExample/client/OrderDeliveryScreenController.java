@@ -19,15 +19,15 @@ public class OrderDeliveryScreenController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 
     @FXML
     private void selectCity(ActionEvent event) {
