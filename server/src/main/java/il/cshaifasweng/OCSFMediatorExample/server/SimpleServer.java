@@ -11,7 +11,7 @@ import java.util.List;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 //@ApplicationScoped
@@ -145,7 +145,8 @@ public class SimpleServer extends AbstractServer{
 
 		}
 		else if (msg instanceof Message message) {
-			if (message.getPayload() instanceof GetBranchOpeningTimes request) {
+			Object payload = message.getPayload();
+			if (payload instanceof GetBranchOpeningTimes request) {
 				String branch = request.getBranchName();
 				OpeningTimes response = new OpeningTimes(branch, "14:14");
 
@@ -155,12 +156,12 @@ public class SimpleServer extends AbstractServer{
 						GetBranchOpeningTimes.class,
 						OpeningTimes.class
 				);
-
 				client.sendToClient(responseMessage);
 			}
 		}
-
 	}
+
+
 	public void sendToAllClients(String message) {
 		try {
 			for (SubscribedClient subscribedClient : SubscribersList) {
