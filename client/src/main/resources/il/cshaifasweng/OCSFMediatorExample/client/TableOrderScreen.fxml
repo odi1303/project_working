@@ -33,7 +33,7 @@
     <!-- Add DatePicker here -->
     <DatePicker fx:id="reservationDate" layoutX="193.0" layoutY="99.0" prefHeight="26.0" prefWidth="114.0" promptText="Choose date" />
 
-    <ComboBox layoutX="20.0" layoutY="155.0" prefHeight="26.0" prefWidth="122.0" promptText="Choose branch" />
+    <ComboBox fx:id="branch" layoutX="20.0" layoutY="155.0" prefHeight="26.0" prefWidth="122.0" promptText="Choose branch"/>
 
     <TextField fx:id="guestNumber" layoutX="193.0" layoutY="155.0" prefHeight="26.0" prefWidth="234.0" promptText="Please enter the number of reservations" />
 

@@ -315,6 +315,7 @@ public class ManualDatabase {
         catch (Exception exception) {
             System.out.println(exception.getMessage());
             Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
+            System.out.println("11111111111111111111111111111111");
             if (existing == null) {
                 session.save(o);
             } else {

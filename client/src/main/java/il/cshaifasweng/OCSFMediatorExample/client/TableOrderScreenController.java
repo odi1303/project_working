@@ -113,6 +113,7 @@ public class TableOrderScreenController {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+        javafx.application.Platform.runLater(this::initializeComboBoxForBranch);
     }
 
 //    public void onDestroy() {
@@ -179,7 +180,7 @@ public class TableOrderScreenController {
         return currentTime.toString();
     }
 
-    @FXML
+
     private void initializeComboBoxForBranch() {
         if (branch.getItems().isEmpty()) {
             ObservableList<String> branchOptions = FXCollections.observableArrayList("1", "2", "3");

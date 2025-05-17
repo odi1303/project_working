@@ -1,16 +1,12 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
-/*
+
 import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OpeningHours;
-import il
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -22,46 +18,22 @@ public class BranchesOpeningTimesPopupController implements PopupController<List
     @FXML
     private Button close;
 
-    private String openingTimeResponse = null;
-
     @FXML
     public void initialize() {
-        EventBus.getDefault().register(this);
     }
 
     private String getOpeningTime(String branchName) {
-        boolean sent = false;
-        openingTimeResponse = null;
-
-        while (!sent) {
-            try {
-                SimpleClient.getClient().sendToServer(new GetBranchOpeningTimes(branchName));
-                sent = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        synchronized (this) {
-            while (openingTimeResponse == null) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return openingTimeResponse;
-    }
-
-    @Subscribe
-    public void reciveOpeningTimes(OpeningTimes openingTimes) {
-        if (openingTimes != null) {
-            openingTimeResponse = openingTimes.getOpeningTime();
-            synchronized (this) {
-                notify();
-            }
+        try {
+            OpeningTimes response = RequestManager.getInstance().sendAndWait(
+                    new GetBranchOpeningTimes(branchName),
+                    5000,
+                    GetBranchOpeningTimes.class,
+                    OpeningTimes.class
+            );
+            return response.getOpeningTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unavailable";
         }
     }
 
@@ -71,6 +43,7 @@ public class BranchesOpeningTimesPopupController implements PopupController<List
 
         for (String branch : branches) {
             String openingTime = getOpeningTime(branch);
+            System.out.println(openingTime);
             Label branchLabel = new Label(branch + " - Opening Time: " + openingTime);
             branchesContainer.getChildren().add(branchLabel);
         }
@@ -87,4 +60,3 @@ public class BranchesOpeningTimesPopupController implements PopupController<List
         stage.close();
     }
 }
-*/

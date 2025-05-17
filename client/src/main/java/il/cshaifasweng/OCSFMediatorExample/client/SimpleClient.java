@@ -11,7 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +62,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-            System.out.println(message);
+			System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
@@ -76,6 +76,13 @@ public class SimpleClient extends AbstractClient {
 				String type=message.substring(endIndex + 1).trim();
 				App.saveClientDetails(username,password,type);
 			}*/
+		} else if (msg instanceof Message message) {
+			Object payload = message.getPayload();
+			Class<?> expectedType = message.getResponseType();
+
+			if (payload != null && expectedType.isInstance(payload)) {
+				RequestManager.getInstance().setResponse(message.getKey(), payload);
+			}
 		} else if (msg instanceof UserType type) {
 			System.out.println("hola");
 			EventBus.getDefault().post(msg);
@@ -102,8 +109,6 @@ public class SimpleClient extends AbstractClient {
 				}
 			}
 		}
-
-
 	}
 
 

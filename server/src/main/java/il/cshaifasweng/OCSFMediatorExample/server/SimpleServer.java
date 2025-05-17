@@ -35,7 +35,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
@@ -166,6 +168,22 @@ public class SimpleServer extends AbstractServer{
 			db_.saveOrUpdate((LocationInformation)msg);
 
 		}
+		else if (msg instanceof Message message) {
+			if (message.getPayload() instanceof GetBranchOpeningTimes request) {
+				String branch = request.getBranchName();
+				OpeningTimes response = new OpeningTimes(branch, "14:14");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						response,
+						GetBranchOpeningTimes.class,
+						OpeningTimes.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+		}
+
 	}
 	public void sendToAllClients(String message) {
 		try {
