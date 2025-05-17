@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -156,6 +157,18 @@ public class SimpleServer extends AbstractServer{
 						GetBranchOpeningTimes.class,
 						OpeningTimes.class
 				);
+				client.sendToClient(responseMessage);
+			} if (payload instanceof GetBranchClosingTimes request) {
+				String branch = request.getBranchName();
+				ClosingTimes response = new ClosingTimes(branch, "22:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						response,
+						GetBranchClosingTimes.class,
+						ClosingTimes.class
+				);
+
 				client.sendToClient(responseMessage);
 			}
 		}

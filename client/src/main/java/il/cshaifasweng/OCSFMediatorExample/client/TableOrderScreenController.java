@@ -7,10 +7,14 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.HashMap;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.ClosingTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Reservation;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.ReservationDetails;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchOpeningTimes;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -167,11 +171,33 @@ public class TableOrderScreenController {
     }
 
     private String getOpenTime() {
-        return "08:00";
+        try {
+            OpeningTimes response = RequestManager.getInstance().sendAndWait(
+                    new GetBranchOpeningTimes("Main"),
+                    5000,
+                    GetBranchOpeningTimes.class,
+                    OpeningTimes.class
+            );
+            return response.getOpeningTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unavailable";
+        }
     }
 
     private String getClosingTime() {
-        return "23:00";
+        try {
+            ClosingTimes response = RequestManager.getInstance().sendAndWait(
+                    new GetBranchClosingTimes("Main"),
+                    5000,
+                    GetBranchClosingTimes.class,
+                    ClosingTimes.class
+            );
+            return response.getClosingTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unavailable";
+        }
     }
 
     private String getCurrentTime() {
