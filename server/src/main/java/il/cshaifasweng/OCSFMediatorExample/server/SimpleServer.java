@@ -170,6 +170,17 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
+			} else if (payload instanceof String request && request.equals("get all branches")) {
+				List<String> branches = List.of("Branch 1", "Branch 2", "Branch 3");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						branches,
+						String.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
 			}
 		}
 	}

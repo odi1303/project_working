@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -205,10 +206,26 @@ public class TableOrderScreenController {
         return currentTime.toString();
     }
 
+    private ArrayList<String> getAllBranches() {
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> response = (List<String>) RequestManager.getInstance().sendAndWait(
+                    "get all branches",
+                    5000,
+                    String.class,
+                    List.class
+            );
+            return new ArrayList<>(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();  // fallback empty list
+        }
+    }
+
 
     private void initializeComboBoxForBranch() {
         if (branch.getItems().isEmpty()) {
-            ObservableList<String> branchOptions = FXCollections.observableArrayList("1", "2", "3");
+            ObservableList<String> branchOptions = FXCollections.observableArrayList(getAllBranches());
             branch.setItems(branchOptions);
         }
     }
