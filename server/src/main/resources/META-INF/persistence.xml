@@ -2,8 +2,8 @@
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
     <persistence-unit name="example">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation</class>
-        <class>il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation</class>
+        <class>il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation</class>
+        <class>il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation</class>
         <properties>
             <!-- Database Conection -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

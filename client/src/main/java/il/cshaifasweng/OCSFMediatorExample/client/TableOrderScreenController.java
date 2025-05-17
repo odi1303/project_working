@@ -7,10 +7,10 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.HashMap;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Reservation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.ReservationDetails;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.ReservationDetails;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 

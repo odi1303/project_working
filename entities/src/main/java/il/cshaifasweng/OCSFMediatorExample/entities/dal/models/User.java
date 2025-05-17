@@ -1,0 +1,64 @@
+package il.cshaifasweng.OCSFMediatorExample.entities.dal.models;
+
+//import javax.persistence.*;
+
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import lombok.Getter;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.NaturalId;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "users")
+public class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+
+    @NaturalId
+    @Column(name="name", nullable=false)
+    public String name;
+
+    @Column(name="password", nullable=false)
+    public String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="type", nullable=false)
+    public UserType type;
+
+    @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
+    public List<TableOrder> tableOrders = new ArrayList<>();
+
+
+    @Column(name="MailAddress", nullable=true)
+    public String MailAddress;
+
+    @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL)
+    public List<Delivery> deliveries = new ArrayList<>();
+
+    public User() {}
+    public User(String name, String password, UserType type) {
+        this.name = name;
+        this.password = password;
+        this.type = type;
+    }
+    public List<TableOrder> getTableOrders() {
+        return tableOrders;
+    }
+
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public boolean isAdmin() {
+        return type == UserType.Admin;
+    }
+
+    public boolean isDietitian() {
+        return type == UserType.Dietitian;
+    }
+}

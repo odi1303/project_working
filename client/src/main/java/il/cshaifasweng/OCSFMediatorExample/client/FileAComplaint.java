@@ -5,10 +5,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Complaint;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,9 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 public class FileAComplaint {

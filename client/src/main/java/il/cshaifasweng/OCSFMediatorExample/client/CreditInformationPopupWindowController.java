@@ -1,10 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.greenrobot.eventbus.EventBus;
 
 public class CreditInformationPopupWindowController implements PopupController<String, CreditInformation> {
 

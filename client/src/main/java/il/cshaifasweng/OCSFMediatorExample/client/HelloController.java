@@ -1,11 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import org.greenrobot.eventbus.EventBus;

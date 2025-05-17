@@ -1,8 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.OrderItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

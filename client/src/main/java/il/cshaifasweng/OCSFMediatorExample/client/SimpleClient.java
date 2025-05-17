@@ -1,20 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.event.Event;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public class SimpleClient extends AbstractClient {
 	//private static SimpleClient client = null;

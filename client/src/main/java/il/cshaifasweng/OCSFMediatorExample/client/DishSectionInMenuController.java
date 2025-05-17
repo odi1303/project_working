@@ -6,8 +6,7 @@ import javafx.scene.control.Label;
 //import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import org.greenrobot.eventbus.EventBus;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
 
 public class DishSectionInMenuController {
 

@@ -1,10 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.greenrobot.eventbus.EventBus;
 
 public class PersonalInformationPopupWindowController implements PopupController<String, PersonalInformation>{
 

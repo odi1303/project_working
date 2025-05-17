@@ -1,8 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Complaint;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

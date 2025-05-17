@@ -1,17 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.LocationInformation;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LocationInformationPopupWindowController implements PopupController<String, LocationInformation> {
 
