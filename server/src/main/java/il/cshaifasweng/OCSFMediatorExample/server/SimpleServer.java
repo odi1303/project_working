@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.server;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.RequestReservationTimes;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -181,7 +182,21 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
+			} else if (payload instanceof RequestReservationTimes request) {
+				ReservationDetails details = request.getDetails();
+
+				List<String> response = List.of("10:00", "15:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						response,
+						RequestReservationTimes.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
 			}
+
 		}
 	}
 

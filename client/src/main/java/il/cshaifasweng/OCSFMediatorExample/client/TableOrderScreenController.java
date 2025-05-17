@@ -16,6 +16,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Reservation;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.ReservationDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.RequestReservationTimes;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -262,9 +263,19 @@ public class TableOrderScreenController {
             }
         }
     }
-
+    @SuppressWarnings("unchecked")
     private List<String> requestPossibleReservationsTimes(ReservationDetails details) {
-        return List.of("10:00", "15:00");
+        try {
+            return (List<String>) RequestManager.getInstance().sendAndWait(
+                    new RequestReservationTimes(details),
+                    5000,
+                    RequestReservationTimes.class,
+                    List.class
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     private void LinkButtonsToReservationOptions(List<String> possibleReservationsTimes, ReservationDetails reservationDetails) {
