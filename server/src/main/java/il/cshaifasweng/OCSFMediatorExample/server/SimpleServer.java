@@ -1,9 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchClosingTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.IsReservationPossibleRequest;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.RequestReservationTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.BookReservationRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -14,9 +13,9 @@ import java.util.List;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
@@ -199,7 +198,6 @@ public class SimpleServer extends AbstractServer{
 			} else if (payload instanceof IsReservationPossibleRequest request) {
 				Reservation reservation = request.getReservation();
 
-				// Placeholder logic (always possible)
 				boolean isPossible = true;
 
 				Message responseMessage = new Message(
@@ -207,6 +205,59 @@ public class SimpleServer extends AbstractServer{
 						isPossible,
 						IsReservationPossibleRequest.class,
 						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof BookReservationRequest request) {
+				Reservation reservation = request.getReservation();
+
+				boolean bookedSuccessfully = false;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						bookedSuccessfully,
+						BookReservationRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof CanBeMadeInOneHourRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				boolean canBeMade = false; // or false
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						canBeMade,
+						CanBeMadeInOneHourRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof CanBeMadeInSameDateRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				boolean canBeMade = true;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						canBeMade,
+						CanBeMadeInSameDateRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof PossibleReservationsTimesRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				// Hardcoded example values
+				List<String> availableTimes = List.of("16:00", "17:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						availableTimes,
+						PossibleReservationsTimesRequest.class,
+						List.class
 				);
 
 				client.sendToClient(responseMessage);

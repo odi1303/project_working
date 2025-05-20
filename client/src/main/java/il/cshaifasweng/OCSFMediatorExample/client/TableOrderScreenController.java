@@ -10,14 +10,11 @@ import java.util.HashMap;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.ClosingTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.ReservationDetails;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchClosingTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.IsReservationPossibleRequest;
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.RequestReservationTimes;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -240,14 +237,13 @@ public class TableOrderScreenController {
             if (canTheReservationBeMadeInOneHour(reservationDetails)) {
                 List<String> possibleReservationsTimes = requestPossibleReservationsTimes(reservationDetails);
                 LinkButtonsToReservationOptions(possibleReservationsTimes, reservationDetails);
-                // Use Platform.runLater to show the options buttons
                 Platform.runLater(() -> showTheOptionsButtons());
             } else if (canTheReservationBeMadeInSameDate(reservationDetails)) {
                 List<String> possibleReservationsTimesInSameDate = requestPossibleReservationsTimesInSameDate(reservationDetails);
                 PopupDialogService popupDialogService = new PopupDialogService();
                 Platform.runLater(() -> {
                     try {
-                        popupDialogService.openPopup("InformationWindow.fxml", String.join(", ", possibleReservationsTimesInSameDate), (Stage) reservationSpace.getScene().getWindow());
+                        popupDialogService.openPopup("InformationWindow.fxml", "the reservation can't be made at the requested time.\n Available options in the same date:\n" + String.join(", ", possibleReservationsTimesInSameDate), (Stage) reservationSpace.getScene().getWindow());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -264,6 +260,7 @@ public class TableOrderScreenController {
             }
         }
     }
+
     @SuppressWarnings("unchecked")
     private List<String> requestPossibleReservationsTimes(ReservationDetails details) {
         try {
@@ -309,7 +306,7 @@ public class TableOrderScreenController {
         PopupDialogService popupDialogService = new PopupDialogService();
         Platform.runLater(() -> {
             try {
-                popupDialogService.openPopup("InformationWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
+//                popupDialogService.openPopup("InformationWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
                 PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
                 if (personalInformation == null) {
                     showOptions();
@@ -325,7 +322,7 @@ public class TableOrderScreenController {
                 ReservationDetails reservation = buttonsReservations.get(currentButton);
                 Reservation fullReservation = new Reservation(reservation, personalInformation, creditInformation);
                 if (isReservationPossible(fullReservation)) {
-                    boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
+                    boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "book reservation?", (Stage) reservationSpace.getScene().getWindow());
                     if (!isConfirmed) {
                         showOptions();
                         return;
@@ -335,13 +332,13 @@ public class TableOrderScreenController {
                             popupDialogService.openPopup("InformationWindow.fxml", "reservation booked", (Stage) reservationSpace.getScene().getWindow());
                             goToHomePage();
                         } else {
-                            popupDialogService.openPopup("InformationWindow.fxml", "reservation failed", (Stage) reservationSpace.getScene().getWindow());
+                            popupDialogService.openPopup("InformationWindow.fxml", "reservation failed, the restaurant is full at that time", (Stage) reservationSpace.getScene().getWindow());
                             showOptions();
                         }
                         return;
                     }
                 } else {
-                    popupDialogService.openPopup("InformationWindow.fxml", "reservation taken", (Stage) reservationSpace.getScene().getWindow());
+                    popupDialogService.openPopup("InformationWindow.fxml", "reservation failed, the restaurant is full at that time", (Stage) reservationSpace.getScene().getWindow());
                     showOptions();
                     return;
                 }
@@ -379,18 +376,64 @@ public class TableOrderScreenController {
     }
 
     boolean bookReservation(Reservation fullReservation) {
-        return true;
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new BookReservationRequest(fullReservation),
+                    5000,
+                    BookReservationRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     boolean canTheReservationBeMadeInOneHour(ReservationDetails reservationDetails) {
-        return true;
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new CanBeMadeInOneHourRequest(reservationDetails),
+                    5000,
+                    CanBeMadeInOneHourRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     boolean canTheReservationBeMadeInSameDate(ReservationDetails reservationDetails) {
-        return true;
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new CanBeMadeInSameDateRequest(reservationDetails),
+                    5000,
+                    CanBeMadeInSameDateRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+
     List<String> requestPossibleReservationsTimesInSameDate(ReservationDetails details) {
-        return List.of("16:00", "17:00");
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> result = (List<String>) RequestManager.getInstance().sendAndWait(
+                    new PossibleReservationsTimesRequest(details),
+                    5000,
+                    PossibleReservationsTimesRequest.class,
+                    List.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 }
