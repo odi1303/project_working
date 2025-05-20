@@ -52,16 +52,19 @@ public class ChangeIngredientsController {
     }
 
     private List<String> getAllPossibleIngredients() {
-        return Arrays.asList(
-                "Tomato Sauce", "Mozzarella Cheese", "Basil",
-                "Pancetta", "Parmesan Cheese", "Egg", "Black Pepper",
-                "Beef Patty", "Cheddar Cheese", "Lettuce",
-                "Tomato", "Pickles", "Chicken",
-                "Flour", "Spices", "Fries",
-                "Salmon", "Tuna", "Shrimp",
-                "Rice", "Seaweed", "Avocado",
-                "Noodles", "Pork", "Vegetables", "Broth"
-        );
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> response = (List<String>) RequestManager.getInstance().sendAndWait(
+                    "get all ingredients",
+                    5000,
+                    String.class,
+                    List.class
+            );
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     private List<String> getCheckedIngredients() {

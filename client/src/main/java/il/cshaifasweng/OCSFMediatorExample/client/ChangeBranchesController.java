@@ -51,15 +51,30 @@ public class ChangeBranchesController {
     }
 
     private List<String> getAllPossibleBranches() {
-        return Arrays.asList(
-                "Rome", "Naples", "Florence",
-                "Milan", "Venice",
-                "New York", "Chicago", "Dallas",
-                "Nashville", "Houston", "Atlanta",
-                "Tokyo", "Osaka", "Kyoto",
-                "Fukuoka", "Sapporo"
-        );
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> response = (List<String>) RequestManager.getInstance().sendAndWait(
+                    "get all branches",
+                    5000,
+                    String.class,
+                    List.class
+            );
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
+//    private List<String> getAllPossibleBranches() {
+//        return Arrays.asList(
+//                "Rome", "Naples", "Florence",
+//                "Milan", "Venice",
+//                "New York", "Chicago", "Dallas",
+//                "Nashville", "Houston", "Atlanta",
+//                "Tokyo", "Osaka", "Kyoto",
+//                "Fukuoka", "Sapporo"
+//        );
+//    }
 
     private List<String> getCheckedBranches() {
         List<String> checkedBranches = new ArrayList<>();

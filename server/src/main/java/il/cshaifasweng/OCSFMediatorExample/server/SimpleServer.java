@@ -172,7 +172,14 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			} else if (payload instanceof String request && request.equals("get all branches")) {
-				List<String> branches = List.of("Branch 1", "Branch 2", "Branch 3");
+				List<String> branches = List.of(
+						"Rome", "Naples", "Florence",
+						"Milan", "Venice",
+						"New York", "Chicago", "Dallas",
+						"Nashville", "Houston", "Atlanta",
+						"Tokyo", "Osaka", "Kyoto",
+						"Fukuoka", "Sapporo"
+				);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -283,6 +290,25 @@ public class SimpleServer extends AbstractServer{
 						cancelationFee,
 						ReservationCancelationFeeRequest.class,
 						Double.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof String request && request.equals("get all ingredients")) {
+				List<String> ingredients = List.of(
+						"Tomato Sauce", "Mozzarella Cheese", "Basil",
+						"Pancetta", "Parmesan Cheese", "Egg", "Black Pepper",
+						"Beef Patty", "Cheddar Cheese", "Lettuce",
+						"Tomato", "Pickles", "Chicken",
+						"Flour", "Spices", "Fries",
+						"Salmon", "Tuna", "Shrimp",
+						"Rice", "Seaweed", "Avocado",
+						"Noodles", "Pork", "Vegetables", "Broth"
+				);
+				Message responseMessage = new Message(
+						message.getKey(),
+						ingredients,
+						String.class,
+						List.class
 				);
 
 				client.sendToClient(responseMessage);
