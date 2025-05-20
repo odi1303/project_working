@@ -261,6 +261,31 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
+			} else if (payload instanceof OrderCancelationFeeRequest request) {
+				OrderClient order = request.getOrder();
+
+				double cancelationFee = 5.0;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						cancelationFee,
+						OrderCancelationFeeRequest.class,
+						Double.class
+				);
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof ReservationCancelationFeeRequest request) {
+				Reservation reservation = request.getReservation();
+
+				double cancelationFee = 10.0;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						cancelationFee,
+						ReservationCancelationFeeRequest.class,
+						Double.class
+				);
+
+				client.sendToClient(responseMessage);
 			}
 		}
 	}
