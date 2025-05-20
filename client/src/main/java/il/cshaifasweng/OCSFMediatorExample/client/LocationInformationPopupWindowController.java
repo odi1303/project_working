@@ -3,7 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.LocationInformation;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

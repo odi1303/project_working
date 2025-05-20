@@ -1,7 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 
 import java.util.List;
 

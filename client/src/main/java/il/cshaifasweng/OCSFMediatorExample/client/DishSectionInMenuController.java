@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 //import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 
 public class DishSectionInMenuController {
 

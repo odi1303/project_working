@@ -1,13 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Reservation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.ReservationDetails;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.ReservationDetails;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
 
 public class ReservationCardController {
 

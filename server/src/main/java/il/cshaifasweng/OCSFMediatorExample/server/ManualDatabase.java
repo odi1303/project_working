@@ -1,14 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.complains.Complain;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.complains.DeliveryComplain;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.complains.RestaurantComplain;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.DeleteRequest;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.InsertRequest;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.Request;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.UpdateRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.InsertRequest;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;

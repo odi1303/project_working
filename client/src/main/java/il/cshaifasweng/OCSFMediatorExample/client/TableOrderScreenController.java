@@ -10,13 +10,14 @@ import java.util.HashMap;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.ClosingTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Reservation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.ReservationDetails;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchOpeningTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.RequestReservationTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.ReservationDetails;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchClosingTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.IsReservationPossibleRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.RequestReservationTimes;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -362,9 +363,19 @@ public class TableOrderScreenController {
         });
     }
 
-    // Temporary methods (should be on the server)
-    boolean isReservationPossible(Reservation fullReservation) {
-        return true;
+    private boolean isReservationPossible(Reservation reservation) {
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new IsReservationPossibleRequest(reservation),
+                    5000,
+                    IsReservationPossibleRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     boolean bookReservation(Reservation fullReservation) {

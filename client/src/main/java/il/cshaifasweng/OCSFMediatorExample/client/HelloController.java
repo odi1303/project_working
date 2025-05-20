@@ -1,7 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

@@ -1,9 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchClosingTimes;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.RequestReservationTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchClosingTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.IsReservationPossibleRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.RequestReservationTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.requests.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 //@ApplicationScoped
@@ -195,8 +196,21 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			}
+			} else if (payload instanceof IsReservationPossibleRequest request) {
+				Reservation reservation = request.getReservation();
 
+				// Placeholder logic (always possible)
+				boolean isPossible = true;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						isPossible,
+						IsReservationPossibleRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
 		}
 	}
 

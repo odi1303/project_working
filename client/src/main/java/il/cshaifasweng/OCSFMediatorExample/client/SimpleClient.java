@@ -2,8 +2,8 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.Complaint;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;

@@ -1,11 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.LocationInformation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.OrderClient;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.PersonalInformation;
-import il.cshaifasweng.OCSFMediatorExample.entities.dal.models.CreditInformation;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
