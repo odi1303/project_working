@@ -69,6 +69,19 @@ public class MenuItem implements Serializable
         this.personalPreferences = new ArrayList<String>(personalPreferences);
         this.sale = sale;
     }
+
+    public MenuItem(String name, String description, long price, String imageUrl,
+                    List<String> availableBranches, List<String> ingredients, int sale) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.availableBranches = availableBranches;
+        this.ingredients = ingredients;
+        this.personalPreferences = new ArrayList<>();
+        this.sale = sale;
+    }
+
     public Long getId() {
         return id;
     }
@@ -164,4 +177,30 @@ public class MenuItem implements Serializable
     public void setSale(int sale) {
         this.sale = sale;
     }
+
+    public boolean isEmpty() {
+        return (name == null || name.isEmpty()) &&
+                (description == null || description.isEmpty()) &&
+                price == 0 &&
+                (imageUrl == null || imageUrl.isEmpty()) &&
+                (availableBranches == null || availableBranches.isEmpty()) &&
+                (ingredients == null || ingredients.isEmpty());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        MenuItem other = (MenuItem) obj;
+        return name.equals(other.name)
+                && description.equals(other.description)
+                && price.equals(other.price)
+                && imageUrl.equals(other.imageUrl)
+                && availableBranches.equals(other.availableBranches)
+                && ingredients.equals(other.ingredients)
+                && personalPreferences.equals(other.personalPreferences)
+                && sale == other.sale;
+    }
+
 }

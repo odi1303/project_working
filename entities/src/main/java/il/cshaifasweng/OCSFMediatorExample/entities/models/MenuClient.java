@@ -1,7 +1,6 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
-import javafx.fxml.FXML;
+//import javafx.fxml.FXML;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,14 +12,14 @@ public class MenuClient {
     private ArrayList<MenuItem> menu;
     private String menuName;
 
-    @FXML
-    public void initialize() {
-        try {
-//            EventBus.getDefault().register(this);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-    }
+//    @FXML
+//    public void initialize() {
+//        try {
+////            EventBus.getDefault().register(this);
+//        } catch (Exception e) {
+//            throw new RuntimeException();
+//        }
+//    }
 
 //    public void onDestroy() {
 //        EventBus.getDefault().unregister(this);

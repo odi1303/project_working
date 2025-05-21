@@ -4,6 +4,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.BookReservationRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.server.bl.HardcodedDataProvider;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -172,14 +173,7 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			} else if (payload instanceof String request && request.equals("get all branches")) {
-				List<String> branches = List.of(
-						"Rome", "Naples", "Florence",
-						"Milan", "Venice",
-						"New York", "Chicago", "Dallas",
-						"Nashville", "Houston", "Atlanta",
-						"Tokyo", "Osaka", "Kyoto",
-						"Fukuoka", "Sapporo"
-				);
+				List<String> branches = HardcodedDataProvider.getAllBranches();
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -294,16 +288,8 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			} else if (payload instanceof String request && request.equals("get all ingredients")) {
-				List<String> ingredients = List.of(
-						"Tomato Sauce", "Mozzarella Cheese", "Basil",
-						"Pancetta", "Parmesan Cheese", "Egg", "Black Pepper",
-						"Beef Patty", "Cheddar Cheese", "Lettuce",
-						"Tomato", "Pickles", "Chicken",
-						"Flour", "Spices", "Fries",
-						"Salmon", "Tuna", "Shrimp",
-						"Rice", "Seaweed", "Avocado",
-						"Noodles", "Pork", "Vegetables", "Broth"
-				);
+				List<String> ingredients = HardcodedDataProvider.getAllIngredients();
+
 				Message responseMessage = new Message(
 						message.getKey(),
 						ingredients,

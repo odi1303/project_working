@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

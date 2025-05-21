@@ -1,30 +1,39 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
+package il.cshaifasweng.OCSFMediatorExample.server.bl;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
-import javafx.fxml.FXML;
-import org.greenrobot.eventbus.EventBus;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MenuFactory {
+public class HardcodedDataProvider {
 
-    @FXML
-    public void initialize() {
-        try {
-//            EventBus.getDefault().register(this);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+    public static List<String> getAllIngredients() {
+        return List.of(
+                "Tomato Sauce", "Mozzarella Cheese", "Basil",
+                "Pancetta", "Parmesan Cheese", "Egg", "Black Pepper",
+                "Beef Patty", "Cheddar Cheese", "Lettuce",
+                "Tomato", "Pickles", "Chicken",
+                "Flour", "Spices", "Fries",
+                "Salmon", "Tuna", "Shrimp",
+                "Rice", "Seaweed", "Avocado",
+                "Noodles", "Pork", "Vegetables", "Broth", "Pasta"
+        );
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+    public static List<String> getAllBranches() {
+        return List.of(
+                "Rome", "Naples", "Florence",
+                "Milan", "Venice",
+                "New York", "Chicago", "Dallas",
+                "Nashville", "Houston", "Atlanta",
+                "Tokyo", "Osaka", "Kyoto",
+                "Fukuoka", "Sapporo"
+        );
     }
 
-    public static List<MenuClient> getMenus() {
+    public static List<MenuClient> getAllMenus() {
         List<MenuClient> menus = new ArrayList<>();
 
         MenuClient italianMenu = new MenuClient("Italian Menu", new ArrayList<>(Arrays.asList(
@@ -32,15 +41,13 @@ public class MenuFactory {
                         25, "images/margherita.jpg",
                         Arrays.asList("Rome", "Naples", "Florence"),
                         Arrays.asList("Tomato Sauce", "Mozzarella Cheese", "Basil"),
-                        new ArrayList<>(),
-                        10),
+                        new ArrayList<>(), 10),
 
                 new MenuItem("Pasta Carbonara", "Creamy pasta with pancetta, parmesan cheese, and egg",
                         20, "images/carbonara.jpg",
                         Arrays.asList("Rome", "Milan", "Venice"),
                         Arrays.asList("Pasta", "Pancetta", "Parmesan Cheese", "Egg", "Black Pepper"),
-                        new ArrayList<>(),
-                        5)
+                        new ArrayList<>(), 5)
         )));
         menus.add(italianMenu);
 
@@ -49,15 +56,13 @@ public class MenuFactory {
                         18, "images/cheeseburger.jpg",
                         Arrays.asList("New York", "Chicago", "Dallas"),
                         Arrays.asList("Beef Patty", "Cheddar Cheese", "Lettuce", "Tomato", "Pickles"),
-                        new ArrayList<>(),
-                        0),
+                        new ArrayList<>(), 0),
 
                 new MenuItem("Fried Chicken", "Crispy fried chicken with a side of fries",
                         15, "images/fried_chicken.jpg",
                         Arrays.asList("Nashville", "Houston", "Atlanta"),
                         Arrays.asList("Chicken", "Flour", "Spices", "Fries"),
-                        new ArrayList<>(),
-                        20)
+                        new ArrayList<>(), 20)
         )));
         menus.add(americanMenu);
 
@@ -66,18 +71,21 @@ public class MenuFactory {
                         35, "images/sushi.jpg",
                         Arrays.asList("Tokyo", "Osaka", "Kyoto"),
                         Arrays.asList("Salmon", "Tuna", "Shrimp", "Rice", "Seaweed", "Avocado"),
-                        new ArrayList<>(),
-                        15),
+                        new ArrayList<>(), 15),
 
                 new MenuItem("Ramen", "Hot noodle soup with pork, egg, and vegetables",
                         12, "images/ramen.jpg",
                         Arrays.asList("Tokyo", "Fukuoka", "Sapporo"),
                         Arrays.asList("Noodles", "Pork", "Egg", "Vegetables", "Broth"),
-                        new ArrayList<>(),
-                        0)
+                        new ArrayList<>(), 0)
         )));
         menus.add(japaneseMenu);
 
         return menus;
+    }
+
+    public static MenuClient getMainMenu() {
+        List<MenuClient> allMenus = getAllMenus();
+        return allMenus.isEmpty() ? null : allMenus.get(0);
     }
 }

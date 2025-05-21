@@ -152,8 +152,8 @@ public class MenuController {
 
     }
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
-        Platform.runLater(()->menuDishList.getChildren().clear());
-        //menuDishList.getChildren().clear();
+//        Platform.runLater(()->menuDishList.getChildren().clear());
+        menuDishList.getChildren().clear();
         if (menuClient != null){
             int i=0;
             for (MenuItem dish : menuClient.getMenu()) {
@@ -172,14 +172,14 @@ public class MenuController {
     private void putBranchCheckBoxesInFilter(List<String> branches){
         branchCheckboxContainerForFilter.setVisible(false);
         branchCheckboxContainerForFilter.setManaged(false);
-        Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().clear());
+//        Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().clear());
 
-        //   branchCheckboxContainerForFilter.getChildren().clear();
+        branchCheckboxContainerForFilter.getChildren().clear();
         for (String branch : branches){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().add(checkBox));
-            //branchCheckboxContainerForFilter.getChildren().add(checkBox);
+//            Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().add(checkBox));
+            branchCheckboxContainerForFilter.getChildren().add(checkBox);
         }
         branchCheckboxContainerForFilter.setVisible(true);
         branchCheckboxContainerForFilter.setManaged(true);
@@ -188,13 +188,13 @@ public class MenuController {
     private void putIngredientsCheckBoxesInFilter(List<String> ingredients){
         IngredientsCheckboxContainerForFilter.setVisible(false);
         IngredientsCheckboxContainerForFilter.setManaged(false);
-        Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().clear());
-        ;
+//        Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().clear());
+        IngredientsCheckboxContainerForFilter.getChildren().clear();
         for (String branch : ingredients){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().add(checkBox));
-            ;
+//            Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().add(checkBox));
+            IngredientsCheckboxContainerForFilter.getChildren().add(checkBox);
         }
         IngredientsCheckboxContainerForFilter.setVisible(true);
         IngredientsCheckboxContainerForFilter.setManaged(true);
@@ -263,8 +263,8 @@ public class MenuController {
                 DishSectionInMenuController dishSectionInMenuController = fxmlLoader.getController();
                 dishSectionInMenuController.setDish(dish);
                 dishSectionInMenuController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
-                //menuDishList.getChildren().add(dishNode);
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }else if (!isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderableDishSectionInMenu.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -272,7 +272,8 @@ public class MenuController {
                 orderableDishSectionInMenuController.reinitialize(this);
                 orderableDishSectionInMenuController.setDishInDishSection(dish);
                 orderableDishSectionInMenuController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }else{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DeletableDishSection.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -280,9 +281,8 @@ public class MenuController {
                 DeletableDishSectionController.reinitialize(this);
                 DeletableDishSectionController.setDishInDishSection(dish);
                 DeletableDishSectionController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
-
-
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
