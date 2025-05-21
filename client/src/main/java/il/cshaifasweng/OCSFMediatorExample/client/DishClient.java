@@ -6,7 +6,7 @@
 
 
 //there is another version in entities
-
+/*
 
 
 
@@ -128,3 +128,4 @@ public class DishClient {
         return name.equals(other.name) && description.equals(other.description) && price == other.price && imageUrl.equals(other.imageUrl) && availableBranches.equals(other.availableBranches) && ingredients.equals(other.ingredients) && personalPreferences.equals(other.personalPreferences) && sale == other.sale;
     }
 }
+*/

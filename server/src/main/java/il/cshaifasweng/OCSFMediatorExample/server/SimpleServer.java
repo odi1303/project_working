@@ -298,6 +298,17 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
+			} else if (payload instanceof String request && request.equals("get main menu")) {
+				MenuClient mainMenu = HardcodedDataProvider.getMainMenu();
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						mainMenu,
+						String.class,
+						MenuClient.class
+				);
+
+				client.sendToClient(responseMessage);
 			}
 		}
 	}
