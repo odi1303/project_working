@@ -28,7 +28,14 @@ public class ChooseMenuController {
     public void initialize() {
         try {
 //            EventBus.getDefault().register(this);
-            List<MenuClient> menuList = MenuFactory.getMenus();
+//            List<MenuClient> menuList = MenuFactory.getMenus();
+            @SuppressWarnings("unchecked")
+            List<MenuClient> menuList = (List<MenuClient>) RequestManager.getInstance().sendAndWait(
+                    "get all menus",
+                    5000,
+                    String.class,
+                    List.class
+            );
             // Use Platform.runLater to update menuListContainer
             Platform.runLater(() -> {
                 menuListContainer.getChildren().clear();

@@ -300,13 +300,22 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			} else if (payload instanceof String request && request.equals("get main menu")) {
 				MenuClient mainMenu = HardcodedDataProvider.getMainMenu();
-				System.out.println(mainMenu.getAllBranches());
-				System.out.println(mainMenu);
+
 				Message responseMessage = new Message(
 						message.getKey(),
 						mainMenu,
 						String.class,
 						MenuClient.class
+				);
+
+				client.sendToClient(responseMessage);
+			} else if (payload instanceof String request && request.equals("get all menus")) {
+				List<MenuClient> Menus = HardcodedDataProvider.getAllMenus();
+				Message responseMessage = new Message(
+						message.getKey(),
+						Menus,
+						String.class,
+						List.class
 				);
 
 				client.sendToClient(responseMessage);
