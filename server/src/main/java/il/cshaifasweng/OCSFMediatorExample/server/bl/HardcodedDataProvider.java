@@ -47,7 +47,31 @@ public class HardcodedDataProvider {
                         20, "images/carbonara.jpg",
                         Arrays.asList("Rome", "Milan", "Venice"),
                         Arrays.asList("Pasta", "Pancetta", "Parmesan Cheese", "Egg", "Black Pepper"),
-                        new ArrayList<>(), 5)
+                        new ArrayList<>(), 5),
+
+                new MenuItem("Lasagna", "Layers of pasta with rich meat sauce, béchamel, and melted cheese",
+                        28, "images/lasagna.jpg",
+                        Arrays.asList("Rome", "Naples"),
+                        Arrays.asList("Pasta", "Beef Patty", "Tomato Sauce", "Mozzarella Cheese", "Parmesan Cheese"),
+                        new ArrayList<>(), 8),
+
+                new MenuItem("Risotto alla Milanese", "Creamy saffron risotto topped with parmesan",
+                        22, "images/risotto.jpg",
+                        Arrays.asList("Milan"),
+                        Arrays.asList("Rice", "Parmesan Cheese", "Spices"),
+                        new ArrayList<>(), 4),
+
+                new MenuItem("Bruschetta", "Grilled bread topped with fresh tomatoes, garlic, and basil",
+                        10, "images/bruschetta.jpg",
+                        Arrays.asList("Florence", "Rome"),
+                        Arrays.asList("Tomato", "Basil", "Bread", "Garlic", "Olive Oil"),
+                        new ArrayList<>(), 12),
+
+                new MenuItem("Tiramisu", "Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream",
+                        14, "images/tiramisu.jpg",
+                        Arrays.asList("Venice", "Rome"),
+                        Arrays.asList("Egg", "Cheese", "Coffee", "Sugar", "Cocoa"),
+                        new ArrayList<>(), 6)
         )));
         menus.add(italianMenu);
 
@@ -86,6 +110,6 @@ public class HardcodedDataProvider {
 
     public static MenuClient getMainMenu() {
         List<MenuClient> allMenus = getAllMenus();
-        return allMenus.isEmpty() ? null : allMenus.get(0);
+        return allMenus.isEmpty() ? null : allMenus.getFirst();
     }
 }
