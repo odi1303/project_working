@@ -27,7 +27,7 @@ public class MenuItem implements Serializable
     public List<String> personalPreferences;;
 
     @Column(name = "price", nullable=false)
-    public Long price;
+    public long price;
 
     public String imageUrl;
     @Convert(converter = StringListConverter.class)
@@ -86,7 +86,7 @@ public class MenuItem implements Serializable
         return id;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -118,7 +118,7 @@ public class MenuItem implements Serializable
         this.personalPreferences = personalPreferences;
     }
 
-    public Long getPrice() {
+    public long getPrice() {
         return price;
     }
 
@@ -195,7 +195,7 @@ public class MenuItem implements Serializable
         MenuItem other = (MenuItem) obj;
         return name.equals(other.name)
                 && description.equals(other.description)
-                && price.equals(other.price)
+                && price == (other.price)
                 && imageUrl.equals(other.imageUrl)
                 && availableBranches.equals(other.availableBranches)
                 && ingredients.equals(other.ingredients)

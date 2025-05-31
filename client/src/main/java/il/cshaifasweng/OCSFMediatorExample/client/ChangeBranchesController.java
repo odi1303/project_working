@@ -100,7 +100,7 @@ public class ChangeBranchesController {
         for (var node : branchesContainer.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
-                if (branchesToCheck.contains(checkBox.getText())) {
+                if (branchesToCheck != null && branchesToCheck.contains(checkBox.getText())) {
                     checkBox.setSelected(true); // Check the checkbox if it's in the list
                 }else{
                     checkBox.setSelected(false);

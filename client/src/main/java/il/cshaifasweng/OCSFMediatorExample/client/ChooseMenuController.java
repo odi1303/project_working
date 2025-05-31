@@ -119,18 +119,17 @@ public class ChooseMenuController {
 
     private void goToEditMenu(MenuClient menu) {
         // Use Platform.runLater to handle scene navigation
-        Platform.runLater(() -> {
+
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("EditMenu.fxml"));
                 Parent root = loader.load();
                 EditMenuController controller = loader.getController();
-                controller.setMenu(menu);
+                Platform.runLater(() -> controller.setMenu(menu));
                 Scene currentScene = menuListContainer.getScene();
                 currentScene.setRoot(root);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
     }
 
     @FXML

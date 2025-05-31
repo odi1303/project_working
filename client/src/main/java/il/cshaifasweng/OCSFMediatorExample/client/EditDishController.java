@@ -56,7 +56,7 @@ public class EditDishController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+//            EventBus.getDefault().register(this);
             // Ensure initial positioning of buttons
             editDishPane.widthProperty().addListener((obs, oldVal, newVal) -> positionButtons());
             editDishPane.heightProperty().addListener((obs, oldVal, newVal) -> positionButtons());
@@ -65,9 +65,9 @@ public class EditDishController {
         }
     }
 
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-    }
+//    public void onDestroy() {
+//        EventBus.getDefault().unregister(this);
+//    }
 
     private void positionButtons() {
         double paneWidth = editDishPane.getWidth();
@@ -115,7 +115,7 @@ public class EditDishController {
 
     @FXML
     public void submitDish() {
-        if (checkValidFields() && !isSubmitted.get()) {
+        if (checkValidFields(dish) && !isSubmitted.get()) {
             dish = new MenuItem(
                     nameTextField.getText(),
                     descriptionTextField.getText(),
@@ -123,7 +123,6 @@ public class EditDishController {
                     imageUrlTextField.getText(),
                     dish.getAvailableBranches(),
                     dish.getIngredients(),
-                    dish.getPersonalPreferences(),
                     Integer.parseInt(SaleTextField.getText())
             );
             isSubmitted.set(true);
@@ -134,8 +133,8 @@ public class EditDishController {
         return isEdit;
     }
 
-    private boolean checkValidFields() {
-        return isFloat(priceTextField) && isInteger(SaleTextField);
+    private boolean checkValidFields(MenuItem dish) {
+        return isFloat(priceTextField) && isInteger(SaleTextField) && dish.getAvailableBranches() != null && dish.getIngredients() != null;
     }
 
     private boolean isFloat(TextField textField) {
@@ -164,9 +163,11 @@ public class EditDishController {
         // Use Platform.runLater to update the availableBranches VBox
         Platform.runLater(() -> {
             availableBranches.getChildren().clear();
-            for (String branch : branches) {
-                Label label = new Label(branch);
-                availableBranches.getChildren().add(label);
+            if (branches != null) {
+                for (String branch : branches) {
+                    Label label = new Label(branch);
+                    availableBranches.getChildren().add(label);
+                }
             }
         });
     }
@@ -175,9 +176,11 @@ public class EditDishController {
         // Use Platform.runLater to update the ingredients VBox
         Platform.runLater(() -> {
             ingredients.getChildren().clear();
-            for (String ingredient : ingredientsList) {
-                Label label = new Label(ingredient);
-                ingredients.getChildren().add(label);
+            if (ingredientsList != null) {
+                for (String ingredient : ingredientsList) {
+                    Label label = new Label(ingredient);
+                    ingredients.getChildren().add(label);
+                }
             }
         });
     }
@@ -190,7 +193,6 @@ public class EditDishController {
                 dish.getImageUrl(),
                 dish.getAvailableBranches(),
                 ingredientsList,
-                dish.getPersonalPreferences(),
                 dish.getSale()
         );
         initializeIngredients(ingredientsList);
@@ -204,7 +206,6 @@ public class EditDishController {
                 dish.getImageUrl(),
                 branchesList,
                 dish.getIngredients(),
-                dish.getPersonalPreferences(),
                 dish.getSale()
         );
         initializeAvailableBranches(branchesList);

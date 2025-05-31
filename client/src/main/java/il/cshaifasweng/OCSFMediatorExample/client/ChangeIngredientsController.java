@@ -90,7 +90,7 @@ public class ChangeIngredientsController {
         for (var node : ingredientsContainer.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
-                if (ingredientsToCheck.contains(checkBox.getText())) {
+                if (ingredientsToCheck != null && ingredientsToCheck.contains(checkBox.getText())) {
                     checkBox.setSelected(true); // Check the checkbox if it's in the list
                 } else {
                     checkBox.setSelected(false);
