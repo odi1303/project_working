@@ -10,7 +10,7 @@
             prefWidth="300" prefHeight="150">
 
     <center>
-        <Label fx:id="informationLabel" BorderPane.alignment="CENTER"/>
+        <Label fx:id="informationLabel" BorderPane.alignment="CENTER" style="-fx-text-fill: red"/>
     </center>
 
     <bottom>

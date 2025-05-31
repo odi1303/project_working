@@ -6,6 +6,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -68,11 +69,12 @@ public class FileDeliveryComplaint {
             warning.setText("waiting to verify and to submit your complaint");
             warning.setTextFill(Color.BLUE);
         }
+        App.setRoot("home-page");
     }
     @FXML
     public void initialize() {
+        EventBus.getDefault().register(this);
         try {
-            EventBus.getDefault().register(this);
             select_branch.accessibleTextProperty().set("Chose the relevant branch");
             // Populate the ChoiceBox with options
             select_branch.getItems().addAll("Kiryon", "Grand Kenyon");
@@ -81,7 +83,7 @@ public class FileDeliveryComplaint {
         }
     }
     @Subscribe
-    public void on_respond(Delivery delivery) throws IOException {
+    public void on_respond(OrderClient delivery) throws IOException {
         if (delivery!=null){
             Date today = new Date();
             Complaint complaint=new Complaint(select_branch.getValue(),headline.getText(),description.getText(),today,email.getText(),delivery);

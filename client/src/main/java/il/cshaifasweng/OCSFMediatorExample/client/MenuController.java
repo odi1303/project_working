@@ -7,6 +7,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -162,13 +163,12 @@ public class MenuController {
         System.out.println("hello from set menu");
         Platform.runLater(()->{
             menuDishList.getChildren().clear();
-            System.out.println("check if got in and deleted the items"+menuDishList.getChildren().size());
+            //System.out.println("check if got in and deleted the items"+menuDishList.getChildren().size());
 
         //menuDishList.getChildren().clear();
         if (menuClient != null){
             int i=0;
             for (MenuItem dish : menuClient.getMenu()) {
-                System.out.println(i);
                 addDishToMenuSection(dish, isOrder);
                 i++;
                 //Platform.runLater(()->addDishToMenuSection(dish, isOrder));
@@ -237,7 +237,15 @@ public class MenuController {
         selectAllCheckboxesInVBox(IngredientsCheckboxContainerForFilter);
         setMenuInMenuSection(fullMenu, isOrder);
     }
+    @FXML
+    void decreaseCount(ActionEvent event) {
+        OrderItem pair;
+    }
 
+    @FXML
+    void increasCount(ActionEvent event) {
+
+    }
 
 
     private void selectAllCheckboxesInVBox(VBox container) {
@@ -300,7 +308,6 @@ public class MenuController {
         }
     }
 
-
     public void orderDish(MenuItem dish){
         PopupDialogService popupDialogService = new PopupDialogService();
 
@@ -337,10 +344,14 @@ public class MenuController {
         }
     }
     @FXML
-    private void finishOrder(){
-
-
+    private void finishOrder() throws IOException {
         PopupDialogService popupDialogService = new PopupDialogService();
+        if (getDishesCountPair().isEmpty()){
+            System.out.println("Your cart is empty!");
+            popupDialogService.openPopup("InformationWindow.fxml", "Your cart is empty!", (Stage) orderSection.getScene().getWindow());
+            return;
+        }
+
         try {
             if(canTheOrderBeMadeFromASingleBranch(dishesInOrder)){
                 Boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Finish Order?", (Stage) orderSection.getScene().getWindow());
@@ -348,15 +359,6 @@ public class MenuController {
                     LocationInformation locationInfo = getLocationInformation();
                     boolean isDelivery = getIsDelivery();
                     personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
-                    /*ExecutorService executor = Executors.newFixedThreadPool(1);
-                    executor.submit(() -> {
-                        try {
-                            App.sendMessageToServer(personalInformation);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                    executor.shutdown();*/
                     if (personalInformation != null) {
                         CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                         //App.sendMessageToServer(creditInformation);
@@ -370,7 +372,8 @@ public class MenuController {
                     }
                 }
             }else {
-                popupDialogService.openPopup("InformationPopupWindow.fxml", "The order cant be made from a single branch", (Stage) orderSection.getScene().getWindow());
+                System.out.println("The order cant be made from a single branch");
+                popupDialogService.openPopup("InformationWindow.fxml", "The order cant be made from a single branch", (Stage) orderSection.getScene().getWindow());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -411,7 +414,17 @@ public class MenuController {
     private ArrayList<OrderItem> getDishesCountPair(){
         ArrayList<OrderItem> pairList = new ArrayList<>();
         for (OrderItem pair : orderDishNodeCountLabelPair){
-            pairList.add(new OrderItem(pair.getMenuItem(), pair.getQuantity()));
+            if(pair.getQuantity()>0)
+                pairList.add(new OrderItem(pair.getMenuItem(), pair.getQuantity()));
+            else{
+                Platform.runLater(()->{
+                    orderSection.getChildren().remove(pair);
+                    orderDishList.getChildren().remove(pair);
+                    dishesInOrder.remove(pair.getMenuItem());
+                    orderDishNodeCountLabelPair.remove(pair);
+                });
+            }
+
         }
         return pairList;
     }
@@ -450,6 +463,7 @@ public class MenuController {
         if (order != null){
             EmailSender emailSender=new EmailSender();
             emailSender.send_email_respond(personalInformation.getEmail(),"Your Order from Mama's Restaurant no."+order.id,order.toString());
+            System.out.println(order.toString());
             App.setRoot("home-page");
         }
         else {
@@ -482,6 +496,7 @@ public class MenuController {
     public void onEventDummy(Object ignored) {}
 
     private void sendOrder(OrderClient order) {
+        System.out.println("sending the order to saving");
         try{
             System.out.println("is the order null?"+order==null);
             App.sendMessageToServer(order);

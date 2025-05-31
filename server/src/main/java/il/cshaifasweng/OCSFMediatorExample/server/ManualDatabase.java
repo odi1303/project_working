@@ -111,7 +111,7 @@ public class ManualDatabase {
                 "Cheese pizza with tomato sauce",
                 35,
                 "images/pizza.jpg",
-                Arrays.asList("Branch A", "Branch B", "Branch C"),
+                Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Cheese", "Tomato Sauce", "Dough"),
                 new ArrayList<>(),
                 10
@@ -123,7 +123,7 @@ public class ManualDatabase {
                 "Beef burger with lettuce and tomato",
                 40,
                 "images/burger.jpg",
-                Arrays.asList("Branch A", "Branch D"),
+                Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Beef Patty", "Lettuce", "Tomato", "Bun"),
                 new ArrayList<>(),
                 0
@@ -134,7 +134,7 @@ public class ManualDatabase {
                 "Spaghetti with meatballs",
                 30,
                 "images/pasta.jpg",
-                Arrays.asList("Branch B", "Branch C"),
+                Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Spaghetti", "Meatballs", "Tomato Sauce"),
                 new ArrayList<>(),
                 5
@@ -145,7 +145,7 @@ public class ManualDatabase {
                 "Fresh vegetable salad",
                 25,
                 "images/salad.jpg",
-                Arrays.asList("Branch A", "Branch C"),
+                Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Lettuce", "Tomato", "Cucumber", "Dressing"),
                 new ArrayList<>(),
                 15
@@ -156,7 +156,7 @@ public class ManualDatabase {
                 "Assorted sushi platter",
                 55,
                 "images/sushi.jpg",
-                Arrays.asList("Branch D"),
+                Arrays.asList("Kiryon"),
                 Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables"),
                 new ArrayList<>(),
                 0
@@ -167,7 +167,7 @@ public class ManualDatabase {
                 "Creamy hummus served with vegetables and pita.",
                 25,
                 "https://example.com/images/hummus.jpg",
-                List.of("Haifa", "Tel Aviv"),
+                List.of( "Grand Kenyon"),
                 List.of("Hummus", "Tomato", "Onion", "Olives"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -178,7 +178,7 @@ public class ManualDatabase {
                 "Delicious falafel balls served with hummus and salad.",
                 22,
                 "https://example.com/images/falafel.jpg",
-                List.of("Tel Aviv", "Haifa", "Jerusalem"),
+                List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
                 new ArrayList<>(),
                 15 // Sale: 15% off
@@ -189,7 +189,7 @@ public class ManualDatabase {
                 "A simple cheese sandwich with tomato and lettuce.",
                 20,
                 "https://example.com/images/cheese_sandwich.jpg",
-                List.of("Haifa", "Jerusalem"),
+                List.of( "Grand Kenyon"),
                 List.of("Cheese", "Tomato", "Lettuce"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -200,7 +200,7 @@ public class ManualDatabase {
                 "Salad with grilled beef, lettuce, tomato, and cucumber.",
                 40,
                 "https://example.com/images/beef_salad.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Kiryon"),
                 List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
                 new ArrayList<>(),
                 20 // Sale: 20% off
@@ -211,7 +211,7 @@ public class ManualDatabase {
                 "Falafel served in pita bread with lettuce and hummus.",
                 24,
                 "https://example.com/images/falafel_wrap.jpg",
-                List.of("Haifa", "Tel Aviv"),
+                List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Lettuce"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -222,7 +222,7 @@ public class ManualDatabase {
                 "Combination of falafel, hummus, tomato, and olives.",
                 30,
                 "https://example.com/images/mixed_platter.jpg",
-                List.of("Tel Aviv", "Jerusalem"),
+                List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Tomato", "Olives"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -235,9 +235,9 @@ public class ManualDatabase {
         LocationInformation location3 = new LocationInformation("Chicago", "Michigan Avenue", "789");
         session.save(location3);
 
-        PersonalInformation personalInfo = new PersonalInformation("John Doe", "john@example.com", "1234567890");
+        PersonalInformation personalInfo = new PersonalInformation("John Doe", "1234567890", "john@example.com");
         session.save(personalInfo);
-        CreditInformation creditInfo = new CreditInformation("1234-5678-9012-3456", "12/27", "123");
+        CreditInformation creditInfo = new CreditInformation("1234567890123456", "12/27", "123");
         session.save(creditInfo);
         OrderClient order1 = new OrderClient(List.of(
                 new OrderItem(pizza, 2),
@@ -274,7 +274,7 @@ public class ManualDatabase {
         Reservation reservation1 = new Reservation(reservationDetails1, personalInformation1, creditInformation1);
         session.save(reservation1);
         ReservationDetails reservationDetails2 = new ReservationDetails(
-                "Tel Aviv Branch", "3", "Outdoor Area", "2025-04-06", "20:00"
+                "Kiryat Bialik Branch", "3", "Outdoor Area", "2025-04-06", "20:00"
         );
         session.save(reservationDetails2);
         PersonalInformation personalInformation2 = new PersonalInformation(
@@ -288,7 +288,7 @@ public class ManualDatabase {
         Reservation reservation2 = new Reservation(reservationDetails2, personalInformation2, creditInformation2);
         session.save(reservation2);
         ReservationDetails reservationDetails3 = new ReservationDetails(
-                "Jerusalem Branch", "2", "VIP Lounge", "2025-04-07", "19:30"
+                "Haifa Branch", "2", "VIP Lounge", "2025-04-07", "19:30"
         );
         session.save(reservationDetails3);
         PersonalInformation personalInformation3 = new PersonalInformation(
@@ -312,6 +312,7 @@ public class ManualDatabase {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
         System.out.println("a");
+
         try {
             if (o instanceof OrderClient){
                 session.saveOrUpdate(((OrderClient) o).getCreditInformation());
@@ -322,12 +323,13 @@ public class ManualDatabase {
         }
         catch (Exception exception) {
             System.out.println(exception.getMessage());
-            Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
+            session.merge(o);
+            /*Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
             if (existing == null) {
                 session.save(o);
             } else {
                 session.merge(o);// or manually update the fields
-            }
+            }*/
         }
         System.out.println("b");
         try{

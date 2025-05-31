@@ -158,15 +158,16 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("saved complain");
 			System.out.println((Complaint)msg);
 			db_.saveOrUpdate((Complaint)msg);
-			List<Complaint> openComplaints =db_.getAll(new Complaint());
-			System.out.println("num of open complaints=" + openComplaints.size());
-		}
-		else if (msg instanceof LocationInformation info) {
-			System.out.println("saved location");
-			db_.saveOrUpdate(info);
-		} else if (msg instanceof PersonalInformation info) {
-			System.out.println("saved personal");
-			db_.saveOrUpdate(info);
+			List<Complaint> openComplaints =new ArrayList<>();
+			System.out.println(db_);
+			List<Complaint> complaints = db_.getAll(new Complaint());
+			for (Complaint complain : complaints) {
+				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
+					openComplaints.add(complain);
+				}
+			}
+			sendToAllClients(openComplaints);
+
 		} else if (msg instanceof OrderClient order) {
 			try {
 				System.out.println("saved order");
@@ -185,10 +186,6 @@ public class SimpleServer extends AbstractServer{
 				System.err.println("Exception occurred while saving or sending order:");
 				e.printStackTrace();
 			}
-		}
-		else if (msg instanceof CreditInformation info) {
-			System.out.println("saved Credit");
-			db_.saveOrUpdate(info);
 		}
 		else if (msgString.startsWith("||delivery||id=")){
 			String[] parts = msgString.split("\\|\\|");
@@ -217,7 +214,7 @@ public class SimpleServer extends AbstractServer{
 			List<OrderClient> openComplaints =db_.getAll(new OrderClient());
 			System.out.println("num of open orders=" + openComplaints.size());
 			for (int i = 0; i < openComplaints.size(); i++) {
-				if (openComplaints.get(i).getId().equals(id)&&openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
+				if (openComplaints.get(i).getId()==(long)id&&openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
 					client.sendToClient(openComplaints.get(i));
 				}
 			}
