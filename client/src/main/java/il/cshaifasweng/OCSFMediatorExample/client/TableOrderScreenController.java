@@ -117,11 +117,25 @@ public class TableOrderScreenController {
             throw new RuntimeException();
         }
         javafx.application.Platform.runLater(this::initializeComboBoxForBranch);
+        reservationSpace.setDisable(true);
+        time.setDisable(true);
+
+        reservationDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onDateChanged();
+        });
+        branch.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onDateChanged();
+        });
     }
 
 //    public void onDestroy() {
 //        EventBus.getDefault().unregister(this);
 //    }
+
+    private void onDateChanged(){
+        time.getSelectionModel().clearSelection();
+        reservationSpace.getSelectionModel().clearSelection();
+    }
 
     @FXML
     private void initializeComboBoxForBranch_Selection() {
@@ -173,7 +187,7 @@ public class TableOrderScreenController {
     private String getOpenTime() {
         try {
             OpeningTimes response = RequestManager.getInstance().sendAndWait(
-                    new GetBranchOpeningTimes("Main"),
+                    new GetBranchOpeningTimes(branch.getValue()),
                     5000,
                     GetBranchOpeningTimes.class,
                     OpeningTimes.class
@@ -228,6 +242,15 @@ public class TableOrderScreenController {
             branch.setItems(branchOptions);
         }
     }
+
+    @FXML
+    private void branch_button_pressed(ActionEvent event) {
+        if (!(branch.getItems().isEmpty())) {
+            reservationSpace.setDisable(false);
+            time.setDisable(false);
+        }
+    }
+
 
     @FXML
     public void showOptions() {
