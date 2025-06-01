@@ -160,7 +160,8 @@ public class SimpleServer extends AbstractServer{
 						OpeningTimes.class
 				);
 				client.sendToClient(responseMessage);
-			} if (payload instanceof GetBranchClosingTimes request) {
+			}
+			else if (payload instanceof GetBranchClosingTimes request) {
 				String branch = request.getBranchName();
 				ClosingTimes response = new ClosingTimes(branch, "22:00");
 
@@ -172,7 +173,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof String request && request.equals("get all branches")) {
+			}
+			else if (payload instanceof String request && request.equals("get all branches")) {
 				List<String> branches = HardcodedDataProvider.getAllBranches();
 
 				Message responseMessage = new Message(
@@ -183,7 +185,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof RequestReservationTimes request) {
+			}
+			else if (payload instanceof RequestReservationTimes request) {
 				ReservationDetails details = request.getDetails();
 
 				List<String> response = List.of("10:00", "15:00");
@@ -196,7 +199,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof IsReservationPossibleRequest request) {
+			}
+			else if (payload instanceof IsReservationPossibleRequest request) {
 				Reservation reservation = request.getReservation();
 
 				boolean isPossible = true;
@@ -209,7 +213,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof BookReservationRequest request) {
+			}
+			else if (payload instanceof BookReservationRequest request) {
 				Reservation reservation = request.getReservation();
 
 				boolean bookedSuccessfully = false;
@@ -222,10 +227,11 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof CanBeMadeInOneHourRequest request) {
+			}
+			else if (payload instanceof CanBeMadeInOneHourRequest request) {
 				ReservationDetails details = request.getReservationDetails();
 
-				boolean canBeMade = false; // or false
+				boolean canBeMade = true; // or false
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -235,7 +241,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof CanBeMadeInSameDateRequest request) {
+			}
+			else if (payload instanceof CanBeMadeInSameDateRequest request) {
 				ReservationDetails details = request.getReservationDetails();
 
 				boolean canBeMade = true;
@@ -248,7 +255,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof PossibleReservationsTimesRequest request) {
+			}
+			else if (payload instanceof PossibleReservationsTimesRequest request) {
 				ReservationDetails details = request.getReservationDetails();
 
 				// Hardcoded example values
@@ -262,7 +270,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof OrderCancelationFeeRequest request) {
+			}
+			else if (payload instanceof OrderCancelationFeeRequest request) {
 				OrderClient order = request.getOrder();
 
 				double cancelationFee = 5.0;
@@ -274,7 +283,8 @@ public class SimpleServer extends AbstractServer{
 						Double.class
 				);
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof ReservationCancelationFeeRequest request) {
+			}
+			else if (payload instanceof ReservationCancelationFeeRequest request) {
 				Reservation reservation = request.getReservation();
 
 				double cancelationFee = 10.0;
@@ -287,7 +297,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof String request && request.equals("get all ingredients")) {
+			}
+			else if (payload instanceof String request && request.equals("get all ingredients")) {
 				List<String> ingredients = HardcodedDataProvider.getAllIngredients();
 
 				Message responseMessage = new Message(
@@ -298,7 +309,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof String request && request.equals("get main menu")) {
+			}
+			else if (payload instanceof String request && request.equals("get main menu")) {
 				MenuClient mainMenu = HardcodedDataProvider.getMainMenu();
 
 				Message responseMessage = new Message(
@@ -309,7 +321,8 @@ public class SimpleServer extends AbstractServer{
 				);
 
 				client.sendToClient(responseMessage);
-			} else if (payload instanceof String request && request.equals("get all menus")) {
+			}
+			else if (payload instanceof String request && request.equals("get all menus")) {
 				List<MenuClient> Menus = HardcodedDataProvider.getAllMenus();
 				Message responseMessage = new Message(
 						message.getKey(),

@@ -3,7 +3,9 @@ package il.cshaifasweng.OCSFMediatorExample.entities.clientRequests;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 
-public class IsReservationPossibleRequest {
+import java.io.Serializable;
+
+public class IsReservationPossibleRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Reservation reservation;
