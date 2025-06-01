@@ -88,7 +88,7 @@ public class MenuController {
                 System.out.println(fullMenu);
             }
             setMenuInMenuSection(fullMenu, false);
-            clearFilter();
+            updateFilter();
 
 
         } catch (Exception e) {
@@ -181,12 +181,9 @@ public class MenuController {
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
 //        Platform.runLater(()->menuDishList.getChildren().clear());
         menuDishList.getChildren().clear();
-        System.out.println(4);
         if (menuClient != null){
             currentMenu = new MenuClient(menuClient.getMenu());
-            System.out.println(3);
             for (MenuItem dish : menuClient.getMenu()) {
-                System.out.println(2);
                 addDishToMenuSection(dish, isOrder);
                 //Platform.runLater(()->addDishToMenuSection(dish, isOrder));
             }
