@@ -65,7 +65,11 @@ public class OrderedDishSectionController {
         dishSectionController.setDishDataInDishSection();
     }
 
-    public String getCountLabel() {
-        return countLabel.getText();
+    public Label getCountLabel() {
+        return countLabel;
+    }
+
+    public DishSectionInMenuController getDishSectionController(){
+        return dishSectionController;
     }
 }

@@ -11,9 +11,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -46,12 +48,12 @@ public class MenuController {
 
     private MenuClient currentMenu;
     private PersonalInformation personalInformation;
-    private ArrayList<MenuItem> dishesInOrder;
+    private ArrayList<MenuItem> dishesInOrder = new ArrayList<>();
     private boolean isOrder;
     private boolean isDelete = false;
     private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu
 
-    private List<OrderItem> orderDishNodeCountLabelPair = new ArrayList<>();
+    private List<Pair<OrderedDishSectionController, Label>> orderDishNodeControllerCountLabelPair = new ArrayList<>();
     private EditMenuController editMenuController;
 
 
@@ -354,7 +356,7 @@ public class MenuController {
             Platform.runLater(()->{
                 orderDishList.getChildren().add(dishNode);
                 dishesInOrder.add(dish);
-                orderDishNodeCountLabelPair.add(new OrderItem(dish, Integer.parseInt(dishSectionInMenuController.getCountLabel())));
+                orderDishNodeControllerCountLabelPair.add(new Pair<>(dishSectionInMenuController, (dishSectionInMenuController.getCountLabel())));
             });
 
 
@@ -367,7 +369,7 @@ public class MenuController {
     @FXML
     private void finishOrder() throws IOException {
         PopupDialogService popupDialogService = new PopupDialogService();
-        if (getDishesCountPair().isEmpty()){
+        if (IsOrderEmpty()){
             System.out.println("Your cart is empty!");
             popupDialogService.openPopup("InformationWindow.fxml", "Your cart is empty!", (Stage) orderSection.getScene().getWindow());
             return;
@@ -378,19 +380,18 @@ public class MenuController {
                 Boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Finish Order?", (Stage) orderSection.getScene().getWindow());
                 if (isConfirmed != null && isConfirmed) {
                     boolean isDelivery = getIsDelivery();
-                    personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                     LocationInformation locationInfo = null;
                     if (isDelivery) {
                         locationInfo = getLocationInformation();
                     }
-                    PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                     if (personalInformation != null) {
                         CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                         //App.sendMessageToServer(creditInformation);
                         if (creditInformation != null) {
                             Boolean Confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Total price is:" + String.valueOf(getTotalPrice()) + ". Confirm Order?", (Stage) orderSection.getScene().getWindow());
                             if (Confirmed != null && Confirmed) {
-                                OrderClient order = new OrderClient(getDishesCountPair(), isDelivery, locationInfo, personalInformation, creditInformation);
+                                OrderClient order = createOrderClient(isDelivery, locationInfo, personalInformation, creditInformation);
                                 sendOrder(order);
                             }
                         }
@@ -403,6 +404,32 @@ public class MenuController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean IsOrderEmpty(){
+        for (Pair<OrderedDishSectionController, Label> pair : orderDishNodeControllerCountLabelPair) {
+            Label countLabel = pair.getValue();
+            String text = countLabel.getText();
+            int quantity = Integer.parseInt(text.trim());
+            if (quantity > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private OrderClient createOrderClient(boolean isDelivery,LocationInformation locationInfo,PersonalInformation personalInformation,CreditInformation creditInformation) {
+        List<OrderItem> itemList = new ArrayList<>();
+        for (Pair<OrderedDishSectionController, Label> pair : orderDishNodeControllerCountLabelPair) {
+            Label countLabel = pair.getValue();
+            String text = countLabel.getText();
+            int quantity = Integer.parseInt(text.trim());
+            if (quantity > 0) {
+                MenuItem dish = pair.getKey().getDishSectionController().getDishClient();
+                itemList.add(new OrderItem(dish, quantity));
+            }
+        }
+        return new OrderClient(itemList, isDelivery, locationInfo, personalInformation, creditInformation);
     }
 
     //good
@@ -433,30 +460,36 @@ public class MenuController {
     //good
     private double getTotalPrice(){
         double totalPrice = 0;
-        for (MenuItem dish : dishesInOrder) {
-            totalPrice += dish.getPrice() *((double) Math.max(100 - dish.getSale(), 0) / 100.0);
+        for (Pair<OrderedDishSectionController, Label> pair : orderDishNodeControllerCountLabelPair) {
+            Label countLabel = pair.getValue();
+            String text = countLabel.getText();
+            int quantity = Integer.parseInt(text.trim());
+            if (quantity > 0) {
+                MenuItem dish = pair.getKey().getDishSectionController().getDishClient();
+                totalPrice += quantity*dish.getPrice() *((double) Math.max(100 - dish.getSale(), 0) / 100.0);
+            }
         }
         return totalPrice;
     }
 
-    //probebly good
-    private ArrayList<OrderItem> getDishesCountPair(){
-        ArrayList<OrderItem> pairList = new ArrayList<>();
-        for (OrderItem pair : orderDishNodeCountLabelPair){
-            if(pair.getQuantity()>0)
-                pairList.add(new OrderItem(pair.getMenuItem(), pair.getQuantity()));
-            else{
-                Platform.runLater(()->{
-                    orderSection.getChildren().remove(pair);
-                    orderDishList.getChildren().remove(pair);
-                    dishesInOrder.remove(pair.getMenuItem());
-                    orderDishNodeCountLabelPair.remove(pair);
-                });
-            }
-
-        }
-        return pairList;
-    }
+//    //probebly good
+//    private ArrayList<OrderItem> getDishesCountPair(){
+//        ArrayList<OrderItem> pairList = new ArrayList<>();
+//        for (OrderItem pair : orderDishNodeControllerCountLabelPair){
+//            if(pair.getQuantity()>0)
+//                pairList.add(new OrderItem(pair.getMenuItem(), pair.getQuantity()));
+//            else{
+//                Platform.runLater(()->{
+//                    orderSection.getChildren().remove(pair);
+//                    orderDishList.getChildren().remove(pair);
+//                    dishesInOrder.remove(pair.getMenuItem());
+//                    orderDishNodeControllerCountLabelPair.remove(pair);
+//                });
+//            }
+//
+//        }
+//        return pairList;
+//    }
 /*
     private void getHardcodedDishes() throws IOException {
         App.sendMessageToServer("send all MenuItems");

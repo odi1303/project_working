@@ -63,6 +63,6 @@ public class OrderItem implements Serializable {
 
     @Override
     public String toString() {
-        return  menuItem.toString();
+        return  menuItem.toString()+",quantity="+quantity;
     }
 }
