@@ -30,7 +30,7 @@ public class ChoseKindComplaint {
 
     @FXML
     void open_delivery_complaint(ActionEvent event) throws IOException {
-        App.setRoot("file-delivery-compaint");
+        App.setRoot("file-delivery-complaint");
     }
 
     @FXML

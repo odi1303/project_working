@@ -203,4 +203,14 @@ public class MenuItem implements Serializable
                 && sale == other.sale;
     }
 
+
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", personalPreferences=" + personalPreferences +
+                ", price=" + price +
+                '}';
+    }
 }

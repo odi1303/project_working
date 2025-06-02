@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Location information")
+@Table(name = "LocationInformation")
 public class LocationInformation implements Serializable {
     @Id
     @Column(name = "id")

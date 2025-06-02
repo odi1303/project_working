@@ -8,7 +8,7 @@ import jakarta.persistence.Column;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Personal information")
+@Table(name = "PersonalInformation")
 public class PersonalInformation implements Serializable {
 
     @Id

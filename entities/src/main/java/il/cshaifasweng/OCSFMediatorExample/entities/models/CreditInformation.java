@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Credit information")
+@Table(name = "CreditInformation")
 public class CreditInformation implements Serializable {
     @Id
     @Column(name = "id")

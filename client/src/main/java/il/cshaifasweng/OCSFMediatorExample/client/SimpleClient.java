@@ -1,14 +1,17 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
+import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class SimpleClient extends AbstractClient {
 	//private static SimpleClient client = null;
@@ -32,6 +35,7 @@ public class SimpleClient extends AbstractClient {
 
     private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
+		//EventBus.getDefault().register(this);
 	}
 
 	@FXML
@@ -56,7 +60,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-			System.out.println(message);
+            System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
@@ -103,6 +107,12 @@ public class SimpleClient extends AbstractClient {
 				}
 			}
 		}
+		else if (msg instanceof OrderClient order){
+			System.out.println("gor the order");
+			EventBus.getDefault().post(order);
+		}
+
+
 	}
 
 

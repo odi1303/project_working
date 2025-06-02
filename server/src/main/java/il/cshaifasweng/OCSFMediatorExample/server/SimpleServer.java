@@ -8,12 +8,31 @@ import il.cshaifasweng.OCSFMediatorExample.server.bl.HardcodedDataProvider;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
+import jakarta.inject.Qualifier;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
@@ -139,13 +158,67 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("saved complain");
 			System.out.println((Complaint)msg);
 			db_.saveOrUpdate((Complaint)msg);
-			List<Complaint> openComplaints =db_.getAll(new Complaint());
-			System.out.println("num of open complaints=" + openComplaints.size());
-		}
-		else if (msg instanceof LocationInformation) {
-			System.out.println("saved location");
-			db_.saveOrUpdate((LocationInformation)msg);
+			List<Complaint> openComplaints =new ArrayList<>();
+			System.out.println(db_);
+			List<Complaint> complaints = db_.getAll(new Complaint());
+			for (Complaint complain : complaints) {
+				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
+					openComplaints.add(complain);
+				}
+			}
+			sendToAllClients(openComplaints);
 
+		} else if (msg instanceof OrderClient order) {
+			try {
+				System.out.println("saved order");
+
+				db_.saveOrUpdate(order);  // suspect this is blocking or failing
+
+				System.out.println("sending the order");
+				List<OrderClient> openComplaints =db_.getAll(new OrderClient());
+				System.out.println("num of open orders=" + openComplaints.size());
+				for (int i = 0; i < openComplaints.size(); i++) {
+					if (order==openComplaints.get(i)) {
+						client.sendToClient(openComplaints.get(i));
+					}
+				}
+			} catch (Exception e) {
+				System.err.println("Exception occurred while saving or sending order:");
+				e.printStackTrace();
+			}
+		}
+		else if (msgString.startsWith("||delivery||id=")){
+			String[] parts = msgString.split("\\|\\|");
+			String idStr = null;
+			String email = null;
+
+			for (String part : parts) {
+				if (part.startsWith("id=")) {
+					idStr = part.substring(3); // Extract the value after "id="
+				} else if (part.startsWith("email=")) {
+					email = part.substring(6); // Extract the value after "email="
+				}
+			}
+
+			Integer id = null;
+			if (idStr != null && idStr.matches("\\d+")) {
+				try {
+					id = Integer.parseInt(idStr);
+				} catch (NumberFormatException e) {
+					System.err.println("Error: Could not parse ID as an integer.");
+				}
+			}
+
+			System.out.println("Delivery ID: " + id);
+			System.out.println("Email: " + email);
+			List<OrderClient> openComplaints =db_.getAll(new OrderClient());
+			System.out.println("num of open orders=" + openComplaints.size());
+			for (int i = 0; i < openComplaints.size(); i++) {
+				if (openComplaints.get(i).getId()==(long)id&&openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
+					client.sendToClient(openComplaints.get(i));
+				}
+			}
+			client.sendToClient(null);
 		}
 		else if (msg instanceof Message message) {
 			Object payload = message.getPayload();
@@ -335,7 +408,6 @@ public class SimpleServer extends AbstractServer{
 			}
 		}
 	}
-
 
 	public void sendToAllClients(String message) {
 		try {
