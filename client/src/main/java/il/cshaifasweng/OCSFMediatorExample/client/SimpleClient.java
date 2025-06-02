@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ public class SimpleClient extends AbstractClient {
 
     private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
+		//EventBus.getDefault().register(this);
 	}
 
 	@FXML
@@ -62,7 +64,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-			System.out.println(message);
+            System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
@@ -109,6 +111,12 @@ public class SimpleClient extends AbstractClient {
 				}
 			}
 		}
+		else if (msg instanceof OrderClient order){
+			System.out.println("gor the order");
+			EventBus.getDefault().post(order);
+		}
+
+
 	}
 
 

@@ -27,6 +27,7 @@ public class App extends Application {
     private static Scene scene;
     private static SimpleClient client;
     public static ObservableList<String> menu;
+    private static final Object lock = new Object();
 
     public static String username;
     public static String password;
@@ -150,7 +151,10 @@ public class App extends Application {
     }
 
     public static void sendMessageToServer(Object message) throws IOException {
-        client.sendToServer(message);
+        synchronized (lock) {
+            client.sendToServer(message);
+        }
+
     }
 
     public static void main(String[] args) {
