@@ -1,27 +1,26 @@
-package il.cshaifasweng.OCSFMediatorExample.client;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import javafx.fxml.FXML;
-import org.greenrobot.eventbus.EventBus;
+//import javafx.fxml.FXML;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.Serializable;
 
 
-public class MenuClient {
+public class MenuClient implements Serializable {
     private ArrayList<MenuItem> menu;
     private String menuName;
 
-    @FXML
-    public void initialize() {
-        try {
-//            EventBus.getDefault().register(this);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-    }
+//    @FXML
+//    public void initialize() {
+//        try {
+////            EventBus.getDefault().register(this);
+//        } catch (Exception e) {
+//            throw new RuntimeException();
+//        }
+//    }
 
 //    public void onDestroy() {
 //        EventBus.getDefault().unregister(this);

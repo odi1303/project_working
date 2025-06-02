@@ -1,6 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 
 public class AppState {
     private static User currentUser;

@@ -1,11 +1,8 @@
-package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "LocationInformation")

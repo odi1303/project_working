@@ -1,13 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.BookReservationRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.server.bl.HardcodedDataProvider;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -35,9 +32,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
@@ -223,7 +221,8 @@ public class SimpleServer extends AbstractServer{
 			client.sendToClient(null);
 		}
 		else if (msg instanceof Message message) {
-			if (message.getPayload() instanceof GetBranchOpeningTimes request) {
+			Object payload = message.getPayload();
+			if (payload instanceof GetBranchOpeningTimes request) {
 				String branch = request.getBranchName();
 				OpeningTimes response = new OpeningTimes(branch, "14:14");
 
@@ -233,12 +232,183 @@ public class SimpleServer extends AbstractServer{
 						GetBranchOpeningTimes.class,
 						OpeningTimes.class
 				);
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof GetBranchClosingTimes request) {
+				String branch = request.getBranchName();
+				ClosingTimes response = new ClosingTimes(branch, "22:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						response,
+						GetBranchClosingTimes.class,
+						ClosingTimes.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof String request && request.equals("get all branches")) {
+				List<String> branches = HardcodedDataProvider.getAllBranches();
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						branches,
+						String.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof RequestReservationTimes request) {
+				ReservationDetails details = request.getDetails();
+
+				List<String> response = List.of("10:00", "15:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						response,
+						RequestReservationTimes.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof IsReservationPossibleRequest request) {
+				Reservation reservation = request.getReservation();
+
+				boolean isPossible = true;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						isPossible,
+						IsReservationPossibleRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof BookReservationRequest request) {
+				Reservation reservation = request.getReservation();
+
+				boolean bookedSuccessfully = false;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						bookedSuccessfully,
+						BookReservationRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof CanBeMadeInOneHourRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				boolean canBeMade = true; // or false
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						canBeMade,
+						CanBeMadeInOneHourRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof CanBeMadeInSameDateRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				boolean canBeMade = true;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						canBeMade,
+						CanBeMadeInSameDateRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof PossibleReservationsTimesRequest request) {
+				ReservationDetails details = request.getReservationDetails();
+
+				// Hardcoded example values
+				List<String> availableTimes = List.of("16:00", "17:00");
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						availableTimes,
+						PossibleReservationsTimesRequest.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof OrderCancelationFeeRequest request) {
+				OrderClient order = request.getOrder();
+
+				double cancelationFee = 5.0;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						cancelationFee,
+						OrderCancelationFeeRequest.class,
+						Double.class
+				);
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof ReservationCancelationFeeRequest request) {
+				Reservation reservation = request.getReservation();
+
+				double cancelationFee = 10.0;
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						cancelationFee,
+						ReservationCancelationFeeRequest.class,
+						Double.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof String request && request.equals("get all ingredients")) {
+				List<String> ingredients = HardcodedDataProvider.getAllIngredients();
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						ingredients,
+						String.class,
+						List.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof String request && request.equals("get main menu")) {
+				MenuClient mainMenu = HardcodedDataProvider.getMainMenu();
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						mainMenu,
+						String.class,
+						MenuClient.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof String request && request.equals("get all menus")) {
+				List<MenuClient> Menus = HardcodedDataProvider.getAllMenus();
+				Message responseMessage = new Message(
+						message.getKey(),
+						Menus,
+						String.class,
+						List.class
+				);
 
 				client.sendToClient(responseMessage);
 			}
 		}
-
 	}
+
 
 	public void sendToAllClients(String message) {
 		try {

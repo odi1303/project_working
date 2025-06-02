@@ -1,7 +1,7 @@
-package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
 import jakarta.persistence.*;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.util.ArrayList;

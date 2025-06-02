@@ -1,8 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
@@ -10,16 +8,13 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.DeleteRequ
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.InsertRequest;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import jakarta.transaction.Transactional;
-import javafx.util.Pair;
 import org.hibernate.Session;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import jakarta.persistence.Query;
 
 
 import org.hibernate.HibernateException;

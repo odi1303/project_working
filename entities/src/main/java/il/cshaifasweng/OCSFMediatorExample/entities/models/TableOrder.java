@@ -1,0 +1,57 @@
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
+
+import jakarta.persistence.*;
+
+//import javax.persistence.*;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "table_orders")
+public class TableOrder implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+
+    @Column(name="start_date")
+    public Date startDate;
+
+    @Column(name="end_date")
+    public Date endDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    public Restaurant restaurant;
+
+    @Column(name="active")
+    public Date active;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    public User allocator;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    public List<RestaurantTable> restaurantTables;
+
+    public TableOrder() {}
+
+    public TableOrder(Date startDate, Date endDate, User allocator, Restaurant restaurant, List<RestaurantTable> restaurantTables) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.allocator = allocator;
+        this.restaurant = restaurant;
+        this.restaurantTables = restaurantTables;
+
+    }
+
+     public Date getStartDate() {
+        return startDate;
+     }
+     public Date getEndDate() {
+        return endDate;
+     }
+
+    public Long getId() {
+        return id;
+    }
+}

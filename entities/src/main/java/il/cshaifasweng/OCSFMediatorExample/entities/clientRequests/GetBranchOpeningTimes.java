@@ -1,10 +1,10 @@
-package il.cshaifasweng.OCSFMediatorExample.entities;
+package il.cshaifasweng.OCSFMediatorExample.entities.clientRequests;
 
 import java.io.Serializable;
 
 public class GetBranchOpeningTimes implements Serializable {
 
-    private String branchName;
+    private final String branchName;
 
     public GetBranchOpeningTimes(String branchName) {
         this.branchName = branchName;
@@ -14,7 +14,10 @@ public class GetBranchOpeningTimes implements Serializable {
         return branchName;
     }
 
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
+    @Override
+    public String toString() {
+        return "GetBranchOpeningTimes{" +
+                "branchName='" + branchName + '\'' +
+                '}';
     }
 }

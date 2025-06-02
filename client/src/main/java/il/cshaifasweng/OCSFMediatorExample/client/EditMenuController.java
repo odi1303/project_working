@@ -1,23 +1,19 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Dish;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
 public class EditMenuController {
 
@@ -60,40 +56,37 @@ public class EditMenuController {
             Node menuNode = menuLoader.load();
             menuController = menuLoader.getController();
             menuController.reinitialize(false, false);
-            menuController.setMenu(menu);
+//            menuController.setMenu(menu);
             menuController.setEdit(this);
-            // Use Platform.runLater to add the menu node to menuContainer
-            Platform.runLater(() -> {
-                menuContainer.getChildren().add(menuNode);
-            });
+
+            menuContainer.getChildren().add(menuNode);
 
             // Dynamically create editDish section
             FXMLLoader editDishLoader = new FXMLLoader(getClass().getResource("EditDish.fxml"));
             Node editDishNode = editDishLoader.load();
             editDishController = editDishLoader.getController();
-            // Use Platform.runLater to update editDishContainer
+            editDishContainer.setVisible(false);
+            editDishContainer.setManaged(false);
+            editDishContainer.getChildren().clear();
+            editDishContainer.getChildren().add(editDishNode);
+            editDishContainer.requestLayout();
             Platform.runLater(() -> {
-                editDishContainer.setVisible(false);
-                editDishContainer.setManaged(false);
-                editDishContainer.getChildren().clear();
-                editDishContainer.getChildren().add(editDishNode);
-                editDishContainer.requestLayout();
+                        editDishController.isSubmitted.addListener((observable, oldValue, newValue) -> handleEditDishIsSubmittedChange(oldValue, newValue));
+                        editDishController.getChangeBranchesButton().setOnAction(event -> changeBranches());
+                        editDishController.getChangeIngredientsButton().setOnAction(event -> changeIngredients());
             });
-            editDishController.isSubmitted.addListener((observable, oldValue, newValue) -> handleEditDishIsSubmittedChange(oldValue, newValue));
-            editDishController.getChangeBranchesButton().setOnAction(event -> changeBranches());
-            editDishController.getChangeIngredientsButton().setOnAction(event -> changeIngredients());
 
             // Dynamically create ChangeBranches section
             FXMLLoader changeBranchesLoader = new FXMLLoader(getClass().getResource("ChangeBranches.fxml"));
             Node changeBranchesNode = changeBranchesLoader.load();
             changeBranchesController = changeBranchesLoader.getController();
             // Use Platform.runLater to update ChangeBranchesContainer
-            Platform.runLater(() -> {
-                ChangeBranchesScrollPaneContainer.setVisible(false);
-                ChangeBranchesScrollPaneContainer.setManaged(false);
-                ChangeBranchesContainer.getChildren().clear();
-                ChangeBranchesContainer.getChildren().add(changeBranchesNode);
-            });
+//            Platform.runLater(() -> {
+            ChangeBranchesScrollPaneContainer.setVisible(false);
+            ChangeBranchesScrollPaneContainer.setManaged(false);
+            ChangeBranchesContainer.getChildren().clear();
+            ChangeBranchesContainer.getChildren().add(changeBranchesNode);
+//            });
             changeBranchesController.getSubmittedBranches().addListener((ListChangeListener<String>) change -> {
                 handelSubmittedBranches();
             });
@@ -104,12 +97,12 @@ public class EditMenuController {
             Node changeIngredientsNode = changeIngredientsLoader.load();
             changeIngredientsController = changeIngredientsLoader.getController();
             // Use Platform.runLater to update ChangeIngredientsContainer
-            Platform.runLater(() -> {
-                ChangeIngredientsScrollPaneContainer.setVisible(false);
-                ChangeIngredientsScrollPaneContainer.setManaged(false);
-                ChangeIngredientsContainer.getChildren().clear();
-                ChangeIngredientsContainer.getChildren().add(changeIngredientsNode);
-            });
+//            Platform.runLater(() -> {
+            ChangeIngredientsScrollPaneContainer.setVisible(false);
+            ChangeIngredientsScrollPaneContainer.setManaged(false);
+            ChangeIngredientsContainer.getChildren().clear();
+            ChangeIngredientsContainer.getChildren().add(changeIngredientsNode);
+//            });
             changeIngredientsController.getSubmittedIngredients().addListener((ListChangeListener<String>) change -> {
                 handleSubmittedIngredients();
             });
@@ -121,56 +114,56 @@ public class EditMenuController {
 
     private void hideChangeBranches() {
         // Use Platform.runLater to update visibility
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             ChangeBranchesScrollPaneContainer.setVisible(false);
             ChangeBranchesScrollPaneContainer.setManaged(false);
-        });
+//        });
     }
 
     private void changeBranches() {
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             changeBranchesController.checkBranches(editDishController.getDish().getAvailableBranches());
             ChangeBranchesScrollPaneContainer.setVisible(true);
             ChangeBranchesScrollPaneContainer.setManaged(true);
-        });
+//        });
     }
 
     private void handelSubmittedBranches() {
         List<String> submittedBranches = changeBranchesController.getSubmittedBranches();
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             editDishController.updateBranches(submittedBranches);
             ChangeBranchesScrollPaneContainer.setVisible(false);
             ChangeBranchesScrollPaneContainer.setManaged(false);
-        });
+//        });
     }
 
     private void hideChangeIngredients() {
         // Use Platform.runLater to update visibility
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             ChangeIngredientsScrollPaneContainer.setVisible(false);
             ChangeIngredientsScrollPaneContainer.setManaged(false);
-        });
+//        });
     }
 
     private void changeIngredients() {
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             changeIngredientsController.checkIngredients(editDishController.getDish().getIngredients());
             ChangeIngredientsScrollPaneContainer.setVisible(true);
             ChangeIngredientsScrollPaneContainer.setManaged(true);
-        });
+//        });
     }
 
     private void handleSubmittedIngredients() {
         List<String> submittedIngredients = changeIngredientsController.getSubmittedIngredients();
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             editDishController.updateIngredients(submittedIngredients);
             ChangeIngredientsScrollPaneContainer.setVisible(false);
             ChangeIngredientsScrollPaneContainer.setManaged(false);
-        });
+//        });
     }
 
 //    public void onDestroy() {
@@ -180,7 +173,7 @@ public class EditMenuController {
     public void deleteDishPressed(MenuItem dish) {
         PopupDialogService popupDialogService = new PopupDialogService();
         // Use Platform.runLater to handle popup and UI updates
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the dish?", (Stage) controlSection.getScene().getWindow());
                 if (isConfirmed) {
@@ -190,7 +183,7 @@ public class EditMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+//        });
     }
 
     public void EditDishPressed(MenuItem dish) {
@@ -200,7 +193,7 @@ public class EditMenuController {
     private void handleEditDishIsSubmittedChange(boolean oldValue, boolean newValue) {
         if (newValue && (!oldValue)) {
             // Use Platform.runLater to update UI
-            Platform.runLater(() -> {
+//            Platform.runLater(() -> {
                 editDishContainer.setVisible(false);
                 editDishContainer.setManaged(false);
                 if (!editDishController.isEdit()) {
@@ -218,28 +211,28 @@ public class EditMenuController {
                     menu.removeDish(editDishController.getOriginalDish());
                     addDishToMenu(editDishController.getDish());
                 }
-            });
+//            });
         }
     }
 
     public void setMenu(MenuClient menu) {
         this.menu = menu;
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             menuName.setText(menu.getMenuName());
             menuController.setMenu(menu);
-        });
+//        });
     }
 
     @FXML
     private void addNewDish() {
         // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             editDishController.setDish(new MenuItem());
             editDishController.setEdit(false);
             editDishContainer.setVisible(true);
             editDishContainer.setManaged(true);
-        });
+//        });
     }
 
     @FXML
@@ -248,20 +241,18 @@ public class EditMenuController {
     }
 
     private void EditDish(MenuItem dish) {
-        // Use Platform.runLater to update UI
-        Platform.runLater(() -> {
-            editDishController.setDish(dish);
-            editDishController.setEdit(true);
-            editDishContainer.setVisible(true);
-            editDishContainer.setManaged(true);
-        });
+
+        editDishController.setDish(dish);
+        editDishController.setEdit(true);
+        editDishContainer.setVisible(true);
+        editDishContainer.setManaged(true);
     }
 
     @FXML
     private void saveChanges() {
         PopupDialogService popupDialogService = new PopupDialogService();
         // Use Platform.runLater to handle popup and navigation
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to save the changes?", (Stage) controlSection.getScene().getWindow());
                 if (isConfirmed) {
@@ -270,7 +261,7 @@ public class EditMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+//        });
     }
 
     private void addDishToMenu(MenuItem dish) {
@@ -281,12 +272,12 @@ public class EditMenuController {
     @FXML
     public void goToHomePage() throws IOException {
         // Use Platform.runLater to handle scene navigation
-        Platform.runLater(() -> {
+//        Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+//        });
     }
 }

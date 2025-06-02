@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.ReservationCancelationFeeRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ public class CancelReservationScreenController {
             throw new RuntimeException(e);
         }
     }
+
     @Subscribe
     public void on_respond(List<Reservation> reservations) {
         Platform.runLater(() -> {
@@ -90,7 +92,6 @@ public class CancelReservationScreenController {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");
@@ -100,7 +101,18 @@ public class CancelReservationScreenController {
         });
     }
 
-    private double getRequiredReservationCancelationFee(Reservation reservations) {
-        return 10.0;
+    private double getRequiredReservationCancelationFee(Reservation reservation) {
+        try {
+            Double result = RequestManager.getInstance().sendAndWait(
+                    new ReservationCancelationFeeRequest(reservation),
+                    5000,
+                    ReservationCancelationFeeRequest.class,
+                    Double.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
     }
 }

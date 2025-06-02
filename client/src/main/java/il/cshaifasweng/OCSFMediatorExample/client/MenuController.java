@@ -1,11 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.LocationInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.LocationInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,26 +58,42 @@ public class MenuController {
     @FXML
     public void initialize() {
         try {
-            EventBus.getDefault().register(this);
+////            EventBus.getDefault().register(this);
+////            isMain = true;
+////            if (fullMenu == null) {
+////                try {
+////                    System.out.println("requesting menu");
+////                    App.sendMessageToServer("send all MenuItems");
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                }
+////                /*new Thread(() -> {
+////                    try {
+////                        System.out.println("requesting menu");
+////                        App.sendMessageToServer("send all MenuItems");
+////                    } catch (IOException e) {
+////                        e.printStackTrace();
+////                    }
+////                }).start();*/
+////            }
             isMain = true;
+            isOrder = false;
             if (fullMenu == null) {
-                try {
-                    dishesInOrder = new ArrayList<>();
-                    System.out.println("requesting menu");
-                    App.sendMessageToServer("send all MenuItems");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                /*new Thread(() -> {
-                    try {
-                        System.out.println("requesting menu");
-                        App.sendMessageToServer("send all MenuItems");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();*/
+                MenuClient response = RequestManager.getInstance().sendAndWait(
+                        "get main menu",
+                        5000,
+                        String.class,
+                        MenuClient.class
+                );
+                fullMenu = response;
             }
+            if ((fullMenu) != null){
+                System.out.println(fullMenu);
+            }
+            setMenuInMenuSection(fullMenu, false);
+            updateFilter();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +103,7 @@ public class MenuController {
         EventBus.getDefault().unregister(this);
     }
 
-
+    //good
     private LocationInformation getLocationInformation() {
         LocationInformation locationInformation;
         PopupDialogService popupDialogService = new PopupDialogService();
@@ -97,11 +112,10 @@ public class MenuController {
             //App.sendMessageToServer(locationInformation);
             return locationInformation;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
-
+    //good
     private boolean getIsDelivery(){
         PopupDialogService popupDialogService = new PopupDialogService();
         try {
@@ -114,7 +128,7 @@ public class MenuController {
             throw new RuntimeException(e);
         }
     }
-
+    //fine
     public void reinitialize(boolean isOrder, boolean isMain) {
         if (isOrder) {
             this.isOrder = true;
@@ -123,7 +137,9 @@ public class MenuController {
         if (!isMain) {
             this.isMain = false;
         }
+        setMenuInMenuSection(fullMenu, isOrder);
     }
+    //good
     public void setEdit(EditMenuController editMenuController) {
         this.editMenuController = editMenuController;
         isDelete = true;
@@ -131,93 +147,98 @@ public class MenuController {
         clearFilter();
     }
 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!
     public void setMenu(MenuClient menu) {
         if (!isMain) {
             fullMenu = menu;
             updateFilter();
+            setMenuInMenuSection(fullMenu, isOrder);
         }
     }
 
+    //good
     private void updateFilter() {
         if(fullMenu != null) {
+            clearFilter();
             List<String> branches = fullMenu.getAllBranches();
             List<String> ingredients = fullMenu.getAllIngredients();
             putBranchCheckBoxesInFilter(branches);
             putIngredientsCheckBoxesInFilter(ingredients);
-            clearFilter();
         }
     }
 
+    //good
     private void addOrderSupportToMenu() {
         isOrder = true; //should be true after reinitialize, but updated in case a different function will call it.
         setMenuInMenuSection(currentMenu, true);
         showOrderSection();
     }
 
+    //good
     private void showOrderSection() {
         orderSection.setVisible(true);
         orderSection.setManaged(true);
 
     }
+
+    //probebly good
     private void setMenuInMenuSection(MenuClient menuClient, boolean isOrder) {
         System.out.println("hello from set menu");
-        Platform.runLater(()->{
-            menuDishList.getChildren().clear();
-            //System.out.println("check if got in and deleted the items"+menuDishList.getChildren().size());
-
-        //menuDishList.getChildren().clear();
+//        Platform.runLater(()->menuDishList.getChildren().clear());
+        menuDishList.getChildren().clear();
         if (menuClient != null){
-            int i=0;
+            currentMenu = new MenuClient(menuClient.getMenu());
             for (MenuItem dish : menuClient.getMenu()) {
                 addDishToMenuSection(dish, isOrder);
-                i++;
                 //Platform.runLater(()->addDishToMenuSection(dish, isOrder));
             }
-            currentMenu = new MenuClient(menuClient.getMenu());
         }else{
             currentMenu = null;
         }
-    });
+    //});
     }
 
+    //good
     private void putBranchCheckBoxesInFilter(List<String> branches){
         branchCheckboxContainerForFilter.setVisible(false);
         branchCheckboxContainerForFilter.setManaged(false);
-        Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().clear());
+//        Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().clear());
 
-        //   branchCheckboxContainerForFilter.getChildren().clear();
+        branchCheckboxContainerForFilter.getChildren().clear();
         for (String branch : branches){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().add(checkBox));
-            //branchCheckboxContainerForFilter.getChildren().add(checkBox);
+//            Platform.runLater(()->branchCheckboxContainerForFilter.getChildren().add(checkBox));
+            branchCheckboxContainerForFilter.getChildren().add(checkBox);
         }
         branchCheckboxContainerForFilter.setVisible(true);
         branchCheckboxContainerForFilter.setManaged(true);
     }
 
+    //good
     private void putIngredientsCheckBoxesInFilter(List<String> ingredients){
         IngredientsCheckboxContainerForFilter.setVisible(false);
         IngredientsCheckboxContainerForFilter.setManaged(false);
-        Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().clear());
-        ;
+//        Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().clear());
+        IngredientsCheckboxContainerForFilter.getChildren().clear();
         for (String branch : ingredients){
             CheckBox checkBox = new CheckBox(branch);
             checkBox.setSelected(true);
-            Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().add(checkBox));
-            ;
+//            Platform.runLater(()->IngredientsCheckboxContainerForFilter.getChildren().add(checkBox));
+            IngredientsCheckboxContainerForFilter.getChildren().add(checkBox);
         }
         IngredientsCheckboxContainerForFilter.setVisible(true);
         IngredientsCheckboxContainerForFilter.setManaged(true);
     }
 
+    //probebly good
     @FXML
     private void applyFilter(){
         List<String> filteredBranches = getSelectedValuesFromVBox(branchCheckboxContainerForFilter);
         List<String> filteredIngredients = getSelectedValuesFromVBox(IngredientsCheckboxContainerForFilter);
         MenuFilter menuFilter = new MenuFilter(filteredBranches, filteredIngredients);
         MenuClient filteredMenu = new MenuClient();
-        if (filteredBranches != null && filteredIngredients != null && currentMenu != null) {
+        if (currentMenu != null) {
             for (MenuItem dish :fullMenu.getMenu()){
                 boolean isAtListOneNotFilterAvailableBranch = dish.getAvailableBranches().stream().anyMatch(filteredBranches::contains);
                 boolean areAllIngredientsContainedInFilteredIngredients = dish.getIngredients().stream().allMatch(filteredIngredients::contains);
@@ -231,23 +252,16 @@ public class MenuController {
         setMenuInMenuSection(newMenu, isOrder);
     }
 
+    //good
     @FXML
     private void clearFilter(){
         selectAllCheckboxesInVBox(branchCheckboxContainerForFilter);
         selectAllCheckboxesInVBox(IngredientsCheckboxContainerForFilter);
         setMenuInMenuSection(fullMenu, isOrder);
     }
-    @FXML
-    void decreaseCount(ActionEvent event) {
-        OrderItem pair;
-    }
-
-    @FXML
-    void increasCount(ActionEvent event) {
-
-    }
 
 
+    //good
     private void selectAllCheckboxesInVBox(VBox container) {
         for (Node node : container.getChildren()) {
             if (node instanceof CheckBox checkBox) {
@@ -282,8 +296,8 @@ public class MenuController {
                 DishSectionInMenuController dishSectionInMenuController = fxmlLoader.getController();
                 dishSectionInMenuController.setDish(dish);
                 dishSectionInMenuController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
-                //menuDishList.getChildren().add(dishNode);
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }else if (!isDelete) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderableDishSectionInMenu.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -291,7 +305,8 @@ public class MenuController {
                 orderableDishSectionInMenuController.reinitialize(this);
                 orderableDishSectionInMenuController.setDishInDishSection(dish);
                 orderableDishSectionInMenuController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }else{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DeletableDishSection.fxml"));
                 Node dishNode = fxmlLoader.load();
@@ -299,15 +314,16 @@ public class MenuController {
                 DeletableDishSectionController.reinitialize(this);
                 DeletableDishSectionController.setDishInDishSection(dish);
                 DeletableDishSectionController.setDishDataInDishSection();
-                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
-
-
+//                Platform.runLater(()->menuDishList.getChildren().add(dishNode));
+                menuDishList.getChildren().add(dishNode);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+
+    //good
     public void orderDish(MenuItem dish){
         PopupDialogService popupDialogService = new PopupDialogService();
 
@@ -324,6 +340,7 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
 
     private void addDishToOrderSection(MenuItem dish){
         try {
@@ -343,6 +360,8 @@ public class MenuController {
             throw new RuntimeException(e);
         }
     }
+
+    //good
     @FXML
     private void finishOrder() throws IOException {
         PopupDialogService popupDialogService = new PopupDialogService();
@@ -356,9 +375,13 @@ public class MenuController {
             if(canTheOrderBeMadeFromASingleBranch(dishesInOrder)){
                 Boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "Finish Order?", (Stage) orderSection.getScene().getWindow());
                 if (isConfirmed != null && isConfirmed) {
-                    LocationInformation locationInfo = getLocationInformation();
                     boolean isDelivery = getIsDelivery();
                     personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
+                    LocationInformation locationInfo = null;
+                    if (isDelivery) {
+                        locationInfo = getLocationInformation();
+                    }
+                    PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                     if (personalInformation != null) {
                         CreditInformation creditInformation = popupDialogService.openPopup("CreditInformationPopupWindow.fxml", null, (Stage) orderSection.getScene().getWindow());
                         //App.sendMessageToServer(creditInformation);
@@ -380,6 +403,7 @@ public class MenuController {
         }
     }
 
+    //good
     private boolean canTheOrderBeMadeFromASingleBranch(ArrayList<MenuItem> dishesInOrder){
         String commonBranch = getCommonBranch(dishesInOrder);
         if(commonBranch != null){
@@ -388,6 +412,7 @@ public class MenuController {
             return false;
         }
     }
+
     private String getCommonBranch(ArrayList<MenuItem> dishes) {  // Changed to ArrayList<DishClient>
         if (dishes == null || dishes.isEmpty()) {
             return null;
@@ -403,6 +428,7 @@ public class MenuController {
         return commonBranches.iterator().next();
     }
 
+    //good
     private double getTotalPrice(){
         double totalPrice = 0;
         for (MenuItem dish : dishesInOrder) {
@@ -411,6 +437,7 @@ public class MenuController {
         return totalPrice;
     }
 
+    //probebly good
     private ArrayList<OrderItem> getDishesCountPair(){
         ArrayList<OrderItem> pairList = new ArrayList<>();
         for (OrderItem pair : orderDishNodeCountLabelPair){
@@ -474,13 +501,17 @@ public class MenuController {
 
 
 
+    //good
     public void deleteDishPressed(MenuItem dish) {
         editMenuController.deleteDishPressed(dish);
     }
+
+    //good
     public void EditDishPressed(MenuItem dish) {
         editMenuController.EditDishPressed(dish);
     }
 
+    //good
     @FXML
     public void displayBranchesAndTheirOpeningTime() {
         PopupDialogService popupDialogService = new PopupDialogService();
@@ -495,11 +526,13 @@ public class MenuController {
     @Subscribe
     public void onEventDummy(Object ignored) {}
 
+
     private void sendOrder(OrderClient order) {
         System.out.println("sending the order to saving");
         try{
             System.out.println("is the order null?"+order==null);
             App.sendMessageToServer(order);
+            App.setRoot("home-page");
         }catch(Exception e){
             e.printStackTrace();
         }

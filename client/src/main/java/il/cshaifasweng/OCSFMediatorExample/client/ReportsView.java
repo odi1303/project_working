@@ -1,10 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.BranchManager;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.TableOrder;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.BranchManager;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.TableOrder;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

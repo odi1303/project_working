@@ -1,5 +1,4 @@
-package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
-import jakarta.persistence.*;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 import jakarta.persistence.Entity; // Or javax.persistence.Entity depending on your JPA version
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -7,9 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "PersonalInformation")

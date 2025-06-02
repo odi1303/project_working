@@ -1,17 +1,13 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.CreditInformation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Reservation;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.ReservationDetails;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.CreditInformation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.ReservationDetails;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.greenrobot.eventbus.EventBus;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.PersonalInformation;
-
-import java.util.List;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
 
 public class ReservationCardController {
 

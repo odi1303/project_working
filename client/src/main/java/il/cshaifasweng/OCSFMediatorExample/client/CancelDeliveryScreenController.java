@@ -1,8 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.OrderCancelationFeeRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -127,7 +128,18 @@ public class CancelDeliveryScreenController {
         });
     }
 
-    private double getRequiredOrderCancelationFee(OrderClient order) {
-        return 5.0;
+    private double getRequiredOrderCancelationFee(OrderClient order){
+        try {
+            Double result = RequestManager.getInstance().sendAndWait(
+                    new OrderCancelationFeeRequest(order),
+                    5000,
+                    OrderCancelationFeeRequest.class,
+                    Double.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
     }
 }

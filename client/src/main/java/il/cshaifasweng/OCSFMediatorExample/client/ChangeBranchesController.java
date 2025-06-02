@@ -51,15 +51,30 @@ public class ChangeBranchesController {
     }
 
     private List<String> getAllPossibleBranches() {
-        return Arrays.asList(
-                "Rome", "Naples", "Florence",
-                "Milan", "Venice",
-                "New York", "Chicago", "Dallas",
-                "Nashville", "Houston", "Atlanta",
-                "Tokyo", "Osaka", "Kyoto",
-                "Fukuoka", "Sapporo"
-        );
+        try {
+            @SuppressWarnings("unchecked")
+            List<String> response = (List<String>) RequestManager.getInstance().sendAndWait(
+                    "get all branches",
+                    5000,
+                    String.class,
+                    List.class
+            );
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
+//    private List<String> getAllPossibleBranches() {
+//        return Arrays.asList(
+//                "Rome", "Naples", "Florence",
+//                "Milan", "Venice",
+//                "New York", "Chicago", "Dallas",
+//                "Nashville", "Houston", "Atlanta",
+//                "Tokyo", "Osaka", "Kyoto",
+//                "Fukuoka", "Sapporo"
+//        );
+//    }
 
     private List<String> getCheckedBranches() {
         List<String> checkedBranches = new ArrayList<>();
@@ -85,7 +100,7 @@ public class ChangeBranchesController {
         for (var node : branchesContainer.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
-                if (branchesToCheck.contains(checkBox.getText())) {
+                if (branchesToCheck != null && branchesToCheck.contains(checkBox.getText())) {
                     checkBox.setSelected(true); // Check the checkbox if it's in the list
                 }else{
                     checkBox.setSelected(false);

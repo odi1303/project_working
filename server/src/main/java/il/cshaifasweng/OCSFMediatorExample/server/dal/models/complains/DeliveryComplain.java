@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Delivery;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 
 import java.util.Date;
 

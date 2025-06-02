@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

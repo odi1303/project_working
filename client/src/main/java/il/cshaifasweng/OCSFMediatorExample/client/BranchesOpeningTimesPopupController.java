@@ -1,6 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.GetBranchOpeningTimes;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchOpeningTimes;
 import il.cshaifasweng.OCSFMediatorExample.entities.OpeningTimes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

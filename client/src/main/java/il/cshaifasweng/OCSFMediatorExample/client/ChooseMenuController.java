@@ -1,7 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -12,12 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class ChooseMenuController {
     private MenuClient chosenMenu = null;
@@ -31,7 +28,14 @@ public class ChooseMenuController {
     public void initialize() {
         try {
 //            EventBus.getDefault().register(this);
-            List<MenuClient> menuList = MenuFactory.getMenus();
+//            List<MenuClient> menuList = MenuFactory.getMenus();
+            @SuppressWarnings("unchecked")
+            List<MenuClient> menuList = (List<MenuClient>) RequestManager.getInstance().sendAndWait(
+                    "get all menus",
+                    5000,
+                    String.class,
+                    List.class
+            );
             // Use Platform.runLater to update menuListContainer
             Platform.runLater(() -> {
                 menuListContainer.getChildren().clear();
@@ -115,18 +119,17 @@ public class ChooseMenuController {
 
     private void goToEditMenu(MenuClient menu) {
         // Use Platform.runLater to handle scene navigation
-        Platform.runLater(() -> {
+
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("EditMenu.fxml"));
                 Parent root = loader.load();
                 EditMenuController controller = loader.getController();
-                controller.setMenu(menu);
+                Platform.runLater(() -> controller.setMenu(menu));
                 Scene currentScene = menuListContainer.getScene();
                 currentScene.setRoot(root);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
     }
 
     @FXML

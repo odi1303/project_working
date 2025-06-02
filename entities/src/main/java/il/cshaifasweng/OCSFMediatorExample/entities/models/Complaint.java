@@ -1,8 +1,5 @@
-package il.cshaifasweng.OCSFMediatorExample.server.dal.models;
+package il.cshaifasweng.OCSFMediatorExample.entities.models;
 import jakarta.persistence.*;
-import lombok.Data;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
