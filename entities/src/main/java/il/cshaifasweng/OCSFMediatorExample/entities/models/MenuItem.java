@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "menu_items")
@@ -193,13 +194,13 @@ public class MenuItem implements Serializable
             return false;
         }
         MenuItem other = (MenuItem) obj;
-        return name.equals(other.name)
-                && description.equals(other.description)
-                && price == (other.price)
-                && imageUrl.equals(other.imageUrl)
-                && availableBranches.equals(other.availableBranches)
-                && ingredients.equals(other.ingredients)
-                && personalPreferences.equals(other.personalPreferences)
+        return Objects.equals(name, other.name)
+                && Objects.equals(description, other.description)
+                && price == other.price
+                && Objects.equals(imageUrl, other.imageUrl)  // Safe even if null
+                && Objects.equals(availableBranches, other.availableBranches)
+                && Objects.equals(ingredients, other.ingredients)
+                && Objects.equals(personalPreferences, other.personalPreferences)
                 && sale == other.sale;
     }
 
