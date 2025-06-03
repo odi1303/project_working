@@ -1,5 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.CanBeMadeInSameDateRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.SaveMenuChangesRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.SaveNewMenuRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import javafx.application.Platform;
@@ -27,6 +30,7 @@ public class EditMenuController {
     public VBox ChangeIngredientsContainer;
 
     private MenuClient menu;
+    private MenuClient lastSavedMenu = new MenuClient();
 
     @FXML
     public VBox controlSection;
@@ -107,6 +111,10 @@ public class EditMenuController {
                 handleSubmittedIngredients();
             });
             changeIngredientsController.getCancelButton().setOnAction(event -> hideChangeIngredients());
+
+
+
+            menuName.textProperty().addListener((observable, oldValue, newValue) -> {nameChanged();});
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -216,11 +224,13 @@ public class EditMenuController {
     }
 
     public void setMenu(MenuClient menu) {
+        System.out.println(30);
         this.menu = menu;
+        lastSavedMenu = new MenuClient(menu);
         // Use Platform.runLater to update UI
 //        Platform.runLater(() -> {
-            menuName.setText(menu.getMenuName());
-            menuController.setMenu(menu);
+        menuName.setText(menu.getMenuName());
+        menuController.setMenu(menu);
 //        });
     }
 
@@ -256,17 +266,76 @@ public class EditMenuController {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to save the changes?", (Stage) controlSection.getScene().getWindow());
                 if (isConfirmed) {
-                    goToHomePage();
+                    System.out.println(0);
+                    if(menu.equals(new MenuClient())){
+                        System.out.println(10);
+                    }
+                    if(lastSavedMenu.equals(new MenuClient())){
+                        System.out.println(20);
+                    }
+                    if (lastSavedMenu.equals(new MenuClient()) && !menu.equals(new MenuClient())) {
+                        System.out.println(1);
+                        if (requestToSaveNewMenu(menu)){
+                            System.out.println(2);
+                            lastSavedMenu = new MenuClient(menu);
+                            popupDialogService.openPopup("InformationWindow.fxml", "successfully saved", (Stage) controlSection.getScene().getWindow());
+                        }else{
+                            popupDialogService.openPopup("InformationWindow.fxml", "save failed", (Stage) controlSection.getScene().getWindow());
+                        }
+                    } else if (menu != null && !menu.equals(lastSavedMenu)) {
+                        System.out.println(3);
+                        if (requestToSaveMenuChanges(lastSavedMenu, menu)){
+                            System.out.println(4);
+                            lastSavedMenu = new MenuClient(menu);
+                            popupDialogService.openPopup("InformationWindow.fxml", "successfully saved", (Stage) controlSection.getScene().getWindow());
+                        }else{
+                            popupDialogService.openPopup("InformationWindow.fxml", "save failed", (Stage) controlSection.getScene().getWindow());
+                        }
+                    }
+                    System.out.println(5);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 //        });
     }
-
+    private boolean requestToSaveMenuChanges(MenuClient oldMenu, MenuClient newMenu) {
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new SaveMenuChangesRequest(oldMenu, newMenu),
+                    5000,
+                    SaveMenuChangesRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean requestToSaveNewMenu(MenuClient menuToSave) {
+        try {
+            System.out.println(menuToSave.getMenu().getFirst().getAvailableBranches().getClass());
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new SaveNewMenuRequest(menuToSave),
+                    5000,
+                    SaveNewMenuRequest.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     private void addDishToMenu(MenuItem dish) {
         menu.addDish(dish);
         menuController.setMenu(menu);
+    }
+
+    @FXML
+    public void nameChanged(){
+        menu.changeName(menuName.getText());
     }
 
     @FXML

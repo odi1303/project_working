@@ -13,12 +13,12 @@
         <VBox>
             <HBox>
                 <VBox fx:id="controlSection" spacing="10">
-                    <Button text="Add New Dish" onAction="#addNewDish"/>
+                    <Button text="Add New Dish"/>
 <!--                    <Button text="Add Dish From Database" onAction="#addDishFromDatabase"/>-->
                     <Button text="Save Changes" onAction="#saveChanges"/>
                     <HBox spacing="10">
                         <Label text="Menu name:"/>
-                        <TextField fx:id="menuName"/>
+                        <TextField fx:id="menuName" onAction="#nameChanged"/>
                     </HBox>
                 </VBox>
                 <ScrollPane fitToWidth="true" prefHeight="800">

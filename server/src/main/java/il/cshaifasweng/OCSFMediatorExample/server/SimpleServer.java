@@ -90,7 +90,8 @@ public class SimpleServer extends AbstractServer{
 					}
 				}
 			}
-		} else if (msg instanceof GetUserType getUserType) {
+		}
+		else if (msg instanceof GetUserType getUserType) {
 			try {
 				System.out.println("new request: "+msgString);
 				System.out.println(getUserType.name + ", " + getUserType.password);
@@ -108,7 +109,8 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (msgString.equals("#getAllDeliveries")) {
+		}
+		else if (msgString.equals("#getAllDeliveries")) {
 			try {
 				List<Delivery> deliveries = db_.getSession()
 						.createQuery("FROM Delivery", Delivery.class)
@@ -117,7 +119,8 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (msgString.equals("#getAllReservations")) {
+		}
+		else if (msgString.equals("#getAllReservations")) {
 			try {
 				List<TableOrder> tableOrders = db_.getSession()
 						.createQuery("FROM TableOrder", TableOrder.class)
@@ -126,7 +129,8 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}else if (msgString.contains("send all complaints")) {
+		}
+		else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
 			List<Complaint> openComplaints =new ArrayList<>();
 			System.out.println(db_);
@@ -138,7 +142,8 @@ public class SimpleServer extends AbstractServer{
 			}
 			System.out.println("num of open complaints=" + openComplaints.size());
 			client.sendToClient(openComplaints);
-		} else if (msgString.equals("send all reservation")) {
+		}
+		else if (msgString.equals("send all reservation")) {
 			List<OrderClient>orders = db_.getAll(new OrderClient());
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
@@ -148,13 +153,15 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
 
-		} else if (msgString.equals("send all MenuItems")) {
+		}
+		else if (msgString.equals("send all MenuItems")) {
 			List<?> items = db_.getAll(new MenuItem());
 			System.out.println("num of items=" + items.size());
 			client.sendToClient("sending menu items soon");
 			client.sendToClient(items);
 			System.out.println("sent all items");
-		} else if (msg instanceof Complaint) {
+		}
+		else if (msg instanceof Complaint) {
 			System.out.println("saved complain");
 			System.out.println((Complaint)msg);
 			db_.saveOrUpdate((Complaint)msg);
@@ -168,7 +175,8 @@ public class SimpleServer extends AbstractServer{
 			}
 			sendToAllClients(openComplaints);
 
-		} else if (msg instanceof OrderClient order) {
+		}
+		else if (msg instanceof OrderClient order) {
 			try {
 				System.out.println("saved order");
 
@@ -367,6 +375,35 @@ public class SimpleServer extends AbstractServer{
 						cancelationFee,
 						ReservationCancelationFeeRequest.class,
 						Double.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof SaveMenuChangesRequest request) {
+				MenuClient oldMenu = request.getOldMenu();
+				MenuClient newMenu = request.getNewMenu();
+
+				boolean returnValue = true; //saved successfully
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						returnValue,
+						SaveMenuChangesRequest.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
+			else if (payload instanceof SaveNewMenuRequest request) {
+				MenuClient menuToSave = request.getMenuToSave();
+
+				boolean returnValue = true; //saved successfully
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						returnValue,
+						SaveNewMenuRequest.class,
+						Boolean.class
 				);
 
 				client.sendToClient(responseMessage);

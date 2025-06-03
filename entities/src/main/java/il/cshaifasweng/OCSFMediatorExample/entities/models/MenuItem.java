@@ -204,6 +204,19 @@ public class MenuItem implements Serializable
                 && sale == other.sale;
     }
 
+    public static MenuItem deepCopyMenuItem(MenuItem item) {
+        return new MenuItem(
+                item.getName(),
+                item.getDescription(),
+                item.getPrice(),
+                item.getImageUrl(),
+                item.getAvailableBranches() != null ? new ArrayList<>(item.getAvailableBranches()) : new ArrayList<>(),
+                item.getIngredients() != null ? new ArrayList<>(item.getIngredients()) : new ArrayList<>(),
+                item.getPersonalPreferences() != null ? new ArrayList<>(item.getPersonalPreferences()) : new ArrayList<>(),
+                item.getSale()
+        );
+    }
+
 
     @Override
     public String toString() {

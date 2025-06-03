@@ -110,7 +110,7 @@ public class EditDishController {
     }
 
     public MenuItem getDish() {
-        return dish;
+        return MenuItem.deepCopyMenuItem(dish);
     }
 
     @FXML

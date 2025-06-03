@@ -2,10 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
 //import javafx.fxml.FXML;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.io.Serializable;
 
 
@@ -29,6 +26,18 @@ public class MenuClient implements Serializable {
     public MenuClient() {
         this.menu = new ArrayList<>();
         menuName = "";
+    }
+    public MenuClient(MenuClient menuClient) {
+        this.menuName = menuClient.menuName;
+        this.menu = new ArrayList<>();
+        for (MenuItem item : menuClient.menu) {
+            this.menu.add(MenuItem.deepCopyMenuItem(item));
+//            if (item.getPersonalPreferences() != null){
+//                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
+//            }else{
+//                this.menu.add(MenuItem.deepCopyMenuItem(item));
+//            }
+        }
     }
 
     public MenuClient(ArrayList<MenuItem> dishes) {
@@ -112,5 +121,20 @@ public class MenuClient implements Serializable {
         }
 
         return new ArrayList<>(IngredientsSet); // Convert Set to List before returning
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj){
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        MenuClient other = (MenuClient) obj;
+        if (!menuName.equals(other.menuName)) {
+            return false;
+        }
+        return Objects.equals(this.menu, other.menu);
     }
 }
