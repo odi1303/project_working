@@ -224,7 +224,6 @@ public class EditMenuController {
     }
 
     public void setMenu(MenuClient menu) {
-        System.out.println(30);
         this.menu = menu;
         lastSavedMenu = new MenuClient(menu);
         // Use Platform.runLater to update UI
@@ -232,6 +231,17 @@ public class EditMenuController {
         menuName.setText(menu.getMenuName());
         menuController.setMenu(menu);
 //        });
+    }
+
+    public void setMenu(MenuClient menu, boolean iscopy){
+        this.menu = menu;
+        if (iscopy){
+            lastSavedMenu = new MenuClient();
+        }else{
+            lastSavedMenu = new MenuClient(menu);
+        }
+        menuName.setText(menu.getMenuName());
+        menuController.setMenu(menu);
     }
 
     @FXML

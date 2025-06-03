@@ -95,7 +95,7 @@ public class ChooseMenuController {
 
     private void chooseMenu(MenuClient menu) {
         if (isCreateCopy) {
-            chosenMenu = createCopy(menu);
+            chosenMenu = new MenuClient(menu);
         } else if (!isSubmit) {
             chosenMenu = menu;
         } else {
@@ -113,9 +113,9 @@ public class ChooseMenuController {
     }
 
     // Placeholder, should be at server
-    private MenuClient createCopy(MenuClient menu) {
-        return menu;
-    }
+    //private MenuClient createCopy(MenuClient menu) {
+//        return menu;
+//    }
 
     private void goToEditMenu(MenuClient menu) {
         // Use Platform.runLater to handle scene navigation
@@ -124,7 +124,7 @@ public class ChooseMenuController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("EditMenu.fxml"));
                 Parent root = loader.load();
                 EditMenuController controller = loader.getController();
-                Platform.runLater(() -> controller.setMenu(menu));
+                Platform.runLater(() -> controller.setMenu(menu, isCreateCopy));
                 Scene currentScene = menuListContainer.getScene();
                 currentScene.setRoot(root);
             } catch (IOException e) {
