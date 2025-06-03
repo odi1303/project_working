@@ -1,40 +1,16 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.UsersRepository;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.User;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.DeliveryComplain;
-import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.RestaurantComplain;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
-
-import jakarta.inject.Qualifier;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
@@ -92,16 +68,15 @@ public class SimpleServer extends AbstractServer{
 			}
 		} else if (msg instanceof GetUserType getUserType) {
 			try {
-				System.out.println("new request: "+msgString);
+				System.out.println("new request: " + msgString);
 				System.out.println(getUserType.name + ", " + getUserType.password);
 				var retval = /*db.getBasicUsers()*/db_.getUserType(getUserType.name, getUserType.password);
-				System.out.println("method returned "+retval);
+				System.out.println("method returned " + retval);
 				client.sendToClient(retval);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		else if (msgString.equals("#getAllComplaints")) {
+		} else if (msgString.equals("#getAllComplaints")) {
 			try {
 				List<Complaint> complaints = ComplaintsBL.getAllComplains(db_.getSession());
 				client.sendToClient(complaints);
@@ -126,9 +101,9 @@ public class SimpleServer extends AbstractServer{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}else if (msgString.contains("send all complaints")) {
+		} else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
-			List<Complaint> openComplaints =new ArrayList<>();
+			List<Complaint> openComplaints = new ArrayList<>();
 			System.out.println(db_);
 			List<Complaint> complaints = db_.getAll(new Complaint());
 			for (Complaint complain : complaints) {
@@ -139,12 +114,11 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("num of open complaints=" + openComplaints.size());
 			client.sendToClient(openComplaints);
 		} else if (msgString.equals("send all reservation")) {
-			List<OrderClient>orders = db_.getAll(new OrderClient());
+			List<OrderClient> orders = db_.getAll(new OrderClient());
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
-		}
-		else if (msgString.equals("send all orders")) {
-			List<OrderClient>orders = db_.getAll(new OrderClient());
+		} else if (msgString.equals("send all orders")) {
+			List<OrderClient> orders = db_.getAll(new OrderClient());
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
 
@@ -156,9 +130,9 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("sent all items");
 		} else if (msg instanceof Complaint) {
 			System.out.println("saved complain");
-			System.out.println((Complaint)msg);
-			db_.saveOrUpdate((Complaint)msg);
-			List<Complaint> openComplaints =new ArrayList<>();
+			System.out.println((Complaint) msg);
+			db_.saveOrUpdate((Complaint) msg);
+			List<Complaint> openComplaints = new ArrayList<>();
 			System.out.println(db_);
 			List<Complaint> complaints = db_.getAll(new Complaint());
 			for (Complaint complain : complaints) {
@@ -168,17 +142,18 @@ public class SimpleServer extends AbstractServer{
 			}
 			sendToAllClients(openComplaints);
 
-		} else if (msg instanceof OrderClient order) {
+		}
+		else if (msg instanceof OrderClient order) {
 			try {
 				System.out.println("saved order");
 
 				db_.saveOrUpdate(order);  // suspect this is blocking or failing
 
 				System.out.println("sending the order");
-				List<OrderClient> openComplaints =db_.getAll(new OrderClient());
+				List<OrderClient> openComplaints = db_.getAll(new OrderClient());
 				System.out.println("num of open orders=" + openComplaints.size());
 				for (int i = 0; i < openComplaints.size(); i++) {
-					if (order==openComplaints.get(i)) {
+					if (order == openComplaints.get(i)) {
 						client.sendToClient(openComplaints.get(i));
 					}
 				}
@@ -187,7 +162,7 @@ public class SimpleServer extends AbstractServer{
 				e.printStackTrace();
 			}
 		}
-		else if (msgString.startsWith("||delivery||id=")){
+		else if (msgString.startsWith("||delivery||id=")) {
 			String[] parts = msgString.split("\\|\\|");
 			String idStr = null;
 			String email = null;
@@ -211,15 +186,102 @@ public class SimpleServer extends AbstractServer{
 
 			System.out.println("Delivery ID: " + id);
 			System.out.println("Email: " + email);
-			List<OrderClient> openComplaints =db_.getAll(new OrderClient());
+			List<OrderClient> openComplaints = db_.getAll(new OrderClient());
 			System.out.println("num of open orders=" + openComplaints.size());
 			for (int i = 0; i < openComplaints.size(); i++) {
-				if (openComplaints.get(i).getId()==(long)id&&openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
+				if (openComplaints.get(i).getId() == (long) id && openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
+					System.out.println(openComplaints.get(i));
 					client.sendToClient(openComplaints.get(i));
 				}
 			}
 			client.sendToClient(null);
 		}
+		else if (msgString.startsWith("@@delivery@@id=")) {
+			String[] parts = msgString.split("@@");
+			String idStr = null;
+			String email = null;
+
+			for (String part : parts) {
+				if (part.startsWith("id=")) {
+					idStr = part.substring(3); // Extract the value after "id="
+				} else if (part.startsWith("email=")) {
+					email = part.substring(6); // Extract the value after "email="
+				}
+			}
+
+			Integer id = null;
+			if (idStr != null && idStr.matches("\\d+")) {
+				try {
+					id = Integer.parseInt(idStr);
+				} catch (NumberFormatException e) {
+					System.err.println("Error: Could not parse ID as an integer.");
+				}
+			}
+
+			System.out.println("Delivery ID: " + id);
+			System.out.println("Email: " + email);
+
+			List<OrderClient> openComplaints = db_.getAll(new OrderClient());
+			for (OrderClient order : openComplaints) {
+				if (order.getId() == (long) id && order.getPersonalInformation().getEmail().equals(email)) {
+					Thread t1=new Thread(()->{
+                        try {
+                            client.sendToClient(order);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });//deleting the object from database
+					t1.start();
+
+					db_.delete_object(order);
+				}
+			}
+			client.sendToClient(null);
+		}
+		else if (msgString.startsWith("@@reservat@@id=")) {
+			String[] parts = msgString.split("@@");
+			String idStr = null;
+			String email = null;
+
+			for (String part : parts) {
+				if (part.startsWith("id=")) {
+					idStr = part.substring(3); // Extract the value after "id="
+				} else if (part.startsWith("email=")) {
+					email = part.substring(6); // Extract the value after "email="
+				}
+			}
+
+			Integer id = null;
+			if (idStr != null && idStr.matches("\\d+")) {
+				try {
+					id = Integer.parseInt(idStr);
+				} catch (NumberFormatException e) {
+					System.err.println("Error: Could not parse ID as an integer.");
+				}
+			}
+
+			System.out.println("Reservation ID: " + id);
+			System.out.println("Email: " + email);
+
+			List<Reservation> openReservations = db_.getAll(new Reservation());
+			for (Reservation reservation : openReservations) {
+				if (reservation.getId() == (long) id && reservation.getPersonalInformation().getEmail().equals(email)) {
+					Thread t1=new Thread(()->{
+                        try {
+							System.out.println(reservation);
+                            client.sendToClient(reservation);
+                        } catch (IOException e) {
+                             e.printStackTrace();
+                        }
+                    });//deleting the object from database
+					t1.start();
+
+					db_.delete_object(reservation);
+				}
+			}
+			client.sendToClient(null);
+		}
+
 	}
 
 	public void sendToAllClients(String message) {

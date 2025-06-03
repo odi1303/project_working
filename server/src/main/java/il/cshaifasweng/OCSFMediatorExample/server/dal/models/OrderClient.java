@@ -5,6 +5,7 @@ import javafx.util.Pair;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,13 @@ public class OrderClient implements Serializable {
         this.personalInformation = personalInformation;
         this.creditInformation = creditInformation;
         this.orderTime = new Date();
-        this.deliveryTime=null;
+        this.deliveryTime=add30MinBlocks(orderTime,orderItems.size());
+    }
+    public static Date add30MinBlocks(Date date, int num) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, 30 * num); // Add 30 * num minutes
+        return calendar.getTime();
     }
 
     public CreditInformation getCreditInformation() {
@@ -98,6 +105,14 @@ public class OrderClient implements Serializable {
 
     public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public boolean isDelivery() {
+        return isDelivery;
+    }
+
+    public void setDelivery(boolean delivery) {
+        isDelivery = delivery;
     }
 
     @Override

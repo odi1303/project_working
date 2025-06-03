@@ -43,6 +43,9 @@ public class ViewComplaints {
     private EmailSender emailSender = new EmailSender();
     public static List<Complaint> complaints;
     public Complaint current_complaint;
+    private String respond="The respond to your complaint is as following:\n";
+    private String pitzoi="The decided compensation sum is:";
+    private String acceptedComplaint="Dear customer,\nWe deeply apologise for you feeling this way, we successfully got your complaint.\nWe hope to learn from our mistake and to see you again at our restaurant!\nYours,\nMama's restaurant\nHere is the description of the submitted complaint:\n";
     @FXML
     void home_page(MouseEvent event) throws IOException {
         App.setRoot("home-page");
@@ -91,12 +94,13 @@ public class ViewComplaints {
         if (chose_status.getValue()!=null){
             current_complaint.setHandled(true);
             Thread emailThread = new Thread(() -> {
+                String temp=acceptedComplaint+current_complaint.getDescription()+respond+respond_text.getText()+pitzoi+current_complaint.getCompensation();
                 if (chose_status.getValue().equals("Approved")) {
                     emailSender.send_email_respond(current_complaint.getEmail(),
-                            "Complaint Response: Approved Complaint", respond_text.getText());
+                            "Complaint Response: Approved Complaint", temp);
                 } else {
                     emailSender.send_email_respond(current_complaint.getEmail(),
-                            "Complaint Response: Denied Complaint", respond_text.getText());
+                            "Complaint Response: Denied Complaint",temp);
                 }
             });
 

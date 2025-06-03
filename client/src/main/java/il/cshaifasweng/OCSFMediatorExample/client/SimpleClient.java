@@ -60,7 +60,7 @@ public class SimpleClient extends AbstractClient {
 	@Override
 	public void handleMessageFromServer(Object msg) throws IOException {
 		//System.out.println("got the message from the server");
-		System.out.println(msg);
+		System.out.println("the received from server is "+msg);
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {

@@ -7,6 +7,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Delivery;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -59,7 +60,6 @@ public class FileDeliveryComplaint {
 
     @FXML
     void submit_complain(ActionEvent event) throws IOException {
-
         if (select_branch.getSelectionModel().getSelectedItem()==null ||email.getText().isEmpty()||
                 headline.getText().isEmpty()||description.getText().isEmpty()) {
             warning.setVisible(true);
@@ -68,8 +68,9 @@ public class FileDeliveryComplaint {
             App.sendMessageToServer("||delivery||id=" + id.getText() + "||email=" + email.getText());
             warning.setText("waiting to verify and to submit your complaint");
             warning.setTextFill(Color.BLUE);
+            warning.setVisible(true);
         }
-        App.setRoot("home-page");
+        //App.setRoot("home-page");
     }
     @FXML
     public void initialize() {
@@ -84,20 +85,39 @@ public class FileDeliveryComplaint {
     }
     @Subscribe
     public void on_respond(OrderClient delivery) throws IOException {
-        if (delivery!=null){
+        if (delivery!=null&&delivery.isDelivery()){
             Date today = new Date();
-            Complaint complaint=new Complaint(select_branch.getValue(),headline.getText(),description.getText(),today,email.getText(),delivery);
-            emailSender.send_email_respond(email.getText(),headline.getText(),acceptedComplaint+description.getText());
-            new Thread(() -> {
-                try {
-                    App.sendMessageToServer(complaint);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
-            App.setRoot("home-page");
+            if (delivery.getDeliveryTime().before(today)){
+                Complaint complaint=new Complaint(select_branch.getValue(),headline.getText(),description.getText(),today,email.getText(),delivery);
+                boolean flag=complaint==null;
+                System.out.println("is the complaint empty?"+flag );
+                emailSender.send_email_respond(email.getText(),headline.getText(),acceptedComplaint+description.getText());
+                new Thread(() -> {
+                    try {
+                        App.sendMessageToServer(complaint);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
+                Platform.runLater(() -> {
+                    warning.setText("We successfully got your complaint, we are sending you email with all the information about it!");
+                    warning.setTextFill(Color.GREEN);
+                    warning.setVisible(true);
+                });
+                App.setRoot("home-page");
+            }
+            else {
+                Platform.runLater(() -> {
+                    warning.setText("According to our calculations your delivery isn't late," +
+                            "\n it should arrive at "+delivery.getDeliveryTime());
+                    warning.setTextFill(Color.DARKGREEN);
+                    warning.setVisible(true);
+                });
+
+            }
+
         }else {
-            warning.setText("One or more of the details are wrong, check it again!");
+            warning.setText("One or more of the details are wrong, try again!");
             warning.setTextFill(Color.RED);
             warning.setVisible(true);
         }

@@ -94,7 +94,7 @@ public class HomePage {
 
     @FXML
     void cancelDeliveryOrReservation(ActionEvent event) throws IOException {
-        App.setRoot("cancelDeliveryOrReservationScreen");
+        App.setRoot("cancel-delivey");
     }
 
 
