@@ -333,11 +333,12 @@ public class MenuController {
 
         try {
             List<String> preferences = popupDialogService.openPopup("PersonalPreferencesPopup.fxml", dish, (Stage) orderSection.getScene().getWindow());
-
-            if (preferences != null && !preferences.isEmpty()) {
-                addDishToOrderSection(new MenuItem(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
-            }else{
-                addDishToOrderSection(dish);
+            if (preferences != null){
+                if (!preferences.isEmpty()) {
+                    addDishToOrderSection(new MenuItem(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getImageUrl(), dish.getAvailableBranches(), dish.getIngredients(),preferences, dish.getSale()));
+                }else{
+                    addDishToOrderSection(dish);
+                }
             }
 
         } catch (IOException e) {
