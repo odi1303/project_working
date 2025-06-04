@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.CanBeMadeInSameDateRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.SubmitionRequestToNetworkManager;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
@@ -94,7 +97,11 @@ public class ChooseMenuController {
     }
 
     private void chooseMenu(MenuClient menu) {
-        if (isCreateCopy) {
+        if (isSubmit){
+            submitMenu(menu);
+            return;
+        }
+        else if (isCreateCopy) {
             chosenMenu = new MenuClient(menu);
         } else if (!isSubmit) {
             chosenMenu = menu;
@@ -112,10 +119,44 @@ public class ChooseMenuController {
         goToEditMenu(chosenMenu);
     }
 
+    private void submitMenu(MenuClient menu) {
+        PopupDialogService popupDialogService = new PopupDialogService();
+        try {
+            boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "submit menu to network manager?", (Stage) menuListContainer.getScene().getWindow());
+            if (isConfirmed) {
+                isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "submit?", (Stage) menuListContainer.getScene().getWindow());
+                if (isConfirmed) {
+                    boolean issubmitted = sendSubmitionRequestToNetworkManager(menu);
+                    if (issubmitted) {
+                        popupDialogService.openPopup("InformationWindow.fxml", "menu summited", (Stage) menuListContainer.getScene().getWindow());
+                        goToHomePage();
+                    }else{
+                        popupDialogService.openPopup("InformationWindow.fxml", "submission failed", (Stage) menuListContainer.getScene().getWindow());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     // Placeholder, should be at server
     //private MenuClient createCopy(MenuClient menu) {
 //        return menu;
 //    }
+    private boolean sendSubmitionRequestToNetworkManager(MenuClient menu) {
+        try {
+            Boolean result = RequestManager.getInstance().sendAndWait(
+                    new SubmitionRequestToNetworkManager(menu),
+                    5000,
+                    SubmitionRequestToNetworkManager.class,
+                    Boolean.class
+            );
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     private void goToEditMenu(MenuClient menu) {
         // Use Platform.runLater to handle scene navigation

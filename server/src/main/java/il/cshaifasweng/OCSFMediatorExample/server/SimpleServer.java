@@ -408,6 +408,20 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			}
+			else if (payload instanceof SubmitionRequestToNetworkManager request) {
+				MenuClient menuTosubmit = request.getMenuToSave();
+
+				boolean returnValue = true; //sabmitted successfully
+
+				Message responseMessage = new Message(
+						message.getKey(),
+						returnValue,
+						SubmitionRequestToNetworkManager.class,
+						Boolean.class
+				);
+
+				client.sendToClient(responseMessage);
+			}
 			else if (payload instanceof String request && request.equals("get all ingredients")) {
 				List<String> ingredients = HardcodedDataProvider.getAllIngredients();
 
