@@ -18,6 +18,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -232,7 +233,9 @@ public class SimpleServer extends AbstractServer{
 			Object payload = message.getPayload();
 			if (payload instanceof GetBranchOpeningTimes request) {
 				String branch = request.getBranchName();
-				OpeningTimes response = new OpeningTimes(branch, "14:14");
+				LocalDate date = request.getDate();
+
+				OpeningTimes response = new OpeningTimes(branch, "10:10");
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -244,6 +247,7 @@ public class SimpleServer extends AbstractServer{
 			}
 			else if (payload instanceof GetBranchClosingTimes request) {
 				String branch = request.getBranchName();
+				LocalDate date = request.getDate();
 				ClosingTimes response = new ClosingTimes(branch, "22:00");
 
 				Message responseMessage = new Message(

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class BranchesOpeningTimesPopupController implements PopupController<List<String>, Void> {
@@ -25,7 +26,7 @@ public class BranchesOpeningTimesPopupController implements PopupController<List
     private String getOpeningTime(String branchName) {
         try {
             OpeningTimes response = RequestManager.getInstance().sendAndWait(
-                    new GetBranchOpeningTimes(branchName),
+                    new GetBranchOpeningTimes(branchName, LocalDate.now()),
                     5000,
                     GetBranchOpeningTimes.class,
                     OpeningTimes.class

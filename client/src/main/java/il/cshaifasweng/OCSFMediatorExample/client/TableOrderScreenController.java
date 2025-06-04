@@ -156,19 +156,22 @@ public class TableOrderScreenController {
         String closingTime = getClosingTime();
         String currentTime = getCurrentTime();
 
-        final String baseTimeForReservations = convertTimeToIntMinutes(currentTime) > convertTimeToIntMinutes(openingTime) ? currentTime : openingTime;
+        final String baseTimeForReservations;
+        if (LocalDate.now().equals(reservationDate.getValue())){
+            baseTimeForReservations = convertTimeToIntMinutes(currentTime) > convertTimeToIntMinutes(openingTime) ? currentTime : openingTime;
+        }else{
+            baseTimeForReservations = openingTime;
+        }
 
         String lastReservationTime = getLastReservationTime(closingTime);
 
-        if (time.getItems().isEmpty()) {
-            ObservableList<String> filteredOptions = timeOptions.filtered(option -> {
-                int optionTime = convertTimeToIntMinutes(option);
-                int baseTime = convertTimeToIntMinutes(baseTimeForReservations);
-                int lastTime = convertTimeToIntMinutes(lastReservationTime);
-                return optionTime >= baseTime && optionTime <= lastTime;
-            });
-            time.setItems(filteredOptions);
-        }
+        ObservableList<String> filteredOptions = timeOptions.filtered(option -> {
+            int optionTime = convertTimeToIntMinutes(option);
+            int baseTime = convertTimeToIntMinutes(baseTimeForReservations);
+            int lastTime = convertTimeToIntMinutes(lastReservationTime);
+            return optionTime >= baseTime && optionTime <= lastTime;
+        });
+        time.setItems(filteredOptions);
     }
 
     private int convertTimeToIntMinutes(String time) {
@@ -187,7 +190,7 @@ public class TableOrderScreenController {
     private String getOpenTime() {
         try {
             OpeningTimes response = RequestManager.getInstance().sendAndWait(
-                    new GetBranchOpeningTimes(branch.getValue()),
+                    new GetBranchOpeningTimes(branch.getValue(), reservationDate.getValue()),
                     5000,
                     GetBranchOpeningTimes.class,
                     OpeningTimes.class
@@ -202,7 +205,7 @@ public class TableOrderScreenController {
     private String getClosingTime() {
         try {
             ClosingTimes response = RequestManager.getInstance().sendAndWait(
-                    new GetBranchClosingTimes("Main"),
+                    new GetBranchClosingTimes(branch.getValue(), reservationDate.getValue()),
                     5000,
                     GetBranchClosingTimes.class,
                     ClosingTimes.class
