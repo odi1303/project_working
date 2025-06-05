@@ -4,6 +4,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 //import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
@@ -48,7 +49,13 @@ public class DishSectionInMenuController {
     }
 
     private void setDishImage(){
-
+        try{
+            Image image = new Image(dish.getImageUrl());
+            dishImage.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to load image: " + dish.getImageUrl());
+        }
     }
 
     private void setDishName() {
