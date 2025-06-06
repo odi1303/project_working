@@ -43,6 +43,9 @@ public class ViewComplaints {
     private EmailSender emailSender = new EmailSender();
     public static List<Complaint> complaints;
     public Complaint current_complaint;
+    private String respond="The respond to your complaint is as following:\n";
+    private String pitzoi="The decided compensation sum is:";
+    private String acceptedComplaint="Dear customer,\nWe deeply apologise for you feeling this way, we successfully got your complaint.\nWe hope to learn from our mistake and to see you again at our restaurant!\nYours,\nMama's restaurant\nHere is the description of the submitted complaint:\n";
     @FXML
     void home_page(MouseEvent event) throws IOException {
         App.setRoot("home-page");
@@ -71,17 +74,16 @@ public class ViewComplaints {
     public void on_respond(List<?> list) throws IOException {
         complaints = (List<Complaint>) list;
         System.out.println("got the list, new way");
-
+        List<String> strings1 = new ArrayList<>();
         if (complaints != null && !complaints.isEmpty()) {
-            List<String> strings = new ArrayList<>();
             for (Complaint complaint : complaints) {
                 String head = complaint.getHeadline() + "||" + (complaint.getDate()).toString();
-                strings.add(head);
+                strings1.add(head);
                 System.out.println(head);
             }
             Platform.runLater(() -> {
-                chose_complaint.getItems().clear();  // clear previous if any
-                chose_complaint.getItems().addAll(strings);
+                chose_complaint.getItems().removeAll();  // clear previous if any
+                chose_complaint.getItems().addAll(strings1);
             });
         }
     }
@@ -92,18 +94,22 @@ public class ViewComplaints {
         if (chose_status.getValue()!=null){
             current_complaint.setHandled(true);
             Thread emailThread = new Thread(() -> {
+                String temp=acceptedComplaint+current_complaint.getDescription()+respond+respond_text.getText()+pitzoi+current_complaint.getCompensation();
                 if (chose_status.getValue().equals("Approved")) {
                     emailSender.send_email_respond(current_complaint.getEmail(),
-                            "Complaint Response: Approved Complaint", respond_text.getText());
+                            "Complaint Response: Approved Complaint", temp);
                 } else {
                     emailSender.send_email_respond(current_complaint.getEmail(),
-                            "Complaint Response: Denied Complaint", respond_text.getText());
+                            "Complaint Response: Denied Complaint",temp);
                 }
             });
 
             Thread serverThread = new Thread(() -> {
                 try {
-                    current_complaint.setCompensation(Integer.parseInt(compensation_sum.getText()));
+                    if (compensation_sum.getText().isEmpty())
+                        current_complaint.setCompensation(0);
+                    else
+                        current_complaint.setCompensation(Integer.parseInt(compensation_sum.getText()));
                     current_complaint.setAnsweredAt(new Date());
                     App.sendMessageToServer(current_complaint);
                 } catch (IOException e) {
@@ -151,23 +157,26 @@ public class ViewComplaints {
     }
     @FXML
     void show_complaint_chosen(ActionEvent event) {
-        String string=chose_complaint.getValue();
-        System.out.println("Show complaint chosen button clicked!"+string);
+        if (chose_complaint.getValue()==null||!chose_complaint.getValue().isEmpty()){
+            String string=chose_complaint.getValue();
+            System.out.println("Show complaint chosen button clicked!"+string);
 
-        String[] parts = string.split("\\|\\|");
-        String headline = parts[0];
-        String date = parts[1];
-        System.out.println(complaints.isEmpty());
-        for (Complaint c : complaints) {
-            System.out.println(c.getHeadline().equals(headline));
-            System.out.println(c.getDate()+"?"+date.toString());
-            System.out.println(c.getDate().toString().equals(date));
-            if (c.getHeadline().equals(headline)&&date.equals(c.getDate().toString())) {
-                System.out.println("gor in"+c.getDescription());
-                complaint_text.setText(c.getDescription());
-                current_complaint=c;
+            String[] parts = string.split("\\|\\|");
+            String headline = parts[0];
+            String date = parts[1];
+            System.out.println(complaints.isEmpty());
+            for (Complaint c : complaints) {
+                System.out.println(c.getHeadline().equals(headline));
+                System.out.println(c.getDate()+"?"+date.toString());
+                System.out.println(c.getDate().toString().equals(date));
+                if (c.getHeadline().equals(headline)&&date.equals(c.getDate().toString())) {
+                    System.out.println("gor in"+c.getDescription());
+                    complaint_text.setText(c.getDescription());
+                    current_complaint=c;
+                }
             }
         }
+
     }
 
 }

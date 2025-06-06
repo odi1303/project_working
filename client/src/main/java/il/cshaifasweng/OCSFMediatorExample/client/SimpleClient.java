@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.MenuItem;
+import il.cshaifasweng.OCSFMediatorExample.server.dal.models.OrderClient;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.complains.Complain;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ public class SimpleClient extends AbstractClient {
 
     private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
+		//EventBus.getDefault().register(this);
 	}
 
 	@FXML
@@ -57,12 +59,12 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	public void handleMessageFromServer(Object msg) throws IOException {
-		System.out.println("got the message from the server");
-		System.out.println(msg);
+		//System.out.println("got the message from the server");
+		System.out.println("the received from server is "+msg);
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-            System.out.println(message);
+            //System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
 			} /*else if (message.contains("does not exist")) {
@@ -77,7 +79,7 @@ public class SimpleClient extends AbstractClient {
 				App.saveClientDetails(username,password,type);
 			}*/
 		} else if (msg instanceof UserType type) {
-			System.out.println("hola");
+			//System.out.println("hola");
 			EventBus.getDefault().post(msg);
 			if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
@@ -86,7 +88,7 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(msg);*/
 		} else if (msg instanceof List<?> list) {
 			//List<?> list = (List<?>) msg;
-			System.out.println("hola");
+			//System.out.println("hola");
 			if (!list.isEmpty()) {
 				Object first = list.getFirst();
 
@@ -101,6 +103,10 @@ public class SimpleClient extends AbstractClient {
 					EventBus.getDefault().post(items);
 				}
 			}
+		}
+		else if (msg instanceof OrderClient order){
+			System.out.println("gor the order");
+			EventBus.getDefault().post(order);
 		}
 
 

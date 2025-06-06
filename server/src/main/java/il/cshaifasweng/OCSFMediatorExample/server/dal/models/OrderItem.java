@@ -62,4 +62,9 @@ public class OrderItem implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return  menuItem.toString();
+    }
 }

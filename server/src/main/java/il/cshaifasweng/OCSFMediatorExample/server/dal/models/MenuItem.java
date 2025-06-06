@@ -164,4 +164,14 @@ public class MenuItem implements Serializable
     public void setSale(int sale) {
         this.sale = sale;
     }
+
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", personalPreferences=" + personalPreferences +
+                ", price=" + price +
+                '}';
+    }
 }

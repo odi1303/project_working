@@ -30,6 +30,10 @@ public class Reservation implements Serializable {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
     public ReservationDetails getReservationDetails() {
         return reservationDetails;
     }
@@ -50,4 +54,5 @@ public class Reservation implements Serializable {
                 reservationDetails.isValid() &&
                 creditInformation.isValid();
     }
+
 }
