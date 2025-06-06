@@ -14,8 +14,8 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>23</maven.compiler.source>
+		<maven.compiler.target>23</maven.compiler.target>
 		<maven.assemblyPlugin.version>3.3.0</maven.assemblyPlugin.version>
 		<javafx.version>23.0.1</javafx.version>
 		<hibernate.version>5.4.12.Final</hibernate.version>
@@ -60,8 +60,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.0</version>
 					<configuration>
-						<source>21</source> <!-- Your Java version -->
-						<target>21</target>
+						<source>23</source> <!-- Your Java version -->
+						<target>23</target>
 						<annotationProcessorPaths>
 							<!-- Hibernate JPA Metamodel Generator -->
 							<path>
