@@ -18,7 +18,7 @@
 
       <!-- User-first actions -->
       <Button fx:id="showMenu" onAction="#showTheMenu" prefHeight="26.0" prefWidth="250.0" text="Menu" />
-      <Button fx:id="reserveButton" onAction="#toResrveAtable" prefHeight="26.0" prefWidth="250.0" text="Reserve a table" />
+      <Button fx:id="reserveButton" onAction="#toReserveAtable" prefHeight="26.0" prefWidth="250.0" text="Reserve a table" />
       <Button fx:id="orderDelivery" onAction="#orderDelivery" prefHeight="26.0" prefWidth="250.0" text="Order Delivery" />
 
       <!-- Account Management -->
@@ -35,7 +35,7 @@
 
       <!-- General Info -->
       <Button fx:id="aboutButton" onAction="#showAbout" prefHeight="26.0" prefWidth="250.0" text="About us" />
-      <Button fx:id="viewReports" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" text="View Reports" />
+      <Button fx:id="viewReports" onAction="#goToReports" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" text="View Reports" />
    </VBox>
 
    <!-- Centered Status Label -->

@@ -5,6 +5,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities.models;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class User implements Serializable {
     @Column(name="name", nullable=false)
     public String name;
 
+    @Getter
     @Column(name="password", nullable=false)
     public String password;
 
@@ -60,4 +62,9 @@ public class User implements Serializable {
     public boolean isDietitian() {
         return type == UserType.Dietitian;
     }
+
+    public String getUsername() {
+        return name;
+    }
+
 }
