@@ -12,11 +12,16 @@ public class OpeningHours implements Serializable {
     public Long id;
 
     @Column(name="start_hour")
-    public Long startHour;
+    public long startHour;
 
     @Column(name="end_hour")
-    public Long endHour;
+    public long endHour;
 
+    public OpeningHours() {}
+    public OpeningHours(long StartHour, long EndHour) {
+        startHour = StartHour;
+        endHour = EndHour;
+    }
    /* @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Restaurant restaurant;*/
 }

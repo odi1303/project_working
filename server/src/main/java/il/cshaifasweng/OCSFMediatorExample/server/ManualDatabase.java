@@ -106,7 +106,6 @@ public class ManualDatabase {
     @Transactional
     public void generateData() {
         session.beginTransaction();
-        session.flush();
         MenuItem pizza = new MenuItem(
                 "Pizza",
                 "Cheese pizza with tomato sauce",
@@ -117,11 +116,11 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 10
         );
-        session.save(pizza);
+        session.saveOrUpdate(pizza);
 
-        Restaurant r = new Restaurant();
+        /*Restaurant r = new Restaurant();
         r.name = "main branch";
-        session.save(r);
+        session.saveOrUpdate(r);*/
         MenuItem burger = new MenuItem(
                 "Burger",
                 "Beef burger with lettuce and tomato",
@@ -132,7 +131,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0
         );
-        session.save(burger);
+        session.saveOrUpdate(burger);
         MenuItem pasta = new MenuItem(
                 "Pasta",
                 "Spaghetti with meatballs",
@@ -143,7 +142,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 5
         );
-        session.save(pasta);
+        session.saveOrUpdate(pasta);
         MenuItem salad = new MenuItem(
                 "Salad",
                 "Fresh vegetable salad",
@@ -154,7 +153,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 15
         );
-        session.save(salad);
+        session.saveOrUpdate(salad);
         MenuItem sushi = new MenuItem(
                 "Sushi",
                 "Assorted sushi platter",
@@ -165,7 +164,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0
         );
-        session.save(sushi);
+        session.saveOrUpdate(sushi);
         MenuItem hummusPlate = new MenuItem(
                 "Hummus Plate",
                 "Creamy hummus served with vegetables and pita.",
@@ -176,7 +175,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0 // No Sale
         );
-        session.save(hummusPlate);
+        session.saveOrUpdate(hummusPlate);
         MenuItem falafelPlate = new MenuItem(
                 "Falafel Plate",
                 "Delicious falafel balls served with hummus and salad.",
@@ -187,7 +186,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 15 // Sale: 15% off
         );
-        session.save(falafelPlate);
+        session.saveOrUpdate(falafelPlate);
         MenuItem cheeseSandwich = new MenuItem(
                 "Cheese Sandwich",
                 "A simple cheese sandwich with tomato and lettuce.",
@@ -198,7 +197,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0 // No Sale
         );
-        session.save(cheeseSandwich);
+        session.saveOrUpdate(cheeseSandwich);
         MenuItem beefSalad = new MenuItem(
                 "Beef Salad",
                 "Salad with grilled beef, lettuce, tomato, and cucumber.",
@@ -209,7 +208,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 20 // Sale: 20% off
         );
-        session.save(beefSalad);
+        session.saveOrUpdate(beefSalad);
         MenuItem falafelWrap = new MenuItem(
                 "Falafel Wrap",
                 "Falafel served in pita bread with lettuce and hummus.",
@@ -220,7 +219,7 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0 // No Sale
         );
-        session.save(falafelWrap);
+        session.saveOrUpdate(falafelWrap);
         MenuItem mixedPlatter = new MenuItem(
                 "Mixed Platter",
                 "Combination of falafel, hummus, tomato, and olives.",
@@ -231,28 +230,28 @@ public class ManualDatabase {
                 new ArrayList<>(),
                 0 // No Sale
         );
-        session.save(mixedPlatter);
+        session.saveOrUpdate(mixedPlatter);
         LocationInformation location1 = new LocationInformation("New York", "Broadway", "123");
-        session.save(location1);
+        session.saveOrUpdate(location1);
         LocationInformation location2 = new LocationInformation("Los Angeles", "Sunset Boulevard", "456");
-        session.save(location2);
+        session.saveOrUpdate(location2);
         LocationInformation location3 = new LocationInformation("Chicago", "Michigan Avenue", "789");
-        session.save(location3);
+        session.saveOrUpdate(location3);
 
         PersonalInformation personalInfo = new PersonalInformation("John Doe", "1234567890", "john@example.com");
-        session.save(personalInfo);
+        session.saveOrUpdate(personalInfo);
         CreditInformation creditInfo = new CreditInformation("1234567890123456", "12/27", "123");
-        session.save(creditInfo);
+        session.saveOrUpdate(creditInfo);
         OrderClient order1 = new OrderClient(List.of(
                 new OrderItem(pizza, 2),
                 new OrderItem(burger, 1)
         ), true, location1, personalInfo, creditInfo);
-        session.save(order1);
+        session.saveOrUpdate(order1);
         OrderClient order2 = new OrderClient(List.of(
                 new OrderItem(pasta, 1),
                 new OrderItem(salad, 3)
         ), false, location2, personalInfo, creditInfo);
-        session.save(order2);
+        session.saveOrUpdate(order2);
         OrderClient order3 = new OrderClient(List.of(
                 new OrderItem(sushi, 2),
                 new OrderItem(pizza, 1),
@@ -261,50 +260,50 @@ public class ManualDatabase {
                 new OrderItem(burger, 1),
                 new OrderItem(salad, 3)
         ), true, location3, personalInfo, creditInfo);
-        session.save(order3);
+        session.saveOrUpdate(order3);
 
         ReservationDetails reservationDetails1 = new ReservationDetails(
                 "Haifa Branch", "5", "Private Room", "2025-04-05", "18:00"
         );
-        session.save(reservationDetails1);
+        session.saveOrUpdate(reservationDetails1);
         PersonalInformation personalInformation1 = new PersonalInformation(
                 "Alice Johnson", "0521234567", "alice.johnson@example.com"
         );
-        session.save(personalInformation1);
+        session.saveOrUpdate(personalInformation1);
         CreditInformation creditInformation1 = new CreditInformation(
                 "1234567812345678", "12/26", "123"
         );
-        session.save(creditInformation1);
+        session.saveOrUpdate(creditInformation1);
         Reservation reservation1 = new Reservation(reservationDetails1, personalInformation1, creditInformation1);
-        session.save(reservation1);
+        session.saveOrUpdate(reservation1);
         ReservationDetails reservationDetails2 = new ReservationDetails(
                 "Kiryat Bialik Branch", "3", "Outdoor Area", "2025-04-06", "20:00"
         );
-        session.save(reservationDetails2);
+        session.saveOrUpdate(reservationDetails2);
         PersonalInformation personalInformation2 = new PersonalInformation(
                 "Bob Smith", "0549876543", "bob.smith@example.com"
         );
-        session.save(personalInformation2);
+        session.saveOrUpdate(personalInformation2);
         CreditInformation creditInformation2 = new CreditInformation(
                 "8765432187654321", "05/27", "456"
         );
-        session.save(creditInformation2);
+        session.saveOrUpdate(creditInformation2);
         Reservation reservation2 = new Reservation(reservationDetails2, personalInformation2, creditInformation2);
-        session.save(reservation2);
+        session.saveOrUpdate(reservation2);
         ReservationDetails reservationDetails3 = new ReservationDetails(
                 "Haifa Branch", "2", "VIP Lounge", "2025-04-07", "19:30"
         );
-        session.save(reservationDetails3);
+        session.saveOrUpdate(reservationDetails3);
         PersonalInformation personalInformation3 = new PersonalInformation(
                 "Charlie Brown", "0535556677", "charlie.brown@example.com"
         );
-        session.save(personalInformation3);
+        session.saveOrUpdate(personalInformation3);
         CreditInformation creditInformation3 = new CreditInformation(
                 "4567891245678912", "08/28", "789"
         );
-        session.save(creditInformation3);
+        session.saveOrUpdate(creditInformation3);
         Reservation reservation3 = new Reservation(reservationDetails3, personalInformation3, creditInformation3);
-        session.save(reservation3);
+        session.saveOrUpdate(reservation3);
 
 
 
@@ -313,45 +312,47 @@ public class ManualDatabase {
                 pizza, burger, pasta, salad
         )));
         mainMenu.is_main_menu = true;
-        session.save(mainMenu);
-
+        session.saveOrUpdate(mainMenu);
+/*
         // Create Vegan Menu
         MenuServer veganMenu = new MenuServer("Vegan Menu", new ArrayList<>(List.of(
                 falafelPlate, hummusPlate, falafelWrap, mixedPlatter, salad
         )));
-        session.save(veganMenu);
+        session.saveOrUpdate(veganMenu);
 
         // Create Premium Menu
         MenuServer premiumMenu = new MenuServer("Premium Menu", new ArrayList<>(List.of(
                 sushi, beefSalad, pasta, burger
         )));
-        session.save(premiumMenu);
+        session.saveOrUpdate(premiumMenu);*/
 
-        OpeningHours defaultHours = new OpeningHours();
-        defaultHours.startHour = 10L;
-        defaultHours.endHour = 22L;
-        session.save(defaultHours);
+
 
 // Reuse same hours for all days for simplicity
-        OpeningHours sun = defaultHours, mon = defaultHours, tue = defaultHours;
-        OpeningHours wed = defaultHours, thu = defaultHours, fri = defaultHours, sat = defaultHours;
+        OpeningHours sun = new OpeningHours(10L, 22L), mon = new OpeningHours(10L, 22L), tue = new OpeningHours(10L, 22L);
+        OpeningHours wed = new OpeningHours(10L, 22L), thu = new OpeningHours(10L, 22L), fri = new OpeningHours(10L, 22L), sat = new OpeningHours(10L, 22L);
 
 // Create sample tables
-        RestaurantTable table1 = new RestaurantTable(); // Table 1 with 4 seats
-        RestaurantTable table2 = new RestaurantTable(); // Table 2 with 6 seats
-        RestaurantTable table3 = new RestaurantTable(); // Table 3 with 2 seats
-        List<RestaurantTable> tables1 = new ArrayList<>(List.of(table1, table2));
-        List<RestaurantTable> tables2 = new ArrayList<>(List.of(table2, table3));
-        List<RestaurantTable> tables3 = new ArrayList<>(List.of(table1, table3));
-        session.save(table1);
-        session.save(table2);
-        session.save(table3);
+        RestaurantTable table1 = new RestaurantTable(2L, true, null); // Table 1 with 4 seats
+        RestaurantTable table2 = new RestaurantTable(2L, true, null); // Table 2 with 6 seats
+        RestaurantTable table3 = new RestaurantTable(2L, true, null); // Table 3 with 2 seats
+
+        List<RestaurantTable> tables1 = new ArrayList<>(List.of(table1));
+        List<RestaurantTable> tables2 = new ArrayList<>(List.of(table2));
+        List<RestaurantTable> tables3 = new ArrayList<>(List.of(table3));
 
 // Restaurant 1
         Restaurant r1 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables1);
         r1.name = "Haifa Branch";
-        session.save(r1);
+        table1.setBranch(r1);
+        table2.setBranch(r1);
+        table3.setBranch(r1);
 
+        session.saveOrUpdate(table1);
+        session.saveOrUpdate(table2);
+        session.saveOrUpdate(table3);
+        session.saveOrUpdate(r1);
+/*
 // Restaurant 2
         Restaurant r2 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables2);
         r2.name = "Grand Kenyon";
@@ -360,7 +361,7 @@ public class ManualDatabase {
 // Restaurant 3
         Restaurant r3 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables3);
         r3.name = "Kiryon";
-        session.save(r3);
+        session.save(r3);*/
 
         session.flush();
         session.getTransaction().commit();
@@ -375,9 +376,6 @@ public class ManualDatabase {
 
         session.getTransaction().commit();
         session.flush();
-        session.close();
-
-
     }
 
     public void saveOrUpdate(Object o) {
@@ -883,12 +881,16 @@ class DeliveriesBL {
 }
 class RestaurantsBL {
     public static OpeningTimes getOpeningTimes(Session session, String branch, LocalDate date) {
-        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).load().getOpeningHours(date);
-        return new OpeningTimes(branch, opening_hours.startHour.toString() + ":00");
+        System.out.println("hello from get opening times: ");
+        final var opening_hours = session.byNaturalId(Restaurant.class).using("restaurant_name", branch).loadOptional().map(r->r.getOpeningHours(date));
+        System.out.println("hello from get opening times: "+opening_hours);
+        return new OpeningTimes(branch, opening_hours.orElseThrow().startHour + ":00");
     }
     public static ClosingTimes getClosingTimes(Session session, String branch, LocalDate date) {
-        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).load().getOpeningHours(date);
-        return new ClosingTimes(branch, opening_hours.endHour.toString() + ":00");
+        System.out.println("hello from get closing times: ");
+        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).loadOptional().map(r->r.getOpeningHours(date));
+        System.out.println("hello from get closing times: "+opening_hours);
+        return new ClosingTimes(branch, opening_hours.orElseThrow().endHour + ":00");
     }
     public static Stream<RestaurantTable> getAvailableTables(Session session, Long restaurantId, boolean inside, LocalDateTime startDate, LocalDateTime endDate) {
         return session.byId(Restaurant.class).load(restaurantId)
@@ -909,7 +911,7 @@ class RestaurantsBL {
     public static List<LocalDateTime> getReservationTimes(Session session, String branch, boolean inside, int ppl, LocalDateTime startDate) {
         final var restaurant = session.byNaturalId(Restaurant.class).using("name", branch).load();
         final var opening_hours = restaurant.getOpeningHours(startDate);
-        final var end = startDate.toLocalDate().atTime(LocalTime.of(opening_hours.endHour.intValue(),0));
+        final var end = startDate.toLocalDate().atTime(LocalTime.of((int)opening_hours.endHour,0));
         List<LocalDateTime> retval = new ArrayList<>();
         while (startDate.isBefore(end)) {
             final var finalStartDate = startDate;

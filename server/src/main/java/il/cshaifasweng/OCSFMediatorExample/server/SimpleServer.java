@@ -361,6 +361,7 @@ public class SimpleServer extends AbstractServer{
 			}
 			else if (payload instanceof GetBranchClosingTimes request) {
 				String branch = request.getBranchName();
+				System.out.println(branch);
 				LocalDate date = request.getDate();
 				ClosingTimes response = db_.getClosingTimes(branch, date);
 

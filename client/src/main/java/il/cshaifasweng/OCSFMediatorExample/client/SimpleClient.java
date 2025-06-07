@@ -125,10 +125,10 @@ public class SimpleClient extends AbstractClient {
 	}
 
 
-	public void sendGetBranchReport(int year, int month, Long branchId) throws IOException {
+	/*public void sendGetBranchReport(int year, int month, Long branchId) throws IOException {
 		GetBranchReportRequest request = new GetBranchReportRequest(branchId, year, month);
 		sendToServer(request);
-	}
+	}*/
 
 	public static synchronized SimpleClient getClient() throws IOException {
 		System.out.println("client == null"+client==null);

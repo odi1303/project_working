@@ -16,28 +16,28 @@ import java.util.List;
 @NoArgsConstructor()
 @Entity
 @Table(name = "restaurants")
-public class Restaurant extends BranchEnt implements Serializable {
+public class Restaurant implements Serializable {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "restaurant_id")
     public Long id;
     @NaturalId
-    @Column(unique = true, nullable = false)
+    @Column(name = "restaurant_name",unique = true, nullable = false)
     public String name;
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours sundayOpeningHours;
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours mondayOpeningHours;
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours tuesdayOpeningHours;
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours wednesdayOpeningHours;
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours thursdayOpeningHours;
-    @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours fridayOpeningHours;
-    @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public OpeningHours saturdayOpeningHours;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)

@@ -16,14 +16,14 @@ public class RestaurantTable implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "branch_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "branch_id", nullable = true)
     private Restaurant branch;
 
-    @Column(name = "size", nullable = false)
+    @Column(name = "size", nullable = true)
     private Long size;
 
-    @Column(name = "inside", nullable = false)
+    @Column(name = "inside", nullable = true)
     private boolean inside;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -31,6 +31,11 @@ public class RestaurantTable implements Serializable {
 
     public RestaurantTable() {}
 
+    public RestaurantTable(long size, boolean inside, List<TableOrder> tableOrders) {
+        this.size = size;
+        this.inside = inside;
+        this.tableOrders = tableOrders;
+    }
     public int getSize() {
         return size.intValue();
     }

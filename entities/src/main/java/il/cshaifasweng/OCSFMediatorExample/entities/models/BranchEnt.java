@@ -20,7 +20,7 @@ public class BranchEnt implements Serializable {
     @Column(name = "location")
     private String location;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RestaurantTable> tables;
 
     public BranchEnt() {}
