@@ -312,7 +312,7 @@ public class ManualDatabase {
 
         session.getTransaction().commit();
         session.flush();
-        session.close();
+        //session.close();
 
 
     }

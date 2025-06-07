@@ -93,12 +93,15 @@ public class CancelDelivey {
             long diffMillis =now.getTime() - delivery.getDeliveryTime().getTime();
             long diffHours = diffMillis / (1000 * 60 * 60);
             if (diffHours >= 3) {
-                emailSender.send_email_respond(email.getText(),delivery_num+delivery.getId().toString()+canceled, acceptedCancel+ending);
-                System.out.println("your delivery canceled successfully for free");
-            } else if (diffHours<3 && diffHours>1){
-                String temp=" due to the late announcement you will be charged with 50% of the order price";
+                int price=delivery.getOrderPrice();
+                String temp=" the total refund amount is "+(price)+"nis";
                 emailSender.send_email_respond(email.getText(),delivery_num+delivery.getId().toString()+canceled, acceptedCancel+temp+ending);
-                System.out.println("your delivery canceled successfully for 50% of the order price");
+                System.out.println("your delivery canceled successfully for free"+temp);
+            } else if (diffHours<3 && diffHours>1){
+                double price=delivery.getOrderPrice()*0.5;
+                String temp=" due to the late announcement you will be charged with 50% of the order price, the total refund amount is "+(price)+"nis";
+                emailSender.send_email_respond(email.getText(),delivery_num+delivery.getId().toString()+canceled, acceptedCancel+temp+ending);
+                System.out.println("your delivery canceled successfully for 50% of the order price, the total refund amount is "+(price)+"nis");
             }
             else {
                 String temp=" due to the last minute announcement you will be charged with full price";

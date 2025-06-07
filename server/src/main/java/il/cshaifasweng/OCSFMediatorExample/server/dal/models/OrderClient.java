@@ -114,6 +114,14 @@ public class OrderClient implements Serializable {
     public void setDelivery(boolean delivery) {
         isDelivery = delivery;
     }
+    public int getOrderPrice() {
+        return orderItems
+                .stream()
+                .mapToInt(i -> Math.toIntExact(
+                        i.getQuantity() *
+                                i.getMenuItem().getPrice() *
+                                (100 - i.getMenuItem().getSale()) / 100)).sum();
+    }
 
     @Override
     public String toString() {
@@ -127,6 +135,7 @@ public class OrderClient implements Serializable {
                 ", isDelivery=" + isDelivery +
                 ",\n locationInformation=" + locationInformation +
                 ",\n personalInformation=" + personalInformation +
+                ",\n total price=" + getOrderPrice() +
                 '}';
     }
 }
