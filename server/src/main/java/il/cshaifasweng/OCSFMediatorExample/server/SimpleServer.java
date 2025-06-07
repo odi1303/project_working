@@ -4,6 +4,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.BookReservationRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import il.cshaifasweng.OCSFMediatorExample.server.bl.HardcodedDataProvider;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
@@ -92,6 +93,16 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(retval);
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+		else if (msg instanceof User user) {
+			try {
+				UserType type = db_.getUserType(user.getUsername(), user.getPassword());
+				System.out.println("Authenticating user: " + user.getUsername() + ", returned type: " + type);
+				client.sendToClient(type);
+			} catch (Exception e) {
+				e.printStackTrace();
+				client.sendToClient(UserType.Empty);
 			}
 		}
 		else if (msgString.equals("#getAllComplaints")) {

@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserType;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,52 +12,88 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 
 public class HomePage {
-
-//    @FXML
-//    private Button MyCartBottun;
-
     @FXML
     private Button aboutButton;
-
     @FXML
     private Button connectButton;
-
     @FXML
     private Button reserveButton;
-
     @FXML
     private Button showMenu;
-
     @FXML
     private Button EditMenu;
-
     @FXML
     private Button orderDelivery;
-
     @FXML
     private Button cancelDeliveryOrReservation;
-
     @FXML
     private Button fileComplaint;
-
     @FXML
     private Button watchComplaints;
-
     @FXML
     private Button watchBranchesCapacity;
-
     @FXML
     private Label StatusLabel;
+    @FXML
+    private Button viewReports;
+
+    @FXML
+    public void initialize() {
+        EventBus.getDefault().register(this);
+        Platform.runLater(this::toggleButtons); // Set initial button visibility
+    }
+
+    private void toggleButtons() {
+        UserType userType = App.userType != null ? App.userType : UserType.Empty;
+        // Default buttons
+        aboutButton.setVisible(true);
+        connectButton.setVisible(true);
+        reserveButton.setVisible(true);
+        showMenu.setVisible(true);
+        EditMenu.setVisible(false);
+        orderDelivery.setVisible(true);
+        cancelDeliveryOrReservation.setVisible(true);
+        fileComplaint.setVisible(true);
+        watchComplaints.setVisible(false);
+        watchBranchesCapacity.setVisible(false);
+        viewReports.setVisible(false);
+
+        switch (userType) {
+            case Employee:
+                watchBranchesCapacity.setVisible(true);
+                break;
+            case Dietitian:
+                EditMenu.setVisible(true);
+                watchBranchesCapacity.setVisible(true);
+                break;
+            case BranchManager:
+                watchBranchesCapacity.setVisible(true);
+                viewReports.setVisible(true);
+                break;
+            case ChainManager:
+                watchBranchesCapacity.setVisible(true);
+                viewReports.setVisible(false);
+                break;
+            case CustomerServiceWorker:
+                watchBranchesCapacity.setVisible(true);
+                watchComplaints.setVisible(true);
+                break;
+            case Empty:
+            default:
+                connectButton.setVisible(true); // Show login button if not logged in
+                break;
+        }
+    }
+
+    @Subscribe
+    public void onUserTypeUpdated(UserType type) {
+        Platform.runLater(this::toggleButtons); // Update buttons on user type change
+    }
 
     @FXML
     void showAbout(ActionEvent event) throws IOException {
         App.setRoot("about-us-page");
     }
-
-//    @FXML
-//    void showMyCart(ActionEvent event) throws IOException {
-//        App.setRoot("MyCartScreen");
-//    }
 
     @FXML
     void showTheMenu(ActionEvent event) throws IOException {
@@ -77,26 +115,25 @@ public class HomePage {
     }
 
     @FXML
-    void toResrveAtable(ActionEvent event) throws IOException {
+    void toReserveAtable(ActionEvent event) throws IOException {
         App.setRoot("TableOrderScreen");
     }
 
     @FXML
-    void EditMenu(ActionEvent event) throws IOException {
+    void editMenu(ActionEvent event) throws IOException {
         App.setRoot("EditMenuScreen");
     }
 
     @FXML
     void orderDelivery(ActionEvent event) throws IOException {
         MainMenuController controller = App.setRootAndGetController("MainMenu");
-        controller.reinitialize(true); //change the screen to handle orders and not only show the menu
+        controller.reinitialize(true);
     }
 
     @FXML
     void cancelDeliveryOrReservation(ActionEvent event) throws IOException {
-        App.setRoot("cancel-delivey");
+        App.setRoot("cancel-delivery");
     }
-
 
     @FXML
     void fileComplaint(ActionEvent event) throws IOException {
@@ -112,10 +149,16 @@ public class HomePage {
     void watchBranchesCapacity(ActionEvent event) throws IOException {
         App.setRoot("WatchBranchesCapacityScreen");
     }
-    @Subscribe
-    public void onEventDummy(Object ignored) {}
 
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+    }
+
+    public void EditMenu(ActionEvent actionEvent) throws IOException {
+        App.setRoot("EditMenu");
+    }
+
+    public void goToReports(ActionEvent actionEvent) throws IOException {
+        App.setRoot("pickReport");
     }
 }

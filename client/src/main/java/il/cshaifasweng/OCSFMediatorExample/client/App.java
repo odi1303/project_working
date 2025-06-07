@@ -42,33 +42,26 @@ public class App extends Application {
 
         // Use Platform.runLater to ensure UI updates are thread-safe
         Platform.runLater(() -> {
-            try {
-                switch (type) {
-                    case Admin:
-                        setRoot("manager_personal_page");
-                        break;
-                    case User:
-                        // Optionally update UI elements instead of changing the scene
-                        System.out.println("User logged in: " + username);
-                        break;
-                    case Employee:
-                        System.out.println("Employee logged in: " + username);
-                        break;
-                    case Dietitian:
-                        System.out.println("Dietitian logged in: " + username);
-                        break;
-                    case ChainManager:
-                        System.out.println("Chain Manager logged in: " + username);
-                        break;
-                    case CustomerServiceWorker:
-                        System.out.println("Customer Service Worker logged in: " + username);
-                        break;
-                    case BranchManager:
-                        System.out.println("Branch Manager logged in: " + username);
-                        break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            switch (type) {
+                case User:
+                    // Optionally update UI elements instead of changing the scene
+                    System.out.println("User logged in: " + username);
+                    break;
+                case Employee:
+                    System.out.println("Employee logged in: " + username);
+                    break;
+                case Dietitian:
+                    System.out.println("Dietitian logged in: " + username);
+                    break;
+                case ChainManager:
+                    System.out.println("Chain Manager logged in: " + username);
+                    break;
+                case CustomerServiceWorker:
+                    System.out.println("Customer Service Worker logged in: " + username);
+                    break;
+                case BranchManager:
+                    System.out.println("Branch Manager logged in: " + username);
+                    break;
             }
         });
     }

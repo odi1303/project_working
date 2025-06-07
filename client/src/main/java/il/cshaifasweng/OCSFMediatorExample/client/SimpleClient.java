@@ -69,7 +69,7 @@ public class SimpleClient extends AbstractClient {
 			} /*else if (message.contains("does not exist")) {
 				EventBus.getDefault().post(message);
 			} else if (message.contains("the password is ok")) {
-				int startIndex = message.indexOf("(") + 1;
+				int startIndex = message.indexOf("(") + 1;F
 				int commaIndex = message.indexOf(",");
 				int endIndex = message.indexOf(")");
 				String username = message.substring(startIndex, commaIndex).trim();
@@ -85,13 +85,10 @@ public class SimpleClient extends AbstractClient {
 				RequestManager.getInstance().setResponse(message.getKey(), payload);
 			}
 		} else if (msg instanceof UserType type) {
-			//System.out.println("hola");
 			EventBus.getDefault().post(msg);
 			if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
 			}
-			/*} /else if (msg instanceof OpeningTimes){
-			EventBus.getDefault().post(msg);*/
 		}
 
 		else if (msg instanceof BranchReportEvent) {
