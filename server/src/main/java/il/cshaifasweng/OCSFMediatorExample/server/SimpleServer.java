@@ -29,7 +29,6 @@ public class SimpleServer extends AbstractServer {
 	protected synchronized void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException {
 		if (msg instanceof GetBranchReportRequest request) {
 			try {
-				// Query the database for BranchReportEnt
 				List<BranchReportEnt> reports = db_.getAll(BranchReportEnt.class.newInstance());
 				BranchReportEnt report = reports.stream()
 						.filter(r -> r.getBranch().getId() == request.getBranchId() &&
@@ -44,6 +43,15 @@ public class SimpleServer extends AbstractServer {
 				e.printStackTrace();
 				client.sendToClient(null);
 			}
+		} else if (msg instanceof GetAllBranchesRequest) {
+			try {
+				List<BranchEnt> branches = db_.getAll(BranchEnt.class.newInstance());
+				System.out.println("Sending " + branches.size() + " branches to client");
+				client.sendToClient(branches);
+			} catch (Exception e) {
+				e.printStackTrace();
+				client.sendToClient(new ArrayList<BranchEnt>());
+			}
 		} else if (msg instanceof Complaint) {
 			System.out.println("saved complain");
 			System.out.println((Complaint)msg);
@@ -52,7 +60,7 @@ public class SimpleServer extends AbstractServer {
 			System.out.println(db_);
 			List<Complaint> complaints = db_.getAll(new Complaint());
 			for (Complaint complain : complaints) {
-				if (complain.isHandled() == false) {
+				if (!complain.isHandled()) {
 					openComplaints.add(complain);
 				}
 			}
@@ -62,11 +70,11 @@ public class SimpleServer extends AbstractServer {
 				System.out.println("saved order");
 				db_.saveOrUpdate(order);
 				System.out.println("sending the order");
-				List<OrderClient> openComplaints = db_.getAll(new OrderClient());
-				System.out.println("num of open orders=" + openComplaints.size());
-				for (int i = 0; i < openComplaints.size(); i++) {
-					if (order == openComplaints.get(i)) {
-						client.sendToClient(openComplaints.get(i));
+				List<OrderClient> openOrders = db_.getAll(new OrderClient());
+				System.out.println("num of open orders=" + openOrders.size());
+				for (int i = 0; i < openOrders.size(); i++) {
+					if (order == openOrders.get(i)) {
+						client.sendToClient(openOrders.get(i));
 					}
 				}
 			} catch (Exception e) {
@@ -143,7 +151,7 @@ public class SimpleServer extends AbstractServer {
 				System.out.println(db_);
 				List<Complaint> complaints = db_.getAll(new Complaint());
 				for (Complaint complain : complaints) {
-					if (complain.isHandled() == false) {
+					if (!complain.isHandled()) {
 						openComplaints.add(complain);
 					}
 				}
@@ -184,11 +192,11 @@ public class SimpleServer extends AbstractServer {
 				}
 				System.out.println("Delivery ID: " + id);
 				System.out.println("Email: " + email);
-				List<OrderClient> openComplaints = db_.getAll(new OrderClient());
-				System.out.println("num of open orders=" + openComplaints.size());
-				for (int i = 0; i < openComplaints.size(); i++) {
-					if (openComplaints.get(i).getId() == (long)id && openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
-						client.sendToClient(openComplaints.get(i));
+				List<OrderClient> openOrders = db_.getAll(new OrderClient());
+				System.out.println("num of open orders=" + openOrders.size());
+				for (int i = 0; i < openOrders.size(); i++) {
+					if (openOrders.get(i).getId() == (long)id && openOrders.get(i).getPersonalInformation().getEmail().equals(email)) {
+						client.sendToClient(openOrders.get(i));
 					}
 				}
 				client.sendToClient(null);
