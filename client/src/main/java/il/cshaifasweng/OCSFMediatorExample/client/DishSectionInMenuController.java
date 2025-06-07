@@ -50,8 +50,10 @@ public class DishSectionInMenuController {
 
     private void setDishImage(){
         try{
-            Image image = new Image(dish.getImageUrl());
-            dishImage.setImage(image);
+            if(dish.getImageUrl() != null) {
+                Image image = new Image(dish.getImageUrl());
+                dishImage.setImage(image);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to load image: " + dish.getImageUrl());
