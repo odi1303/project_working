@@ -29,6 +29,6 @@
             </LineChart>
          </children>
       </AnchorPane>
-      <ComboBox fx:id="report_list" layoutX="230.0" layoutY="40.0" onAction="#chosing_report" prefHeight="26.0" prefWidth="313.0" promptText="to view a report chose one from the list" />
+      <ComboBox fx:id="report_list" layoutX="230.0" layoutY="40.0" onAction="#pick_report" prefHeight="26.0" prefWidth="313.0" promptText="to view a report chose one from the list" />
    </children>
 </AnchorPane>

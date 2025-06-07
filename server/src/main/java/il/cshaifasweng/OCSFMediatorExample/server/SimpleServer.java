@@ -168,6 +168,26 @@ public class SimpleServer extends AbstractServer{
 			sendToAllClients(openComplaints);
 
 		}
+
+		else if (msg instanceof GetBranchReportRequest request) {
+			try {
+				// Query the database for BranchReportEnt
+				List<BranchReportEnt> reports = db_.getAll(BranchReportEnt.class.newInstance());
+				BranchReportEnt report = reports.stream()
+						.filter(r -> r.getBranch().getId() == request.getBranchId() &&
+								r.getYear() == request.getYear() &&
+								r.getMonth() == request.getMonth())
+						.findFirst()
+						.orElse(null);
+				System.out.println("Sending BranchReportEnt for branchId=" + request.getBranchId() +
+						", year=" + request.getYear() + ", month=" + request.getMonth());
+				client.sendToClient(report);
+			} catch (Exception e) {
+				e.printStackTrace();
+				client.sendToClient(null);
+			}
+		}
+
 		else if (msg instanceof OrderClient order) {
 			try {
 				System.out.println("saved order");

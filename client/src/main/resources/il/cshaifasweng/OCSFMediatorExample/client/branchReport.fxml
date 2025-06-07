@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.BranchReportController">
+    <content>
+        <VBox alignment="CENTER" spacing="10">
+
+            <BarChart fx:id="orderChart">
+                <xAxis>
+                    <CategoryAxis label="Date" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Order count" />
+                </yAxis>
+            </BarChart>
+            <Label fx:id="orderSummaryLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+            <BarChart fx:id="peopleChart">
+                <xAxis>
+                    <CategoryAxis label="Date" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Resturant Visitor Count" />
+                </yAxis>
+            </BarChart>
+            <Label fx:id="peopleSummaryLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+            <BarChart fx:id="complaintsChart">
+                <xAxis>
+                    <CategoryAxis label="Date" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Complaint Counter" />
+                </yAxis>
+            </BarChart>
+            <Label fx:id="complaintsSummaryLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+            <Button onAction="#goBack" text="Go back" />
+
+        </VBox>
+    </content>
+</ScrollPane>

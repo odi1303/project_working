@@ -89,7 +89,17 @@ public class SimpleClient extends AbstractClient {
 			}
 			/*} /else if (msg instanceof OpeningTimes){
 			EventBus.getDefault().post(msg);*/
-		} else if (msg instanceof List<?> list) {
+		}
+
+		else if (msg instanceof BranchReportEvent) {
+			EventBus.getDefault().post((BranchReportEvent) msg);
+		}
+
+		else if (msg instanceof BranchReportEnt) {
+			EventBus.getDefault().post(msg);
+		}
+
+		else if (msg instanceof List<?> list) {
 			//List<?> list = (List<?>) msg;
 			//System.out.println("hola");
 			if (!list.isEmpty()) {
@@ -115,6 +125,11 @@ public class SimpleClient extends AbstractClient {
 
 	}
 
+
+	public void sendGetBranchReport(int year, int month, int branchId) throws IOException {
+		GetBranchReportRequest request = new GetBranchReportRequest(branchId, year, month);
+		sendToServer(request);
+	}
 
 	public static synchronized SimpleClient getClient() throws IOException {
 		System.out.println("client == null"+client==null);
