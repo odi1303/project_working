@@ -92,7 +92,7 @@ public class ReservationCardController {
     private void setReservationDetailsDataInLabels() {
         ReservationDetails reservationDetails = reservation.getReservationDetails();
         ReservationBranchLabel.setText(reservationDetails.getBranch());
-        ReservationGuestNumberLabel.setText(reservationDetails.getGuestNumber());
+        ReservationGuestNumberLabel.setText(Integer.toString(reservationDetails.getGuestNumber()));
         ReservationReservationSpaceLabel.setText(reservationDetails.getReservationSpace());
         ReservationReservationDateLabel.setText(reservationDetails.getReservationDate());
         ReservationTimeLabel.setText(reservationDetails.getTime());

@@ -85,7 +85,7 @@ public class ReportsView {
 
     @Subscribe
     public void onReservationsReceived(List<TableOrder> tableOrders) {
-        handleReportData(tableOrders, "Reservations", TableOrder::getStartDate, tableOrder -> tableOrder.restaurant.getId());
+        handleReportData(tableOrders, "Reservations", TableOrder::getStartDateLegacy, to -> to.restaurant.getId());
     }
 
     private <T> void handleReportData(List<T> data, String reportType,

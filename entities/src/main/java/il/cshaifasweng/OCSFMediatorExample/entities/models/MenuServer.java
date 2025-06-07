@@ -1,60 +1,37 @@
 package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
-//import javafx.fxml.FXML;
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "menus")
+public class MenuServer implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-public class MenuClient implements Serializable {
-    private ArrayList<MenuItem> menu;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<MenuItem> menu;
+
+    public boolean is_main_menu;
+
+    @Column
+    @NaturalId
     private String menuName;
 
-//    @FXML
-//    public void initialize() {
-//        try {
-////            EventBus.getDefault().register(this);
-//        } catch (Exception e) {
-//            throw new RuntimeException();
-//        }
-//    }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
-
-    public MenuClient() {
+    public MenuServer() {
         this.menu = new ArrayList<>();
         menuName = "";
     }
-    public MenuClient(MenuClient menuClient) {
-        this.menuName = menuClient.menuName;
-        this.menu = new ArrayList<>();
-        for (MenuItem item : menuClient.menu) {
-            this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            if (item.getPersonalPreferences() != null){
-//                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
-//            }else{
-//                this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            }
-        }
-    }
-    public MenuClient(MenuServer menuClient) {
+    public MenuServer(MenuClient menuClient) {
         this.menuName = menuClient.getMenuName();
         this.menu = new ArrayList<>(menuClient.getMenu());
-        /*for (MenuItem item : menuClient.menu) {
-            this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            if (item.getPersonalPreferences() != null){
-//                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
-//            }else{
-//                this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            }
-        }*/
     }
 
-    public MenuClient(ArrayList<MenuItem> dishes) {
+    public MenuServer(ArrayList<MenuItem> dishes) {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
@@ -63,7 +40,7 @@ public class MenuClient implements Serializable {
         menuName = "";
     }
 
-    public MenuClient(String menuName, ArrayList<MenuItem> dishes) {
+    public MenuServer(String menuName, ArrayList<MenuItem> dishes) {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
@@ -118,23 +95,26 @@ public class MenuClient implements Serializable {
     }
 
     public List<String> getAllBranches() {
-        Set<String> branchesSet = new HashSet<>(); // Using a Set to avoid duplicates
+        return menu.stream().flatMap(m -> m.getAvailableBranches().stream()).distinct().toList();
+        /*Set<String> branchesSet = new HashSet<>(); // Using a Set to avoid duplicates
 
         for (MenuItem dish : menu) {
             branchesSet.addAll(dish.getAvailableBranches());
         }
 
-        return new ArrayList<>(branchesSet); // Convert Set to List before returning
+        return new ArrayList<>(branchesSet); // Convert Set to List before returning*/
     }
 
     public List<String> getAllIngredients() {
-        Set<String> IngredientsSet = new HashSet<>(); // Using a Set to avoid duplicates
+        return menu.stream().flatMap(m -> m.getIngredients().stream()).distinct().toList();
+
+        /*Set<String> IngredientsSet = new HashSet<>(); // Using a Set to avoid duplicates
 
         for (MenuItem dish : menu) {
             IngredientsSet.addAll(dish.getIngredients());
         }
 
-        return new ArrayList<>(IngredientsSet); // Convert Set to List before returning
+        return new ArrayList<>(IngredientsSet); // Convert Set to List before returning*/
     }
 
     @Override
@@ -145,10 +125,18 @@ public class MenuClient implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        MenuClient other = (MenuClient) obj;
+        MenuServer other = (MenuServer) obj;
         if (!menuName.equals(other.menuName)) {
             return false;
         }
         return Objects.equals(this.menu, other.menu);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

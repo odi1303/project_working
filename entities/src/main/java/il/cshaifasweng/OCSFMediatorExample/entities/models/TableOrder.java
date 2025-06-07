@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 //import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -16,16 +18,16 @@ public class TableOrder implements Serializable {
     public Long id;
 
     @Column(name="start_date")
-    public Date startDate;
+    public LocalDateTime startDate;
 
     @Column(name="end_date")
-    public Date endDate;
+    public LocalDateTime endDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     public Restaurant restaurant;
 
     @Column(name="active")
-    public Date active;
+    public LocalDateTime active;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     public User allocator;
@@ -35,7 +37,7 @@ public class TableOrder implements Serializable {
 
     public TableOrder() {}
 
-    public TableOrder(Date startDate, Date endDate, User allocator, Restaurant restaurant, List<RestaurantTable> restaurantTables) {
+    public TableOrder(LocalDateTime startDate, LocalDateTime endDate, User allocator, Restaurant restaurant, List<RestaurantTable> restaurantTables) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.allocator = allocator;
@@ -44,10 +46,13 @@ public class TableOrder implements Serializable {
 
     }
 
-     public Date getStartDate() {
+     public LocalDateTime getStartDate() {
         return startDate;
      }
-     public Date getEndDate() {
+    public Date getStartDateLegacy() {
+        return Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
+    }
+     public LocalDateTime getEndDate() {
         return endDate;
      }
 

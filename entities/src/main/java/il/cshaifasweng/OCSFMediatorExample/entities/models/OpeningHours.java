@@ -17,6 +17,6 @@ public class OpeningHours implements Serializable {
     @Column(name="end_hour")
     public Long endHour;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public Restaurant restaurant;
+   /* @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Restaurant restaurant;*/
 }

@@ -4,9 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 //import org.hibernate.annotations.Table;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor()
@@ -18,6 +21,8 @@ public class Restaurant implements Serializable {
     //@Column(name = "restaurant_id")
     //why not String???
     public Long id;
+    @NaturalId
+    @Column(unique = true, nullable = false)
     public String name;
     @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     public OpeningHours sundayOpeningHours;
@@ -78,6 +83,28 @@ public class Restaurant implements Serializable {
         return saturdayOpeningHours;
     }
 
+    public OpeningHours getOpeningHours(LocalDate date) {
+        return switch(date.getDayOfWeek()){
+            case SUNDAY -> getSundayOpeningHours();
+            case MONDAY -> getMondayOpeningHours();
+            case TUESDAY -> getTuesdayOpeningHours();
+            case WEDNESDAY -> getWednesdayOpeningHours();
+            case THURSDAY -> getThursdayOpeningHours();
+            case FRIDAY -> getFridayOpeningHours();
+            case SATURDAY -> getSaturdayOpeningHours();
+        };
+    }
+    public OpeningHours getOpeningHours(LocalDateTime date) {
+        return switch(date.getDayOfWeek()){
+            case SUNDAY -> getSundayOpeningHours();
+            case MONDAY -> getMondayOpeningHours();
+            case TUESDAY -> getTuesdayOpeningHours();
+            case WEDNESDAY -> getWednesdayOpeningHours();
+            case THURSDAY -> getThursdayOpeningHours();
+            case FRIDAY -> getFridayOpeningHours();
+            case SATURDAY -> getSaturdayOpeningHours();
+        };
+    }
 
     public Restaurant(OpeningHours sundayOpeningHours,OpeningHours mondayOpeningHours,
                       OpeningHours tuesdayOpeningHours,OpeningHours wednesdayOpeningHours,

@@ -10,12 +10,16 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import jakarta.transaction.Transactional;
-import org.hibernate.*;
+import org.hibernate.Session;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-
+import java.util.stream.Stream;
 
 
 import org.hibernate.HibernateException;
@@ -34,13 +38,14 @@ public class ManualDatabase {
         config.setProperty("hibernate.connection.password", password);
 
         config.addAnnotatedClass(User.class);
+        config.addAnnotatedClass(MenuServer.class);
+        config.addAnnotatedClass(BranchEnt.class);
         config.addAnnotatedClass(TableOrder.class);
         config.addAnnotatedClass(Delivery.class);
         config.addAnnotatedClass(DeliveryItem.class);
         config.addAnnotatedClass(MenuItem.class);
         config.addAnnotatedClass(Restaurant.class);
         config.addAnnotatedClass(RestaurantTable.class);
-        config.addAnnotatedClass(TableOrder.class);
         config.addAnnotatedClass(OpeningHours.class);
         config.addAnnotatedClass(Complaint.class);
         config.addAnnotatedClass(Complain.class);
@@ -82,10 +87,10 @@ public class ManualDatabase {
                 System.out.println("Database already contains data. Skipping initialization.");
                 session.getTransaction().commit();
             }
-            else{
+            else {
                 session.getTransaction().commit();
                 System.out.println("Database initialized with default data.");
-                generateOrders();
+                generateData();
             }
 
 
@@ -99,7 +104,7 @@ public class ManualDatabase {
         }
     }
     @Transactional
-    public void generateOrders(){
+    public void generateData() {
         session.beginTransaction();
         session.flush();
         MenuItem pizza = new MenuItem(
@@ -114,6 +119,9 @@ public class ManualDatabase {
         );
         session.save(pizza);
 
+        Restaurant r = new Restaurant();
+        r.name = "main branch";
+        session.save(r);
         MenuItem burger = new MenuItem(
                 "Burger",
                 "Beef burger with lettuce and tomato",
@@ -163,7 +171,7 @@ public class ManualDatabase {
                 "Creamy hummus served with vegetables and pita.",
                 25,
                 "https://example.com/images/hummus.jpg",
-                List.of( "Grand Kenyon"),
+                List.of("Grand Kenyon"),
                 List.of("Hummus", "Tomato", "Onion", "Olives"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -185,7 +193,7 @@ public class ManualDatabase {
                 "A simple cheese sandwich with tomato and lettuce.",
                 20,
                 "https://example.com/images/cheese_sandwich.jpg",
-                List.of( "Grand Kenyon"),
+                List.of("Grand Kenyon"),
                 List.of("Cheese", "Tomato", "Lettuce"),
                 new ArrayList<>(),
                 0 // No Sale
@@ -297,6 +305,63 @@ public class ManualDatabase {
         session.save(creditInformation3);
         Reservation reservation3 = new Reservation(reservationDetails3, personalInformation3, creditInformation3);
         session.save(reservation3);
+
+
+
+        // Create Main Menu with some dishes
+        MenuServer mainMenu = new MenuServer("main menu", new ArrayList<>(List.of(
+                pizza, burger, pasta, salad
+        )));
+        mainMenu.is_main_menu = true;
+        session.save(mainMenu);
+
+        // Create Vegan Menu
+        MenuServer veganMenu = new MenuServer("Vegan Menu", new ArrayList<>(List.of(
+                falafelPlate, hummusPlate, falafelWrap, mixedPlatter, salad
+        )));
+        session.save(veganMenu);
+
+        // Create Premium Menu
+        MenuServer premiumMenu = new MenuServer("Premium Menu", new ArrayList<>(List.of(
+                sushi, beefSalad, pasta, burger
+        )));
+        session.save(premiumMenu);
+
+        OpeningHours defaultHours = new OpeningHours();
+        defaultHours.startHour = 10L;
+        defaultHours.endHour = 22L;
+        session.save(defaultHours);
+
+// Reuse same hours for all days for simplicity
+        OpeningHours sun = defaultHours, mon = defaultHours, tue = defaultHours;
+        OpeningHours wed = defaultHours, thu = defaultHours, fri = defaultHours, sat = defaultHours;
+
+// Create sample tables
+        RestaurantTable table1 = new RestaurantTable(); // Table 1 with 4 seats
+        RestaurantTable table2 = new RestaurantTable(); // Table 2 with 6 seats
+        RestaurantTable table3 = new RestaurantTable(); // Table 3 with 2 seats
+        List<RestaurantTable> tables1 = new ArrayList<>(List.of(table1, table2));
+        List<RestaurantTable> tables2 = new ArrayList<>(List.of(table2, table3));
+        List<RestaurantTable> tables3 = new ArrayList<>(List.of(table1, table3));
+        session.save(table1);
+        session.save(table2);
+        session.save(table3);
+
+// Restaurant 1
+        Restaurant r1 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables1);
+        r1.name = "Haifa Branch";
+        session.save(r1);
+
+// Restaurant 2
+        Restaurant r2 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables2);
+        r2.name = "Grand Kenyon";
+        session.save(r2);
+
+// Restaurant 3
+        Restaurant r3 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables3);
+        r3.name = "Kiryon";
+        session.save(r3);
+
         session.flush();
         session.getTransaction().commit();
     }
@@ -320,6 +385,7 @@ public class ManualDatabase {
         System.out.println(session);
         if (!session.getTransaction().isActive())
             session.beginTransaction();
+        else System.out.println("wtaf");
         System.out.println("a");
 
         try {
@@ -333,12 +399,12 @@ public class ManualDatabase {
         catch (Exception exception) {
             System.out.println(exception.getMessage());
             session.merge(o);
-            Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
+            /*Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
             if (existing == null) {
                 session.save(o);
             } else {
                 session.merge(o);// or manually update the fields
-            }
+            }*/
         }
         System.out.println("b");
         try{
@@ -363,10 +429,35 @@ public class ManualDatabase {
         System.out.println("Finished saving " + o.getClass().getSimpleName());
     }
 
-    public <T> List<T> getAll(T dummy) {
-        if (!session.getTransaction().isActive())
+    public <T> List<T> getAll(Class<T> clss) {
+        if (!session.getTransaction().isActive()){
             session.beginTransaction();
-        var result = session.createQuery("FROM " + dummy.getClass().getSimpleName()).getResultList();
+        } else {
+            System.out.println("wtf why is there an active transaction");
+        }
+        System.out.println("hello from get all "+clss.getSimpleName());
+        var result = session.createQuery("FROM " + clss.getSimpleName(), clss).getResultList();
+        session.getTransaction().commit();
+        System.out.println(result.size());
+        return result;
+    }
+    public <T> Optional<T> getById(Class<T> clss, Long id) {
+        if (!session.getTransaction().isActive()){
+            session.beginTransaction();
+        } else {
+            System.out.println("wtf why is there an active transaction");
+        }
+        var result = session.byId(clss).loadOptional(id);
+        session.getTransaction().commit();
+        return result;
+    }
+    public <T> Optional<T> getByNaturalId(Class<T> clss, String field ,Object natural_id) {
+        if (!session.getTransaction().isActive()){
+            session.beginTransaction();
+        } else {
+            System.out.println("wtf why is there an active transaction");
+        }
+        var result = session.byNaturalId(clss).using(field, natural_id).loadOptional();
         session.getTransaction().commit();
         return result;
     }
@@ -374,7 +465,38 @@ public class ManualDatabase {
     public UserType getUserType(String name, String password) {
         return UsersBL.getUserType(session, name, password);
     }
-
+    public OpeningTimes getOpeningTimes(String branch, LocalDate date) {
+        return RestaurantsBL.getOpeningTimes(session, branch, date);
+    }
+    public ClosingTimes getClosingTimes(String branch, LocalDate date) {
+        return RestaurantsBL.getClosingTimes(session, branch, date);
+    }
+    public boolean canReserve(ReservationDetails reservation_details, int hours_offset, int minutes_offset) {
+        String branch = reservation_details.getBranch();
+        boolean inside = reservation_details.isInside();
+        int ppl = reservation_details.getGuestNumber();
+        var start = reservation_details.getStartDateTime().plusHours(hours_offset).plusMinutes(minutes_offset);
+        var tables = RestaurantsBL.getAvailableTables(session, branch, inside,start,start.plusHours(1).plusMinutes(30)).mapToInt(RestaurantTable::getSize).sorted().toArray();
+        return RestaurantsBL.optimal_allocation(tables, ppl).isPresent();
+    }
+    public List<String> getAllIngredients() {
+        return getAll(MenuItem.class)
+                .stream()
+                .flatMap(i -> i.getIngredients().stream())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+    public List<LocalDateTime> getAvailableTimes(ReservationDetails reservation_details) {
+        String branch = reservation_details.getBranch();
+        boolean inside = reservation_details.isInside();
+        int ppl = reservation_details.getGuestNumber();
+        var start = reservation_details.getStartDateTime();
+        return RestaurantsBL.getReservationTimes(session, branch, inside, ppl, start);
+    }
+    public List<Complaint> getAllOpenComplaints() {
+        return ComplaintsBL.getAllOpenComplains(session);
+    }
     public Session getSession() {
         return session;
     }
@@ -404,10 +526,10 @@ class UsersBL {
 }
 
 class ComplaintsBL {
-    public static List<Complaint> getAllComplains(Session session) {
+    public static List<Complaint> getAllOpenComplains(Session session) {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
-        var retval = session.createQuery("From Complaint", Complaint.class).getResultList();
+        var retval = session.createQuery("From Complaint Where Not handled", Complaint.class).getResultList();
 
         session.getTransaction().commit();
         session.flush();
@@ -450,6 +572,8 @@ class ComplaintsBL {
         //session.save(new DeliveryComplain(description, new Date(), user, delivery));
         session.getTransaction().commit();
     }
+
+    //wtf
     public static void createDeliveryComplain(Session session,DeliveryComplain complain) {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
@@ -756,4 +880,88 @@ class DeliveriesBL {
         deliveriesRepository.delete(delivery);
         return return_money;
     }*/
+}
+class RestaurantsBL {
+    public static OpeningTimes getOpeningTimes(Session session, String branch, LocalDate date) {
+        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).load().getOpeningHours(date);
+        return new OpeningTimes(branch, opening_hours.startHour.toString() + ":00");
+    }
+    public static ClosingTimes getClosingTimes(Session session, String branch, LocalDate date) {
+        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).load().getOpeningHours(date);
+        return new ClosingTimes(branch, opening_hours.endHour.toString() + ":00");
+    }
+    public static Stream<RestaurantTable> getAvailableTables(Session session, Long restaurantId, boolean inside, LocalDateTime startDate, LocalDateTime endDate) {
+        return session.byId(Restaurant.class).load(restaurantId)
+                .getTables()
+                .stream()
+                .filter(t -> t.isInside() == inside)
+                .filter(t -> t.getTableOrders().stream().allMatch(to -> endDate.isBefore(to.getStartDate()) || startDate.isAfter(to.getEndDate())));
+    }
+    public static Stream<RestaurantTable> getAvailableTables(Session session, String branch, boolean inside, LocalDateTime startDate, LocalDateTime endDate) {
+        return session.byNaturalId(Restaurant.class).using("name", branch)
+                .load()
+                .getTables()
+                .stream()
+                .filter(t -> t.isInside() == inside)
+                .filter(t -> t.getTableOrders().stream().allMatch(to -> endDate.isBefore(to.getStartDate()) || startDate.isAfter(to.getEndDate())));
+    }
+
+    public static List<LocalDateTime> getReservationTimes(Session session, String branch, boolean inside, int ppl, LocalDateTime startDate) {
+        final var restaurant = session.byNaturalId(Restaurant.class).using("name", branch).load();
+        final var opening_hours = restaurant.getOpeningHours(startDate);
+        final var end = startDate.toLocalDate().atTime(LocalTime.of(opening_hours.endHour.intValue(),0));
+        List<LocalDateTime> retval = new ArrayList<>();
+        while (startDate.isBefore(end)) {
+            final var finalStartDate = startDate;
+            final var potential_end = startDate.plusHours(1).plusMinutes(30);
+            final var finalEndDate = potential_end.isBefore(end) ? potential_end : end;
+            final var tables = restaurant.getTables()
+                    .stream()
+                    .filter(t -> t.isInside() == inside)
+                    .filter(t -> t.getTableOrders().stream().allMatch(to -> finalEndDate.isBefore(to.getStartDate()) || finalStartDate.isAfter(to.getEndDate())))
+            .mapToInt(RestaurantTable::getSize).sorted().toArray();
+            if (optimal_allocation(tables, ppl).isPresent()) retval.add(startDate);
+            startDate = startDate.plusMinutes(15);
+        }
+        return retval;
+    }
+
+    static Optional<int[]> optimal_allocation(int[] tables, int ppl) {
+        int total_tables = tables.length;
+        int upper = ppl + 4;
+        long[][] dp = new long[total_tables + 1][upper + 1];
+        int[][] opt = new int[total_tables + 1][upper + 1];
+        // int[] count = new int[3];
+        // for (int t : tables) ++count[t - 2];
+
+        Arrays.stream(opt).forEach(t -> Arrays.fill(t, -1));
+        Arrays.fill(dp[0], Integer.MAX_VALUE);
+        for (int c = 1; c <= total_tables; ++c) {
+            int table = tables[c - 1];
+            for (int r = 1; r <= ppl + 4; ++r) {
+                if (table == r) {
+                    dp[c][r] = 1;
+                    opt[c][r] = table;
+                } else if (table > r) dp[c][r] = dp[c - 1][r];
+                else if (dp[c - 1][r] < dp[c - 1][r - table] + 1) dp[c][r] = dp[c - 1][r];
+                else {
+                    dp[c][r] = dp[c - 1][r - table] + 1;
+                    opt[c][r] = table;
+                }
+            }
+        }
+
+        while (dp[total_tables][ppl] == Integer.MAX_VALUE && ppl < upper) ++ppl;
+        if (ppl == upper) return Optional.empty();
+        int[] optimal = new int[3];
+        int j = ppl;
+        for (int i = total_tables; i > 0; --i)
+            if (opt[i][j] != -1) {
+                ++optimal[opt[i][j] - 2];
+                j -= opt[i][j];
+            }
+        return Optional.of(optimal);
+    }
+
+
 }

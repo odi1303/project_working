@@ -307,7 +307,7 @@ public class TableOrderScreenController {
         buttonsReservations.clear();
 
         for (int i = 0; i < possibleReservationsTimes.size() && i < buttons.size(); i++) {
-            ReservationDetails reservation = new ReservationDetails(reservationDetails.getBranch(), reservationDetails.getGuestNumber(), reservationDetails.getReservationSpace(), reservationDetails.getReservationDate(), possibleReservationsTimes.get(i));
+            ReservationDetails reservation = new ReservationDetails(reservationDetails.getBranch(), Integer.toString(reservationDetails.getGuestNumber()), reservationDetails.getReservationSpace(), reservationDetails.getReservationDate(), possibleReservationsTimes.get(i));
             Button currentButton = buttons.get(i);
             buttonsReservations.put(currentButton, reservation);
             // Use Platform.runLater to update button text

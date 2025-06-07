@@ -16,7 +16,7 @@ public class OrderClient implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     private boolean isDelivery;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -51,7 +51,6 @@ public class OrderClient implements Serializable {
         calendar.add(Calendar.MINUTE, 30 * num); // Add 30 * num minutes
         return calendar.getTime();
     }
-
     public CreditInformation getCreditInformation() {
         return creditInformation;
     }

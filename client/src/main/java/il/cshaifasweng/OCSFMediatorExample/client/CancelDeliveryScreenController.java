@@ -1,6 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.OrderCancelationFeeRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.OrderCancellationFeeRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderItem;
@@ -117,7 +117,7 @@ public class CancelDeliveryScreenController {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the order?", (Stage) orderTable.getScene().getWindow());
                 if (isConfirmed) {
-                    boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredOrderCancelationFee(order)), (Stage) orderTable.getScene().getWindow());
+                    boolean confirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "you will be required to pay: " + String.valueOf(getRequiredOrderCancellationFee(order)), (Stage) orderTable.getScene().getWindow());
                     if (confirmed) {
                         orderTable.getChildren().remove(scrollPane);
                     }
@@ -128,12 +128,12 @@ public class CancelDeliveryScreenController {
         });
     }
 
-    private double getRequiredOrderCancelationFee(OrderClient order){
+    private double getRequiredOrderCancellationFee(OrderClient order){
         try {
             Double result = RequestManager.getInstance().sendAndWait(
-                    new OrderCancelationFeeRequest(order),
+                    new OrderCancellationFeeRequest(order),
                     5000,
-                    OrderCancelationFeeRequest.class,
+                    OrderCancellationFeeRequest.class,
                     Double.class
             );
             return result;

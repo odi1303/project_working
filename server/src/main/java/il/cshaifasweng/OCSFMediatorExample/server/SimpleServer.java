@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
@@ -28,9 +31,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Reservation;
 //@ApplicationScoped
 public class SimpleServer extends AbstractServer{
-	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-	/*@Inject
-	Database db;*/
+	private static final ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
 
 	ManualDatabase db_;
 	/**
@@ -96,7 +97,7 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.equals("#getAllComplaints")) {
 			try {
-				List<Complaint> complaints = ComplaintsBL.getAllComplains(db_.getSession());
+				List<Complaint> complaints = db_.getAll(Complaint.class);
 				client.sendToClient(complaints);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -104,9 +105,7 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.equals("#getAllDeliveries")) {
 			try {
-				List<Delivery> deliveries = db_.getSession()
-						.createQuery("FROM Delivery", Delivery.class)
-						.getResultList();
+				List<Delivery> deliveries = db_.getAll(Delivery.class);
 				client.sendToClient(deliveries);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -114,9 +113,7 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.equals("#getAllReservations")) {
 			try {
-				List<TableOrder> tableOrders = db_.getSession()
-						.createQuery("FROM TableOrder", TableOrder.class)
-						.getResultList();
+				List<TableOrder> tableOrders = db_.getAll(TableOrder.class);
 				client.sendToClient(tableOrders);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -124,47 +121,47 @@ public class SimpleServer extends AbstractServer{
 		}
 		else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
-			List<Complaint> openComplaints = new ArrayList<>();
-			System.out.println(db_);
-			List<Complaint> complaints = db_.getAll(new Complaint());
+			List<Complaint> openComplaints =db_.getAllOpenComplaints();
+			/*System.out.println(db_);
+			List<Complaint> complaints = db_.getAll(Complaint.class);
 			for (Complaint complain : complaints) {
 				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
 					openComplaints.add(complain);
 				}
-			}
+			}*/
 			System.out.println("num of open complaints=" + openComplaints.size());
 			client.sendToClient(openComplaints);
 		}
 		else if (msgString.equals("send all reservation")) {
-			List<OrderClient>orders = db_.getAll(new OrderClient());
+			List<OrderClient>orders = db_.getAll(OrderClient.class);
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
 		}
 		else if (msgString.equals("send all orders")) {
-			List<OrderClient> orders = db_.getAll(new OrderClient());
+			List<OrderClient>orders = db_.getAll(OrderClient.class);
 			System.out.println("num of orders=" + orders.size());
 			client.sendToClient(orders);
 
 		}
 		else if (msgString.equals("send all MenuItems")) {
-			List<?> items = db_.getAll(new MenuItem());
+			List<?> items = db_.getAll(MenuItem.class);
 			System.out.println("num of items=" + items.size());
 			client.sendToClient("sending menu items soon");
 			client.sendToClient(items);
 			System.out.println("sent all items");
 		}
-		else if (msg instanceof Complaint) {
+		else if (msg instanceof Complaint complaint) {
 			System.out.println("saved complain");
-			System.out.println((Complaint) msg);
-			db_.saveOrUpdate((Complaint) msg);
-			List<Complaint> openComplaints = new ArrayList<>();
-			System.out.println(db_);
-			List<Complaint> complaints = db_.getAll(new Complaint());
+			System.out.println(complaint);
+			db_.saveOrUpdate(complaint);
+			List<Complaint> openComplaints = db_.getAllOpenComplaints();
+			/*System.out.println(db_);
+			List<Complaint> complaints = db_.getAll(Complaint.class);
 			for (Complaint complain : complaints) {
 				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
 					openComplaints.add(complain);
 				}
-			}
+			}*/
 			sendToAllClients(openComplaints);
 
 		}
@@ -172,7 +169,7 @@ public class SimpleServer extends AbstractServer{
 		else if (msg instanceof GetBranchReportRequest request) {
 			try {
 				// Query the database for BranchReportEnt
-				List<BranchReportEnt> reports = db_.getAll(BranchReportEnt.class.newInstance());
+				List<BranchReportEnt> reports = db_.getAll(BranchReportEnt.class);
 				BranchReportEnt report = reports.stream()
 						.filter(r -> r.getBranch().getId() == request.getBranchId() &&
 								r.getYear() == request.getYear() &&
@@ -195,13 +192,13 @@ public class SimpleServer extends AbstractServer{
 				db_.saveOrUpdate(order);  // suspect this is blocking or failing
 
 				System.out.println("sending the order");
-				List<OrderClient> openComplaints = db_.getAll(new OrderClient());
+				List<OrderClient> openComplaints = db_.getAll(OrderClient.class);
 				System.out.println("num of open orders=" + openComplaints.size());
-				for (int i = 0; i < openComplaints.size(); i++) {
-					if (order == openComplaints.get(i)) {
-						client.sendToClient(openComplaints.get(i));
-					}
-				}
+                for (OrderClient openComplaint : openComplaints) {
+                    if (order == openComplaint) {
+                        client.sendToClient(openComplaint);
+                    }
+                }
 			} catch (Exception e) {
 				System.err.println("Exception occurred while saving or sending order:");
 				e.printStackTrace();
@@ -226,20 +223,23 @@ public class SimpleServer extends AbstractServer{
 					id = Integer.parseInt(idStr);
 				} catch (NumberFormatException e) {
 					System.err.println("Error: Could not parse ID as an integer.");
+					throw(e);
 				}
 			}
 
 			System.out.println("Delivery ID: " + id);
 			System.out.println("Email: " + email);
-			List<OrderClient> openComplaints = db_.getAll(new OrderClient());
-			System.out.println("num of open orders=" + openComplaints.size());
-			for (int i = 0; i < openComplaints.size(); i++) {
-				if (openComplaints.get(i).getId() == (long) id && openComplaints.get(i).getPersonalInformation().getEmail().equals(email)) {
-					System.out.println(openComplaints.get(i));
-					client.sendToClient(openComplaints.get(i));
-				}
-			}
-			client.sendToClient(null);
+			/*List<OrderClient> orders = db_.getAll(OrderClient.class);
+			System.out.println("num of open orders=" + orders.size());
+            for (OrderClient order : orders) {
+                if (order.getId() == (long) id && order.getPersonalInformation().getEmail().equals(email)) {
+                    client.sendToClient(order);
+					return;
+                }
+            }*/
+			String finalEmail = email;
+			Optional<OrderClient> maybeOrder = db_.getById(OrderClient.class, id.longValue()).filter(o -> o.getPersonalInformation().getEmail().equals(finalEmail));
+			client.sendToClient(maybeOrder.orElse(null));
 		}
 		else if (msgString.startsWith("@@delivery@@id=")) {
 			String[] parts = msgString.split("@@");
@@ -266,7 +266,7 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("Delivery ID: " + id);
 			System.out.println("Email: " + email);
 
-			List<OrderClient> openComplaints = db_.getAll(new OrderClient());
+			List<OrderClient> openComplaints = db_.getAll(OrderClient.class);
 			for (OrderClient order : openComplaints) {
 				if (order.getId() == (long) id && order.getPersonalInformation().getEmail().equals(email)) {
 					Thread t1=new Thread(()->{
@@ -308,7 +308,7 @@ public class SimpleServer extends AbstractServer{
 			System.out.println("Reservation ID: " + id);
 			System.out.println("Email: " + email);
 
-			List<Reservation> openReservations = db_.getAll(new Reservation());
+			List<Reservation> openReservations = db_.getAll(Reservation.class);
 			for (Reservation reservation : openReservations) {
 				if (reservation.getId() == (long) id && reservation.getPersonalInformation().getEmail().equals(email)) {
 					Thread t1=new Thread(()->{
@@ -327,13 +327,18 @@ public class SimpleServer extends AbstractServer{
 			client.sendToClient(null);
 		}
 
+
+
+
+
+
 		else if (msg instanceof Message message) {
 			Object payload = message.getPayload();
 			if (payload instanceof GetBranchOpeningTimes request) {
 				String branch = request.getBranchName();
 				LocalDate date = request.getDate();
 
-				OpeningTimes response = new OpeningTimes(branch, "10:10");
+				OpeningTimes response = db_.getOpeningTimes(branch, date);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -346,7 +351,7 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof GetBranchClosingTimes request) {
 				String branch = request.getBranchName();
 				LocalDate date = request.getDate();
-				ClosingTimes response = new ClosingTimes(branch, "22:00");
+				ClosingTimes response = db_.getClosingTimes(branch, date);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -358,8 +363,7 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof String request && request.equals("get all branches")) {
-				List<String> branches = HardcodedDataProvider.getAllBranches();
-
+				List<String> branches = db_.getAll(Restaurant.class).stream().map(r -> r.name).toList();
 				Message responseMessage = new Message(
 						message.getKey(),
 						branches,
@@ -372,11 +376,18 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof RequestReservationTimes request) {
 				ReservationDetails details = request.getDetails();
 
-				List<String> response = List.of("10:00", "15:00");
+				List<LocalTime> times = new ArrayList<>();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+				var start = details.getStartTime();
+				if (db_.canReserve(details,0,0)) times.add(start);
+				if (db_.canReserve(details,0,15)) times.add(start.plusMinutes(15));
+				if (db_.canReserve(details,0,30)) times.add(start.plusMinutes(30));
+				if (db_.canReserve(details,0,45)) times.add(start.plusMinutes(45));
+				if (db_.canReserve(details,1,0)) times.add(start.plusHours(1));
 
 				Message responseMessage = new Message(
 						message.getKey(),
-						response,
+						times.stream().map(t -> t.format(formatter)).toList(),
 						RequestReservationTimes.class,
 						List.class
 				);
@@ -384,9 +395,9 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof IsReservationPossibleRequest request) {
-				Reservation reservation = request.getReservation();
-
-				boolean isPossible = true;
+				// wait what
+				ReservationDetails reservation_details = request.getReservation().getReservationDetails();
+				boolean isPossible = true;//db_.canReserve(reservation_details,0,0);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -397,6 +408,8 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			}
+
+
 			else if (payload instanceof BookReservationRequest request) {
 				Reservation reservation = request.getReservation();
 
@@ -412,9 +425,14 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof CanBeMadeInOneHourRequest request) {
-				ReservationDetails details = request.getReservationDetails();
-
-				boolean canBeMade = true; // or false
+				// Done
+				ReservationDetails reservation_details = request.getReservationDetails();
+				boolean canBeMade =
+						db_.canReserve(reservation_details,0,0)  ||
+						db_.canReserve(reservation_details,0,15) ||
+						db_.canReserve(reservation_details,0,30) ||
+						db_.canReserve(reservation_details,0,45) ||
+						db_.canReserve(reservation_details,1,0);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -428,7 +446,7 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof CanBeMadeInSameDateRequest request) {
 				ReservationDetails details = request.getReservationDetails();
 
-				boolean canBeMade = true;
+				boolean canBeMade = !db_.getAvailableTimes(details).isEmpty();
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -442,8 +460,8 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof PossibleReservationsTimesRequest request) {
 				ReservationDetails details = request.getReservationDetails();
 
-				// Hardcoded example values
-				List<String> availableTimes = List.of("16:00", "17:00");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+				List<String> availableTimes = db_.getAvailableTimes(details).stream().map(t -> t.format(formatter)).toList();
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -454,15 +472,16 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			}
-			else if (payload instanceof OrderCancelationFeeRequest request) {
+
+			else if (payload instanceof OrderCancellationFeeRequest request) {
 				OrderClient order = request.getOrder();
 
-				double cancelationFee = 5.0;
+				double cancellation_fee = 5.0;
 
 				Message responseMessage = new Message(
 						message.getKey(),
-						cancelationFee,
-						OrderCancelationFeeRequest.class,
+						cancellation_fee,
+						OrderCancellationFeeRequest.class,
 						Double.class
 				);
 				client.sendToClient(responseMessage);
@@ -470,19 +489,21 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof ReservationCancelationFeeRequest request) {
 				Reservation reservation = request.getReservation();
 
-				double cancelationFee = 10.0;
+				double cancellationFee = 10.0;
 
 				Message responseMessage = new Message(
 						message.getKey(),
-						cancelationFee,
+						cancellationFee,
 						ReservationCancelationFeeRequest.class,
 						Double.class
 				);
 
 				client.sendToClient(responseMessage);
 			}
+
 			else if (payload instanceof SaveMenuChangesRequest request) {
 				MenuClient oldMenu = request.getOldMenu();
+
 				MenuClient newMenu = request.getNewMenu();
 
 				boolean returnValue = true; //saved successfully
@@ -511,9 +532,9 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof SubmitionRequestToNetworkManager request) {
-				MenuClient menuTosubmit = request.getMenuToSave();
+				MenuClient menuToSubmit = request.getMenuToSave();
 
-				boolean returnValue = true; //sabmitted successfully
+				boolean returnValue = true; //submitted successfully
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -524,8 +545,9 @@ public class SimpleServer extends AbstractServer{
 
 				client.sendToClient(responseMessage);
 			}
+
 			else if (payload instanceof String request && request.equals("get all ingredients")) {
-				List<String> ingredients = HardcodedDataProvider.getAllIngredients();
+				List<String> ingredients = db_.getAllIngredients();
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -537,7 +559,7 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof String request && request.equals("get main menu")) {
-				MenuClient mainMenu = HardcodedDataProvider.getMainMenu();
+				MenuClient mainMenu = new MenuClient(db_.getByNaturalId(MenuServer.class, "menuName", "main menu").orElseThrow());
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -549,7 +571,7 @@ public class SimpleServer extends AbstractServer{
 				client.sendToClient(responseMessage);
 			}
 			else if (payload instanceof String request && request.equals("get all menus")) {
-				List<MenuClient> Menus = HardcodedDataProvider.getAllMenus();
+				List<MenuClient> Menus = db_.getAll(MenuServer.class).stream().map(MenuClient::new).toList();
 				Message responseMessage = new Message(
 						message.getKey(),
 						Menus,
