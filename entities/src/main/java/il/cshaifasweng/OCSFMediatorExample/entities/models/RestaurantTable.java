@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities.models;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,21 +10,26 @@ import java.util.List;
 @Table(name = "tables")
 @Data
 public class RestaurantTable implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    public Restaurant restaurant;
+    @JoinColumn(name = "branch_id", nullable = false)
+    private BranchEnt branch;
 
-    @Column(name="size", nullable = false)
-    public Long size;
+    @Column(name = "size", nullable = false)
+    private Long size;
 
-    @Column(name="inside", nullable = false)
-    public boolean inside;
+    @Column(name = "inside", nullable = false)
+    private boolean inside;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<TableOrder> tableOrders;
+    private List<TableOrder> tableOrders;
+
+    public RestaurantTable() {}
 
     public int getSize() {
         return size.intValue();
@@ -36,6 +42,4 @@ public class RestaurantTable implements Serializable {
     public List<TableOrder> getTableOrders() {
         return tableOrders;
     }
-
-    public RestaurantTable() {}
 }

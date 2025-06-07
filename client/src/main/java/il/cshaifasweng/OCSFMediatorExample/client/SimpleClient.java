@@ -2,7 +2,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchReportRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.BranchReportEnt;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.Complaint;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
@@ -74,7 +76,13 @@ public class SimpleClient extends AbstractClient {
 				String type=message.substring(endIndex + 1).trim();
 				App.saveClientDetails(username,password,type);
 			}*/
-		} else if (msg instanceof Message message) {
+		}
+
+		else if (msg instanceof BranchReportEvent) {
+			EventBus.getDefault().post((BranchReportEvent) msg);
+		}
+
+		else if (msg instanceof Message message) {
 			Object payload = message.getPayload();
 			Class<?> expectedType = message.getResponseType();
 
@@ -112,7 +120,9 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(order);
 		}
 
-
+		else if (msg instanceof BranchReportEnt) {
+			EventBus.getDefault().post(msg);
+		}
 	}
 
 
@@ -122,5 +132,11 @@ public class SimpleClient extends AbstractClient {
 			client = new SimpleClient("localhost", 3000);
 		}
 		return client;
+	}
+
+
+	public void sendGetBranchReport(int year, int month, int branchId) throws IOException {
+		GetBranchReportRequest request = new GetBranchReportRequest(branchId, year, month);
+		sendToServer(request);
 	}
 }

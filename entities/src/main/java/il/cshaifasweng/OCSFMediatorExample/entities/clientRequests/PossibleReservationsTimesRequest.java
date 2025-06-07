@@ -15,4 +15,8 @@ public class PossibleReservationsTimesRequest implements Serializable {
     public ReservationDetails getReservationDetails() {
         return reservationDetails;
     }
+
+    public ReservationDetails getDetails() {
+        return reservationDetails;
+    }
 }
