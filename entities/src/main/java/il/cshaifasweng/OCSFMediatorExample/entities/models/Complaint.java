@@ -31,7 +31,7 @@ public class Complaint implements Serializable {
     int compensation=0;
     @Column
     Date answerdAt=null;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn
     OrderClient delivery=null;
 

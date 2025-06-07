@@ -10,11 +10,12 @@ import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.Request;
 import il.cshaifasweng.OCSFMediatorExample.server.dal.models.requests.UpdateRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 import jakarta.transaction.Transactional;
-import org.hibernate.Session;
+import org.hibernate.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 
 import java.io.IOException;
 import java.util.*;
+
 
 
 import org.hibernate.HibernateException;
@@ -300,6 +301,19 @@ public class ManualDatabase {
         session.getTransaction().commit();
     }
 
+    public void delete_object(Object o){
+        if (!session.getTransaction().isActive())
+            session.beginTransaction();
+        if (o != null) {
+            session.delete(o);
+        }
+
+        session.getTransaction().commit();
+        session.flush();
+        session.close();
+
+
+    }
 
     public void saveOrUpdate(Object o) {
         System.out.println("Saving " + o.getClass().getSimpleName());
@@ -319,12 +333,12 @@ public class ManualDatabase {
         catch (Exception exception) {
             System.out.println(exception.getMessage());
             session.merge(o);
-            /*Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
+            Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
             if (existing == null) {
                 session.save(o);
             } else {
                 session.merge(o);// or manually update the fields
-            }*/
+            }
         }
         System.out.println("b");
         try{
