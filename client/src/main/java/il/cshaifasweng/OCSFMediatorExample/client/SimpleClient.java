@@ -3,19 +3,21 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.models.Complaint;
-import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuItem;
-import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchReportRequest;
+import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
 import javafx.fxml.FXML;
 import org.greenrobot.eventbus.EventBus;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class SimpleClient extends AbstractClient {
 	//private static SimpleClient client = null;
 	private static SimpleClient client;
+	public static List<BranchEnt> BranchList = new ArrayList<>();
+	public static List<Integer> userBranchesIdList = new ArrayList<>();
 
     /*static {
         try {
