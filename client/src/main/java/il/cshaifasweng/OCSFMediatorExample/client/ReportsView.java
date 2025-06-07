@@ -139,4 +139,8 @@ public class ReportsView {
 
         return series;
     }
+
+    public void pick_report(ActionEvent actionEvent) throws IOException {
+        App.setRoot("pickReport");
+    }
 }

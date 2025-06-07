@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="269.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SelectReportController">
+    <children>
+
+        <ComboBox fx:id="yearComboBox" layoutX="147.0" layoutY="86.0" prefHeight="25.0" prefWidth="74.0" promptText="year" />
+        <ComboBox fx:id="monthComboBox" layoutX="244.0" layoutY="86.0" prefHeight="25.0" prefWidth="88.0" promptText="month" />
+
+        <Label layoutX="43.0" layoutY="135.0" />
+        <ComboBox fx:id="branchComboBox" layoutX="119.0" layoutY="131.0" prefHeight="25.0" prefWidth="236.0" promptText="Branch" />
+
+        <Button fx:id="getReportButton" layoutX="197.0" layoutY="173.0" onAction="#getReport" text="View report" />
+        <Button layoutX="41.0" layoutY="226.0" onAction="#goBack" text="Back" />
+        <Text layoutX="119.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Reports" wrappingWidth="249.53466796875">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Text>
+    </children>
+</AnchorPane>
