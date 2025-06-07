@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 //import org.hibernate.annotations.Table;
@@ -15,11 +16,11 @@ import java.util.List;
 @NoArgsConstructor()
 @Entity
 @Table(name = "restaurants")
-public class Restaurant implements Serializable {
+public class Restaurant extends BranchEnt implements Serializable {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "restaurant_id")
-    //why not String???
     public Long id;
     @NaturalId
     @Column(unique = true, nullable = false)
@@ -43,9 +44,6 @@ public class Restaurant implements Serializable {
     public List<RestaurantTable> tables;
 
     public long sales;
-    public Long getId() {
-        return id;
-    }
 
 
     public Long return_money(long amount_to_return)
@@ -121,6 +119,7 @@ public class Restaurant implements Serializable {
         this.tables = tables;
         this.sales = 0;
     }
+
     public Restaurant getRestaurant(int id){
         if (this.id.equals(id)){
             return this;
@@ -136,5 +135,9 @@ public class Restaurant implements Serializable {
         else{
             return null;
         }
+    }
+
+    public String getBranchName() {
+        return name;
     }
 }

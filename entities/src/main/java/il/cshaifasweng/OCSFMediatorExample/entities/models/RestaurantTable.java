@@ -18,7 +18,7 @@ public class RestaurantTable implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "branch_id", nullable = false)
-    private BranchEnt branch;
+    private Restaurant branch;
 
     @Column(name = "size", nullable = false)
     private Long size;

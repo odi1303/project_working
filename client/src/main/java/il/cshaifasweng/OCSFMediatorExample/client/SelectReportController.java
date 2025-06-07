@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.models.Restaurant;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,15 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.models.BranchEnt;
-
 public class SelectReportController {
 
     @FXML
     private Button getReportButton;
 
     @FXML
-    private ComboBox<BranchEnt> branchComboBox;
+    private ComboBox<Restaurant> branchComboBox;
 
     @FXML
     private ComboBox<Integer> yearComboBox;
@@ -28,10 +27,10 @@ public class SelectReportController {
     @FXML
     private ComboBox<String> monthComboBox;
 
-    // Static variables to store selected year and month
+    // Static variables to store the selected year and month
     private static int selectedYear;
     private static int selectedMonth;
-    private static int selectedBranchId;
+    private static Long selectedBranchId;
     private static String selectedBranchName;
 
     @FXML
@@ -43,25 +42,24 @@ public class SelectReportController {
         branchComboBox.setPromptText("Choose Branch");
 
         // Customize branchComboBox display format
-        branchComboBox.setCellFactory(lv -> new ListCell<BranchEnt>() {
-            @Override
-            protected void updateItem(BranchEnt item, boolean empty) {
+        branchComboBox.setCellFactory(lv -> new ListCell<Restaurant>() {
+            protected void updateItem(Restaurant item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : item.getId() + " - " + item.getBranchName());
             }
         });
-        branchComboBox.setButtonCell(new ListCell<BranchEnt>() {
+        branchComboBox.setButtonCell(new ListCell<Restaurant>() {
             @Override
-            protected void updateItem(BranchEnt item, boolean empty) {
+            protected void updateItem(Restaurant item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : item.getId() + " - " + item.getBranchName());
             }
         });
 
         // Populate the branchComboBox with only the branches the user has access to
-        List<BranchEnt> filteredBranches = SimpleClient.BranchList.stream()
+        List<Restaurant> filteredBranches = SimpleClient.BranchList.stream()
                 .filter(branch -> SimpleClient.userBranchesIdList.contains(branch.getId()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()).reversed();
 
 
         branchComboBox.setItems(FXCollections.observableArrayList(filteredBranches));
@@ -134,7 +132,7 @@ public class SelectReportController {
         return selectedMonth;
     }
 
-    public static int getSelectedBranchId() {
+    public static Long getSelectedBranchId() {
         return selectedBranchId;
     }
 

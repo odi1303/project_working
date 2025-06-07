@@ -12,7 +12,7 @@ public class BranchEnt implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "branch_name", nullable = false)
     private String branchName;
@@ -24,26 +24,6 @@ public class BranchEnt implements Serializable {
     private List<RestaurantTable> tables;
 
     public BranchEnt() {}
-
-    public BranchEnt(int id, String branchName) {
-        this.id = id;
-        this.branchName = branchName;
-    }
-
-    public BranchEnt(int id, String branchName, String location, String[] openingHours, List<RestaurantTable> tables) {
-        this.id = id;
-        this.branchName = branchName;
-        this.location = location;
-        this.tables = tables;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getBranchName() {
         return branchName;

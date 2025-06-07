@@ -16,7 +16,7 @@ public class BranchReportEnt implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)
-    private BranchEnt branch;
+    private Restaurant branch;
 
     @Column(name = "year", nullable = false)
     private int year;
@@ -53,7 +53,7 @@ public class BranchReportEnt implements Serializable {
 
     public BranchReportEnt() {}
 
-    public BranchReportEnt(BranchEnt branch, int year, int month, int failedOrders, double totalComplaintsRefund,
+    public BranchReportEnt(Restaurant branch, int year, int month, int failedOrders, double totalComplaintsRefund,
                            double totalOrdersIncome, int complaintsHandledAutomatically,
                            List<Integer> ordersPerDay, List<Integer> dinersPerDay, List<Integer> complaintsPerDay) {
         this.branch = branch;
@@ -76,11 +76,11 @@ public class BranchReportEnt implements Serializable {
         this.id = id;
     }
 
-    public BranchEnt getBranch() {
+    public Restaurant getBranch() {
         return branch;
     }
 
-    public void setBranch(BranchEnt branch) {
+    public void setBranch(Restaurant branch) {
         this.branch = branch;
     }
 

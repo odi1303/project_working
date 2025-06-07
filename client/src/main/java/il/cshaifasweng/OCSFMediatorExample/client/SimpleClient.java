@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.client.ocsf.ObservableSWRClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.GetBranchReportRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.*;
@@ -11,14 +10,14 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
 
 public class SimpleClient extends AbstractClient {
 	//private static SimpleClient client = null;
 	private static SimpleClient client;
-	public static List<BranchEnt> BranchList = new ArrayList<>();
-	public static List<Integer> userBranchesIdList = new ArrayList<>();
+	public static List<Restaurant> BranchList = new ArrayList<>();
+	public static List<Long> userBranchesIdList = new ArrayList<>();
 
     /*static {
         try {
@@ -126,7 +125,7 @@ public class SimpleClient extends AbstractClient {
 	}
 
 
-	public void sendGetBranchReport(int year, int month, int branchId) throws IOException {
+	public void sendGetBranchReport(int year, int month, Long branchId) throws IOException {
 		GetBranchReportRequest request = new GetBranchReportRequest(branchId, year, month);
 		sendToServer(request);
 	}
