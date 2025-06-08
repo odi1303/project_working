@@ -5,10 +5,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class CreditInformation implements Serializable {
-   /* @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;*/
     //@Column(name = "Card number")
     private String cardNumber;
     //@Column(name = "Expiration date")
@@ -62,5 +58,4 @@ public class CreditInformation implements Serializable {
     public boolean isCvvValid() {
         return cvv != null && cvv.matches("\\d{3}"); // 3-digit CVV
     }
-
 }

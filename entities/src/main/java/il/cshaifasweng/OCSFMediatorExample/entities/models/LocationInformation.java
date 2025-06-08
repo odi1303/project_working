@@ -6,11 +6,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class LocationInformation implements Serializable {
-    /*@Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;*/
-    //@Column(name= "City")
     public String city;
     //@Column(name = "Street")
     public String street;
@@ -29,13 +24,7 @@ public class LocationInformation implements Serializable {
                 && houseNumber != null && !houseNumber.trim().isEmpty();
     }
 
-   /* public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }*/
     public void setCity(String city) {
         this.city = city;
     }
@@ -54,6 +43,4 @@ public class LocationInformation implements Serializable {
     public String getHouseNumber() {
         return houseNumber;
     }
-
-
 }
