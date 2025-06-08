@@ -127,7 +127,7 @@ public class ManualDatabase {
         session.saveOrUpdate(customerServiceWorker);
 
 
-        String foodImageUrl = "client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
+        String foodImageUrl = "/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
 
         MenuItem pizza = new MenuItem(
                 "Pizza",
