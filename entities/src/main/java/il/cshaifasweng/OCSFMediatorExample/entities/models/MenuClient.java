@@ -32,14 +32,14 @@ public class MenuClient implements Serializable {
     public MenuClient(MenuClient menuClient) {
         this.menuName = menuClient.menuName;
         this.menu = new ArrayList<>();
-        /*for (MenuItem item : menuClient.menu) {
+        for (MenuItem item : menuClient.menu) {
             this.menu.add(MenuItem.deepCopyMenuItem(item));
 //            if (item.getPersonalPreferences() != null){
 //                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
 //            }else{
 //                this.menu.add(MenuItem.deepCopyMenuItem(item));
 //            }
-        }*/
+        }
     }
     public MenuClient(MenuServer menuClient) {
         this.menuName = menuClient.getMenuName();

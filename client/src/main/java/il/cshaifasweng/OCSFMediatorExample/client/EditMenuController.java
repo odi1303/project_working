@@ -237,7 +237,7 @@ public class EditMenuController {
         this.menu = menu;
         if (iscopy){
             lastSavedMenu = new MenuClient();
-        }else{
+        } else {
             lastSavedMenu = new MenuClient(menu);
         }
         menuName.setText(menu.getMenuName());
