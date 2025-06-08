@@ -402,6 +402,7 @@ public class ManualDatabase {
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             session.getTransaction().rollback();
+            throw exception;
         }
         System.out.println("b");
         /*try{

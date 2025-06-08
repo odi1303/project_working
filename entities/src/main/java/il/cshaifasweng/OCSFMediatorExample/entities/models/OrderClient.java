@@ -19,15 +19,9 @@ public class OrderClient implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
     private boolean isDelivery;
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_information_id")
-    */private LocationInformation locationInformation;
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "personal_information_id")
-    */private PersonalInformation personalInformation;
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credit_information_id")
-    */private CreditInformation creditInformation;
+    private LocationInformation locationInformation;
+    private PersonalInformation personalInformation;
+    private CreditInformation creditInformation;
     @Column(name = "order time")
     private Date orderTime;// the time the order was placed
     @Column
