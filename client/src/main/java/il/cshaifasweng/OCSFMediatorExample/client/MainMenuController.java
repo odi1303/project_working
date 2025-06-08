@@ -30,7 +30,7 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-    @Subscribe // WTF??
+    @Subscribe
     public void onDestroy(Object _o) {
         EventBus.getDefault().unregister(this);
     }

@@ -578,21 +578,7 @@ class ComplaintsBL {
         session.flush();
         return retval;
     }
-/*
-    public static List<DeliveryComplain> getDeliveryComplaints(Session session) {
-        return getAllComplains(session).stream()
-                .filter(c -> c instanceof DeliveryComplain)
-                .map(c -> (DeliveryComplain) c)
-                .collect(Collectors.toList());
-    }
 
-    public static List<RestaurantComplain> getRestaurantComplains(Session session) {
-        return getAllComplains(session).stream()
-                .filter(c -> c instanceof RestaurantComplain)
-                .map(c -> (RestaurantComplain) c)
-                .collect(Collectors.toList());
-    }
-*/
     public static void createDeliveryComplain(Session session, Long userId, Long deliveryId, String description) {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
@@ -612,7 +598,6 @@ class ComplaintsBL {
         Delivery delivery = optionalDelivery.get();
         if (!session.getTransaction().isActive())
             session.beginTransaction();
-        //session.save(new DeliveryComplain(description, new Date(), user, delivery));
         session.getTransaction().commit();
     }
 
@@ -620,16 +605,10 @@ class ComplaintsBL {
     public static void createDeliveryComplain(Session session,DeliveryComplain complain) {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
-        //Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
         session.getTransaction().commit();
         if (!session.getTransaction().isActive())
             session.beginTransaction();
-        //Optional<Delivery> optionalDelivery = session.byId(Delivery.class).loadOptional(deliveryId);
         session.getTransaction().commit();
-        /*if (optionalDelivery.isEmpty()) {
-            return;
-        }
-        Delivery delivery = optionalDelivery.get();*/
         session.beginTransaction();
         session.save(complain);
         session.getTransaction().commit();
@@ -660,7 +639,6 @@ class ComplaintsBL {
     }
 
     public static void closeComplain(Session session, Long complainId) {
-        //Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
         if (!session.getTransaction().isActive())
             session.beginTransaction();
         Optional<Complaint> maybeComplain = session.byId(Complaint.class).loadOptional(complainId);
@@ -676,7 +654,6 @@ class ComplaintsBL {
     }
 
     public static void compensateComplain(Session session, Long complainId, Long compensation) {
-        //Optional<Complain> maybeComplain = complainsRepository.findById(complainId);
         if (!session.getTransaction().isActive())
             session.beginTransaction();
         Optional<Complain> maybeComplain = session.byId(Complain.class).loadOptional(complainId);
@@ -688,7 +665,6 @@ class ComplaintsBL {
         complain.setAnsweredAt(new Date());
         complain.setCompensation(compensation);
 
-        //complainsRepository.save(complain);
         session.save(complain);
         session.getTransaction().commit();
     }
@@ -709,15 +685,6 @@ class AdminsBL {
             }
         });
         session.getTransaction().commit();
-
-/*Optional<User> user = usersRepository.findById(userId);
-
-        if (user.map(User::isAdmin).orElse(false)) {
-            return;
-        }
-
-        menuRepository.deleteById(menuId);*/
-
     }
 
 
@@ -725,11 +692,7 @@ class AdminsBL {
         if (!session.getTransaction().isActive())
             session.beginTransaction();
         Optional<User> maybeUser = session.byId(User.class).loadOptional(userId);
-        /*Optional<User> user = usersRepository.findById(userId);
 
-        if (user.map(User::isAdmin).orElse(false)) {
-            return;
-        }*/
         maybeUser.ifPresent(user -> {
             if (user.isAdmin()) {
                 Optional<Request> maybeRequest = session.byId(Request.class).loadOptional(requestId);//requestsRepository.findById(requestId);
@@ -738,12 +701,9 @@ class AdminsBL {
                         case DeleteRequest deleteRequest -> session.createQuery("DELETE FROM MenuItem WHERE id = :id")
                                 .setParameter("id", deleteRequest.getMenuItem())
                                 .executeUpdate();
-                        //menuRepository.deleteById(deleteRequest.getMenuItem());
                         case InsertRequest insertRequest ->
                                 session.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
-                                //menuRepository.save(new MenuItem(insertRequest.getMenuItemDescription(), insertRequest.getMenuItemPrice()));
                         case UpdateRequest updateRequest ->
-                                //menuRepository.findById(updateRequest.getMenuItem())
                                 session.byId(MenuItem.class).loadOptional(updateRequest.getMenuItem())
                                         .ifPresent(menu -> {
                                     if (updateRequest.getMenuItemPrice() != null) {

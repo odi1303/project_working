@@ -69,11 +69,7 @@ public class SimpleServer extends AbstractServer{
 			} else {
 				System.out.println("Client " + client.getId() + " already in SubscribersList.");
 			}
-			//db.getBasicUsers().addUser(new User("pp", "pp", UserType.Admin));
-			/*for (var o : db_.getAll(new User())) {
-				System.out.println(o.toString());
-			}
-			System.out.println("supposedly added into db");*/
+
 		}
 		else if (msgString.startsWith("remove client")) {
 			if (!SubscribersList.isEmpty()) {
@@ -133,13 +129,6 @@ public class SimpleServer extends AbstractServer{
 		else if (msgString.contains("send all complaints")) {
 			System.out.println("got in");
 			List<Complaint> openComplaints =db_.getAllOpenComplaints();
-			/*System.out.println(db_);
-			List<Complaint> complaints = db_.getAll(Complaint.class);
-			for (Complaint complain : complaints) {
-				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
-					openComplaints.add(complain);
-				}
-			}*/
 			System.out.println("num of open complaints=" + openComplaints.size());
 			client.sendToClient(openComplaints);
 		}
@@ -166,13 +155,6 @@ public class SimpleServer extends AbstractServer{
 			System.out.println(complaint);
 			db_.saveOrUpdate(complaint);
 			List<Complaint> openComplaints = db_.getAllOpenComplaints();
-			/*System.out.println(db_);
-			List<Complaint> complaints = db_.getAll(Complaint.class);
-			for (Complaint complain : complaints) {
-				if (complain.isHandled() == false) { // Corrected the condition to find open complaints
-					openComplaints.add(complain);
-				}
-			}*/
 			sendToAllClients(openComplaints);
 
 		}
@@ -219,14 +201,6 @@ public class SimpleServer extends AbstractServer{
 
 			System.out.println("Delivery ID: " + id);
 			System.out.println("Email: " + email);
-			/*List<OrderClient> orders = db_.getAll(OrderClient.class);
-			System.out.println("num of open orders=" + orders.size());
-            for (OrderClient order : orders) {
-                if (order.getId() == (long) id && order.getPersonalInformation().getEmail().equals(email)) {
-                    client.sendToClient(order);
-					return;
-                }
-            }*/
 			String finalEmail = email;
 			Optional<OrderClient> maybeOrder = db_.getById(OrderClient.class, id.longValue()).filter(o -> o.getPersonalInformation().getEmail().equals(finalEmail));
 			client.sendToClient(maybeOrder.orElse(null));
@@ -310,7 +284,6 @@ public class SimpleServer extends AbstractServer{
                         }
                     });//deleting the object from database
 					t1.start();
-
 					db_.delete_object(reservation);
 				}
 			}
