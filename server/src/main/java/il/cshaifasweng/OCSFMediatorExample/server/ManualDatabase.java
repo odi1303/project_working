@@ -107,7 +107,7 @@ public class ManualDatabase {
     public void generateData() {
         session.beginTransaction();
 
-        String foodImageUrl = "file:/C:/Users/sharo/Documents/Kiran_workspace/software_enginiring/project_working/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
+        String foodImageUrl = "client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
 
         MenuItem pizza = new MenuItem(
                 "Pizza",
@@ -372,8 +372,26 @@ public class ManualDatabase {
         }
         session.save(r3);
 
+        User employee1 = new User("Alon", "emp123", UserType.Employee);
+        User employee2 = new User("Dana", "emp456", UserType.Employee);
+        User employee3 = new User("Esti", "emp901", UserType.Employee);
+        User chainManager = new User("Liri", "cm234", UserType.ChainManager);
+        User branchManager1 = new User("Dekel", "bm012", UserType.BranchManager);
+        User branchManager2 = new User("Sigal", "bm345", UserType.BranchManager);
+        User dietitian = new User("Karin", "diet789", UserType.Dietitian);
+        User customerServiceWorker = new User("Keren", "cs678", UserType.CustomerServiceWorker);
 
+        // Save users to the database
+        session.saveOrUpdate(employee1);
+        session.saveOrUpdate(employee2);
+        session.saveOrUpdate(employee3);
+        session.saveOrUpdate(chainManager);
+        session.saveOrUpdate(branchManager1);
+        session.saveOrUpdate(branchManager2);
+        session.saveOrUpdate(dietitian);
+        session.saveOrUpdate(customerServiceWorker);
         session.flush();
+
         session.getTransaction().commit();
     }
 
