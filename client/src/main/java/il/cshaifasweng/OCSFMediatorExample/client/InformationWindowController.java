@@ -24,10 +24,6 @@ public class InformationWindowController implements PopupController<String, Stri
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
-
 
     @FXML
     public void closeWindow() {

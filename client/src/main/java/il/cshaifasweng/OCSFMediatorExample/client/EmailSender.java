@@ -10,8 +10,8 @@ import javafx.fxml.FXML;
 import java.util.Properties;
 
 public class EmailSender {
-    final String senderEmail = "odifn567@gmail.com";  // Replace with your email
-    final String senderPassword = "xeco tdac fztn nuva";  // Replace with your app password
+    final String senderEmail = "odifn567@gmail.com";  // Replace with email
+    final String senderPassword = "xeco tdac fztn nuva";  // Replace with app password
 
     void send_email_respond(String recipient,String subject, String respond_text) {
         if (respond_text.isEmpty()) {

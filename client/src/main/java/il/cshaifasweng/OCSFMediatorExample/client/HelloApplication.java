@@ -16,15 +16,11 @@ public class HelloApplication extends Application {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -50,14 +46,12 @@ public class HelloApplication extends Application {
     public static void changeScene(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 629, 386);
-        // Use Platform.runLater to set the scene
         Platform.runLater(() -> stg.setScene(scene));
     }
 
     public static void setRoot(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 629, 386);
-        // Use Platform.runLater to set the scene
         Platform.runLater(() -> stg.setScene(scene));
     }
 

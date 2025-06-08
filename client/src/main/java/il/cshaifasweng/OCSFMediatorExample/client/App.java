@@ -147,7 +147,6 @@ public class App extends Application {
         synchronized (lock) {
             client.sendToServer(message);
         }
-
     }
 
     public static void main(String[] args) {

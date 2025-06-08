@@ -77,7 +77,7 @@ public class FileDeliveryComplaint {
         EventBus.getDefault().register(this);
         try {
             select_branch.accessibleTextProperty().set("Chose the relevant branch");
-            // Populate the ChoiceBox with options
+            // Populating the ChoiceBox with options
             select_branch.getItems().addAll("Kiryon", "Grand Kenyon");
         } catch (Exception e) {
             throw new RuntimeException();

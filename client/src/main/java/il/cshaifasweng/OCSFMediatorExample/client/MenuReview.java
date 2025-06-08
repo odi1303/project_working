@@ -17,15 +17,11 @@ public class MenuReview {
     public void initialize() {
         try {
             System.out.println("Initializing Secondary Controller");
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     CompactMenu compactMenu = (CompactMenu) App.menu;
 
@@ -47,11 +43,10 @@ public class MenuReview {
                 e.printStackTrace();
             }
         }
-        // Use Platform.runLater to update the statusLabel
+
         Platform.runLater(() -> {
             statusLabel.setText("loading " + choice);
         });
-//        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe
@@ -60,7 +55,6 @@ public class MenuReview {
             compactMenu = (CompactMenu) event;
             var list = FXCollections.observableList(compactMenu.dishes);
             System.out.println("the length of list is :" + list.size());
-            // Use Platform.runLater to update the MenuList items
             Platform.runLater(() -> {
                 MenuList.setItems(list);
             });

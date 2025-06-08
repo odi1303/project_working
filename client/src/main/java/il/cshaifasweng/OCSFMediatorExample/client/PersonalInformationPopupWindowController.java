@@ -23,15 +23,10 @@ public class PersonalInformationPopupWindowController implements PopupController
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     @FXML
     private void submit() {
@@ -49,9 +44,7 @@ public class PersonalInformationPopupWindowController implements PopupController
     }
 
     @Override
-    public void reInitialize(String input){
-
-    }
+    public void reInitialize(String input){}
 
     @Override
     public PersonalInformation getOutput(){

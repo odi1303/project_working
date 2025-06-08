@@ -19,7 +19,6 @@ public class DeletableDishSectionController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DishSectionInMenu.fxml"));
             Node dishNode = loader.load();
             dishSectionController = loader.getController(); // Properly access the controller
@@ -28,10 +27,6 @@ public class DeletableDishSectionController {
             e.printStackTrace();
         }
     }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     public void reinitialize(MenuController menuController) {
         setMainMenuController(menuController);

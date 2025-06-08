@@ -27,8 +27,6 @@ public class CancelReservationScreenController {
         try {
             EventBus.getDefault().register(this);
             App.sendMessageToServer("send all reservations");
-            //List<Reservation> reservations = HardcodedReservations.getSampleReservations();
-            // Use Platform.runLater to update ReservationListContainer
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +72,6 @@ public class CancelReservationScreenController {
     private void cancelReservation(Reservation reservation, Button button) {
         HBox hbox = (HBox) button.getParent();
         PopupDialogService popupDialogService = new PopupDialogService();
-        // Use Platform.runLater to handle popup and UI updates
         Platform.runLater(() -> {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to cancel the reservation?", (Stage) ReservationListContainer.getScene().getWindow());

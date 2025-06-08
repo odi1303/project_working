@@ -24,15 +24,11 @@ public class DishSectionInMenuController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     public void setDish(MenuItem dish) {
         this.dish = dish;

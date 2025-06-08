@@ -11,8 +11,6 @@ import il.cshaifasweng.OCSFMediatorExample.entities.models.PersonalInformation;
 
 public class ReservationCardController {
 
-
-
     @FXML
     private Button ReservationDetailsButton;
     @FXML
@@ -61,24 +59,15 @@ public class ReservationCardController {
     @FXML
     private Label CreditInformationCVVLabel;
 
-//    public void initialize() {
-//        List<Reservation> reservations = HardcodedReservations.getSampleReservations();
-//        setData(reservations.getFirst());
-//    }
-
 
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     public void setData(Reservation reservation) {
         this.reservation = reservation;
@@ -139,8 +128,4 @@ public class ReservationCardController {
         CreditInformationSection.setVisible(true);
         CreditInformationSection.setManaged(true);
     }
-
-//    public Reservation getData() {
-//        return reservation;
-//    }
 }
