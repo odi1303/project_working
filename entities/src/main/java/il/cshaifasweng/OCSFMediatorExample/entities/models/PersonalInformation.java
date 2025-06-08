@@ -6,10 +6,6 @@ import java.io.Serializable;
 @Embeddable
 public class PersonalInformation implements Serializable {
 
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-*/
     //@Column(name = "full name")
     public String fullName;
     //@Column(name = "phone number")
@@ -58,12 +54,4 @@ public class PersonalInformation implements Serializable {
     public boolean isEmailValid() {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"); // Email format
     }
-/*
-public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }*/
 }

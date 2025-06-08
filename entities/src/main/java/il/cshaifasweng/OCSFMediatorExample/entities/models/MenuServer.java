@@ -67,9 +67,6 @@ public class MenuServer implements Serializable {
     public void addDish(MenuItem dish) {
         menu.add(dish);
     }
-    //public void removeDish(DishClient dish) {
-//        menu.remove(dish);
-//    }
 
     public boolean removeDish(MenuItem dish) {
         if (menu.contains(dish)){
@@ -96,25 +93,10 @@ public class MenuServer implements Serializable {
 
     public List<String> getAllBranches() {
         return menu.stream().flatMap(m -> m.getAvailableBranches().stream()).distinct().toList();
-        /*Set<String> branchesSet = new HashSet<>(); // Using a Set to avoid duplicates
-
-        for (MenuItem dish : menu) {
-            branchesSet.addAll(dish.getAvailableBranches());
-        }
-
-        return new ArrayList<>(branchesSet); // Convert Set to List before returning*/
     }
 
     public List<String> getAllIngredients() {
         return menu.stream().flatMap(m -> m.getIngredients().stream()).distinct().toList();
-
-        /*Set<String> IngredientsSet = new HashSet<>(); // Using a Set to avoid duplicates
-
-        for (MenuItem dish : menu) {
-            IngredientsSet.addAll(dish.getIngredients());
-        }
-
-        return new ArrayList<>(IngredientsSet); // Convert Set to List before returning*/
     }
 
     @Override

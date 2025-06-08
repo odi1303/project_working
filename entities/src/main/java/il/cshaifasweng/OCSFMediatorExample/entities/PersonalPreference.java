@@ -11,7 +11,6 @@ public class PersonalPreference implements Serializable {
     private String kindOfBread;
 
     // Getters and Setters
-
     public String getLevelOfSpiciness() {
         return levelOfSpiciness;
     }

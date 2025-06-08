@@ -12,19 +12,6 @@ public class MenuClient implements Serializable {
     private ArrayList<MenuItem> menu;
     private String menuName;
 
-//    @FXML
-//    public void initialize() {
-//        try {
-////            EventBus.getDefault().register(this);
-//        } catch (Exception e) {
-//            throw new RuntimeException();
-//        }
-//    }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
-
     public MenuClient() {
         this.menu = new ArrayList<>();
         menuName = "";
@@ -34,24 +21,11 @@ public class MenuClient implements Serializable {
         this.menu = new ArrayList<>();
         for (MenuItem item : menuClient.menu) {
             this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            if (item.getPersonalPreferences() != null){
-//                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
-//            }else{
-//                this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            }
         }
     }
     public MenuClient(MenuServer menuClient) {
         this.menuName = menuClient.getMenuName();
         this.menu = menuClient.getMenu();
-        /*for (MenuItem item : menuClient.menu) {
-            this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            if (item.getPersonalPreferences() != null){
-//                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
-//            }else{
-//                this.menu.add(MenuItem.deepCopyMenuItem(item));
-//            }
-        }*/
     }
 
     public MenuClient(ArrayList<MenuItem> dishes) {
@@ -90,9 +64,6 @@ public class MenuClient implements Serializable {
     public void addDish(MenuItem dish) {
         menu.add(dish);
     }
-    //public void removeDish(DishClient dish) {
-//        menu.remove(dish);
-//    }
 
     public boolean removeDish(MenuItem dish) {
         if (menu.contains(dish)){

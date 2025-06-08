@@ -11,8 +11,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "menu_items")
 public class MenuItem implements Serializable
-// when trying to send objects over a channel, make sure that they are serializable!!4
-// otherwise, sending them over a channel will silently fail, making it a pain in the ass to debug
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +38,6 @@ public class MenuItem implements Serializable
     //@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(fetch = FetchType.LAZY)
     public Restaurant restaurant;
-/*
-    @Column(name = "restaurant_id")
-    public Long restaurantId;*/
 
     @Column(name = "available_for_takeout")
     public boolean availableForTakeout;

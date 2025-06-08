@@ -8,9 +8,6 @@ public class CompactMenu implements Serializable {
     public ArrayList<String> dishes;
 
     public CompactMenu(List<String> dishes) {
-
-        //EventBus.getDefault().register(this);
-
         this.dishes = new ArrayList<>(dishes);
     }
 }

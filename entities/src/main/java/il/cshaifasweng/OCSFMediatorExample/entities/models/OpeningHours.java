@@ -22,6 +22,4 @@ public class OpeningHours implements Serializable {
         startHour = StartHour;
         endHour = EndHour;
     }
-   /* @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public Restaurant restaurant;*/
 }

@@ -18,9 +18,6 @@ public class OrderItem implements Serializable {
 
     private int quantity;
 
-    /*@ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderClient order;*/
     public OrderItem(){
 
     }
@@ -44,14 +41,6 @@ public class OrderItem implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    /*public OrderClient getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderClient order) {
-        this.order = order;
-    }*/
 
     public Long getId() {
         return id;

@@ -81,6 +81,4 @@ public class ReservationDetails implements Serializable {
     private boolean isNonEmpty(String value) {
         return value != null && !value.trim().isEmpty();
     }
-
-
 }
