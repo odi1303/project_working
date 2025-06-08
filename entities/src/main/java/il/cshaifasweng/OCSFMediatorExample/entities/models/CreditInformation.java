@@ -3,18 +3,17 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "CreditInformation")
+@Embeddable
 public class CreditInformation implements Serializable {
-    @Id
+   /* @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    @Column(name = "Card number")
+    public Long id;*/
+    //@Column(name = "Card number")
     private String cardNumber;
-    @Column(name = "Expiration date")
+    //@Column(name = "Expiration date")
     private String expirationDate;
-    @Column(name = "cvv")
+    //@Column(name = "cvv")
     private String cvv;
     public CreditInformation() {}
 

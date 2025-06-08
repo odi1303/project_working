@@ -4,18 +4,17 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "LocationInformation")
+@Embeddable
 public class LocationInformation implements Serializable {
-    @Id
+    /*@Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    @Column(name= "City")
+    public Long id;*/
+    //@Column(name= "City")
     public String city;
-    @Column(name = "Street")
+    //@Column(name = "Street")
     public String street;
-    @Column(name = "House number")
+    //@Column(name = "House number")
     public String houseNumber;
 
     public LocationInformation() {}
@@ -30,13 +29,13 @@ public class LocationInformation implements Serializable {
                 && houseNumber != null && !houseNumber.trim().isEmpty();
     }
 
-    public void setId(Long id) {
+   /* public void setId(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
-    }
+    }*/
     public void setCity(String city) {
         this.city = city;
     }

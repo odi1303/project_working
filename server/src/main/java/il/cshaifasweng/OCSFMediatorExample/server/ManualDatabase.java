@@ -235,16 +235,11 @@ public class ManualDatabase {
         );
         session.saveOrUpdate(mixedPlatter);
         LocationInformation location1 = new LocationInformation("New York", "Broadway", "123");
-        session.saveOrUpdate(location1);
         LocationInformation location2 = new LocationInformation("Los Angeles", "Sunset Boulevard", "456");
-        session.saveOrUpdate(location2);
         LocationInformation location3 = new LocationInformation("Chicago", "Michigan Avenue", "789");
-        session.saveOrUpdate(location3);
 
         PersonalInformation personalInfo = new PersonalInformation("John Doe", "1234567890", "john@example.com");
-        session.saveOrUpdate(personalInfo);
         CreditInformation creditInfo = new CreditInformation("1234567890123456", "12/27", "123");
-        session.saveOrUpdate(creditInfo);
         OrderClient order1 = new OrderClient(List.of(
                 new OrderItem(pizza, 2),
                 new OrderItem(burger, 1)
@@ -272,11 +267,9 @@ public class ManualDatabase {
         PersonalInformation personalInformation1 = new PersonalInformation(
                 "Alice Johnson", "0521234567", "alice.johnson@example.com"
         );
-        session.saveOrUpdate(personalInformation1);
         CreditInformation creditInformation1 = new CreditInformation(
                 "1234567812345678", "12/26", "123"
         );
-        session.saveOrUpdate(creditInformation1);
         Reservation reservation1 = new Reservation(reservationDetails1, personalInformation1, creditInformation1);
         session.saveOrUpdate(reservation1);
         ReservationDetails reservationDetails2 = new ReservationDetails(
@@ -286,11 +279,9 @@ public class ManualDatabase {
         PersonalInformation personalInformation2 = new PersonalInformation(
                 "Bob Smith", "0549876543", "bob.smith@example.com"
         );
-        session.saveOrUpdate(personalInformation2);
         CreditInformation creditInformation2 = new CreditInformation(
                 "8765432187654321", "05/27", "456"
         );
-        session.saveOrUpdate(creditInformation2);
         Reservation reservation2 = new Reservation(reservationDetails2, personalInformation2, creditInformation2);
         session.saveOrUpdate(reservation2);
         ReservationDetails reservationDetails3 = new ReservationDetails(
@@ -300,11 +291,9 @@ public class ManualDatabase {
         PersonalInformation personalInformation3 = new PersonalInformation(
                 "Charlie Brown", "0535556677", "charlie.brown@example.com"
         );
-        session.saveOrUpdate(personalInformation3);
         CreditInformation creditInformation3 = new CreditInformation(
                 "4567891245678912", "08/28", "789"
         );
-        session.saveOrUpdate(creditInformation3);
         Reservation reservation3 = new Reservation(reservationDetails3, personalInformation3, creditInformation3);
         session.saveOrUpdate(reservation3);
 
@@ -336,9 +325,9 @@ public class ManualDatabase {
         OpeningHours wed = new OpeningHours(10L, 22L), thu = new OpeningHours(10L, 22L), fri = new OpeningHours(10L, 22L), sat = new OpeningHours(10L, 22L);
 
 // Create sample tables
-        RestaurantTable table1 = new RestaurantTable(2L, true, null); // Table 1 with 4 seats
-        RestaurantTable table2 = new RestaurantTable(2L, true, null); // Table 2 with 6 seats
-        RestaurantTable table3 = new RestaurantTable(2L, true, null); // Table 3 with 2 seats
+        RestaurantTable table1 = new RestaurantTable(2L, true, new ArrayList<>()); // Table 1 with 4 seats
+        RestaurantTable table2 = new RestaurantTable(2L, true, new ArrayList<>()); // Table 2 with 6 seats
+        RestaurantTable table3 = new RestaurantTable(2L, true, new ArrayList<>()); // Table 3 with 2 seats
 
 
         List<RestaurantTable> tables1 = createTablesList();
@@ -408,26 +397,14 @@ public class ManualDatabase {
         System.out.println("a");
 
         try {
-            if (o instanceof OrderClient){
-                session.saveOrUpdate(((OrderClient) o).getCreditInformation());
-                session.saveOrUpdate(((OrderClient) o).getLocationInformation());
-                session.saveOrUpdate(((OrderClient) o).getPersonalInformation());
-            }
             session.saveOrUpdate(o);
-        }
-        catch (Exception exception) {
+            session.getTransaction().commit();
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
-            session.merge(o);
-            /*Complaint existing = session.get(Complaint.class, ((Complaint) o).getId());
-            if (existing == null) {
-                session.save(o);
-            } else {
-                session.merge(o);// or manually update the fields
-            }*/
+            session.getTransaction().rollback();
         }
         System.out.println("b");
-        try{
-            session.getTransaction().commit();
+        /*try{
         } catch (Exception e) {
             e.printStackTrace();
             if (session.getTransaction().isActive()) {
@@ -444,7 +421,7 @@ public class ManualDatabase {
             }
         }  catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
         System.out.println("Finished saving " + o.getClass().getSimpleName());
     }
 
@@ -490,12 +467,17 @@ public class ManualDatabase {
     public ClosingTimes getClosingTimes(String branch, LocalDate date) {
         return RestaurantsBL.getClosingTimes(session, branch, date);
     }
+    public boolean attemptReservation(Reservation reservation) {
+        return RestaurantsBL.attemptReservation(session, reservation);
+    }
     public boolean canReserve(ReservationDetails reservation_details, int hours_offset, int minutes_offset) {
         String branch = reservation_details.getBranch();
         boolean inside = reservation_details.isInside();
         int ppl = reservation_details.getGuestNumber();
         var start = reservation_details.getStartDateTime().plusHours(hours_offset).plusMinutes(minutes_offset);
+        System.out.println(branch + " " + inside + " " + ppl + " " + start);
         var tables = RestaurantsBL.getAvailableTables(session, branch, inside,start,start.plusHours(1).plusMinutes(30)).mapToInt(RestaurantTable::getSize).sorted().toArray();
+        System.out.println("Available tables: " + Arrays.toString(tables));
         return RestaurantsBL.optimal_allocation(tables, ppl).isPresent();
     }
     public List<String> getAllIngredients() {
@@ -969,7 +951,48 @@ class RestaurantsBL {
         }
         return retval;
     }
-
+    public static boolean attemptReservation(Session session, Reservation reservation) {
+        var reservation_details = reservation.getReservationDetails();
+        String branch = reservation_details.getBranch();
+        boolean inside = reservation_details.isInside();
+        int ppl = reservation_details.getGuestNumber();
+        var start = reservation_details.getStartDateTime();
+        System.out.println(branch + " " + inside + " " + ppl + " " + start);
+        var tables = getAvailableTables(session, branch, inside,start,start.plusHours(1).plusMinutes(30)).toList();
+        System.out.println("Available tables: " + tables.size());
+        var allocation = optimal_allocation(tables.stream().mapToInt(RestaurantTable::getSize).sorted().toArray(), ppl);
+        System.out.println("Attempted allocation: " + allocation);
+        try {
+            var table_counts = allocation.orElseThrow();
+            var ordered_tables = new ArrayList<RestaurantTable>();
+            tables.stream().filter(t -> t.getSize() == 2).limit(table_counts[0]).forEach(ordered_tables::add);
+            tables.stream().filter(t -> t.getSize() == 3).limit(table_counts[1]).forEach(ordered_tables::add);
+            tables.stream().filter(t -> t.getSize() == 4).limit(table_counts[2]).forEach(ordered_tables::add);
+            session.beginTransaction();
+            System.out.println("began transaction");
+            var to = new TableOrder(start, start.plusHours(1).plusMinutes(30), null, session.byNaturalId(Restaurant.class).using("name", branch).load(),ordered_tables);
+            session.save(to);
+            System.out.println("saved table order");
+            ordered_tables.forEach(
+                    t -> {
+                        t.getTableOrders().add(to);
+                        session.saveOrUpdate(t);
+                    }
+            );
+            System.out.println("saved tables");
+            session.save(reservation);
+            System.out.println("saved reservation");
+            session.getTransaction().commit();
+            //session.flush();
+        } catch (NoSuchElementException e) {
+            return false;
+        } catch (RuntimeException e) {
+            session.getTransaction().rollback();
+            System.out.println(e.getMessage());
+            throw (e);
+        }
+        return true;
+    }
     static Optional<int[]> optimal_allocation(int[] tables, int ppl) {
         int total_tables = tables.length;
         int upper = ppl + 4;

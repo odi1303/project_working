@@ -29,7 +29,7 @@ public class TableOrder implements Serializable {
     @Column(name="active")
     public LocalDateTime active;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
     public User allocator;
 
     @ManyToMany(cascade = CascadeType.ALL)

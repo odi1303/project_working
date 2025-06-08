@@ -424,8 +424,7 @@ public class SimpleServer extends AbstractServer{
 
 			else if (payload instanceof BookReservationRequest request) {
 				Reservation reservation = request.getReservation();
-
-				boolean bookedSuccessfully = false;
+				boolean bookedSuccessfully = db_.attemptReservation(reservation);
 
 				Message responseMessage = new Message(
 						message.getKey(),
@@ -439,6 +438,7 @@ public class SimpleServer extends AbstractServer{
 			else if (payload instanceof CanBeMadeInOneHourRequest request) {
 				// Done
 				ReservationDetails reservation_details = request.getReservationDetails();
+				System.out.println("hello! " +reservation_details);
 				boolean canBeMade =
 						db_.canReserve(reservation_details,0,0)  ||
 						db_.canReserve(reservation_details,0,15) ||

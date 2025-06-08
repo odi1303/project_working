@@ -1,25 +1,20 @@
 package il.cshaifasweng.OCSFMediatorExample.entities.models;
-import jakarta.persistence.Entity; // Or javax.persistence.Entity depending on your JPA version
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 
-@Entity
-@Table(name = "PersonalInformation")
+@Embeddable
 public class PersonalInformation implements Serializable {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "full name")
+*/
+    //@Column(name = "full name")
     public String fullName;
-    @Column(name = "phone number")
+    //@Column(name = "phone number")
     public String phoneNumber;
-    @Column(name = "email")
+    //@Column(name = "email")
     public String email;
     public PersonalInformation() {}
 
@@ -63,12 +58,12 @@ public class PersonalInformation implements Serializable {
     public boolean isEmailValid() {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"); // Email format
     }
-
+/*
 public void setId(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
-    }
+    }*/
 }

@@ -155,7 +155,7 @@ public class TableOrderScreenController {
         String openingTime = getOpenTime();
         String closingTime = getClosingTime();
         String currentTime = getCurrentTime();
-
+        System.out.println("hello " + openingTime + " " + closingTime);
         final String baseTimeForReservations;
         if (LocalDate.now().equals(reservationDate.getValue())){
             baseTimeForReservations = convertTimeToIntMinutes(currentTime) > convertTimeToIntMinutes(openingTime) ? currentTime : openingTime;
@@ -405,7 +405,7 @@ public class TableOrderScreenController {
         try {
             Boolean result = RequestManager.getInstance().sendAndWait(
                     new BookReservationRequest(fullReservation),
-                    5000,
+                    7000,
                     BookReservationRequest.class,
                     Boolean.class
             );

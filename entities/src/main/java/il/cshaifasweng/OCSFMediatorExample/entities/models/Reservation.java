@@ -11,14 +11,14 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private  ReservationDetails reservationDetails;
-    @JoinColumn
-    @ManyToOne
+    /*@JoinColumn
+    @ManyToOne*/
     private PersonalInformation personalInformation;
-    @ManyToOne
-    @JoinColumn(name = "credit_information_id")
+    /*@ManyToOne
+    @JoinColumn(name = "credit_information_id")*/
     private CreditInformation creditInformation;
     public Reservation(ReservationDetails reservationDetails, PersonalInformation personalInformation, CreditInformation creditInformation) {
         this.reservationDetails = reservationDetails;
