@@ -30,8 +30,6 @@ public class ChooseMenuController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
-//            List<MenuClient> menuList = MenuFactory.getMenus();
             @SuppressWarnings("unchecked")
             List<MenuClient> menuList = (List<MenuClient>) RequestManager.getInstance().sendAndWait(
                     "get all menus",
@@ -51,9 +49,6 @@ public class ChooseMenuController {
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     public void setCreateCopy(boolean createCopy) {
         isCreateCopy = createCopy;
@@ -139,10 +134,7 @@ public class ChooseMenuController {
             throw new RuntimeException(e);
         }
     }
-    // Placeholder, should be at server
-    //private MenuClient createCopy(MenuClient menu) {
-//        return menu;
-//    }
+
     private boolean sendSubmitionRequestToNetworkManager(MenuClient menu) {
         try {
             Boolean result = RequestManager.getInstance().sendAndWait(
@@ -160,7 +152,6 @@ public class ChooseMenuController {
 
     private void goToEditMenu(MenuClient menu) {
         // Use Platform.runLater to handle scene navigation
-
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("EditMenu.fxml"));
                 Parent root = loader.load();
@@ -175,7 +166,6 @@ public class ChooseMenuController {
 
     @FXML
     private void goToHomePage() throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");

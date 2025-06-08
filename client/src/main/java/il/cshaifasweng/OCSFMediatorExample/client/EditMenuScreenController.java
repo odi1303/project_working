@@ -22,10 +22,6 @@ public class EditMenuScreenController {
         }
     }
 
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
-
     @FXML
     private void createNewMenu(ActionEvent event) {
         // Use Platform.runLater to handle scene navigation
@@ -95,7 +91,6 @@ public class EditMenuScreenController {
 
     @FXML
     private void goToHomePage(ActionEvent event) throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");

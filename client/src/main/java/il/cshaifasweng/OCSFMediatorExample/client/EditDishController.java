@@ -56,7 +56,6 @@ public class EditDishController {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
             // Ensure initial positioning of buttons
             editDishPane.widthProperty().addListener((obs, oldVal, newVal) -> positionButtons());
             editDishPane.heightProperty().addListener((obs, oldVal, newVal) -> positionButtons());
@@ -64,10 +63,6 @@ public class EditDishController {
             throw new RuntimeException();
         }
     }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     private void positionButtons() {
         double paneWidth = editDishPane.getWidth();
@@ -160,7 +155,6 @@ public class EditDishController {
     }
 
     private void initializeAvailableBranches(List<String> branches) {
-        // Use Platform.runLater to update the availableBranches VBox
         Platform.runLater(() -> {
             availableBranches.getChildren().clear();
             if (branches != null) {
@@ -173,7 +167,6 @@ public class EditDishController {
     }
 
     private void initializeIngredients(List<String> ingredientsList) {
-        // Use Platform.runLater to update the ingredients VBox
         Platform.runLater(() -> {
             ingredients.getChildren().clear();
             if (ingredientsList != null) {

@@ -94,7 +94,7 @@ public class SelectReportController {
     }
 
 
-    // Show months up to current month (if this year was choosen
+    // Show months up to the current month (if this year was choosen
     private void updateMonthComboBox() {
         int currentYear = LocalDate.now().getYear();
         int currentMonth = LocalDate.now().getMonthValue();

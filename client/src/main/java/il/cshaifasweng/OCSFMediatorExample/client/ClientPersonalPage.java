@@ -43,7 +43,6 @@ public class ClientPersonalPage {
 
     @FXML
     void home_page(MouseEvent event) throws IOException {
-        // Use Platform.runLater to handle scene navigation
         Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");

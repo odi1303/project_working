@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.CanBeMadeInSameDateRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.SaveMenuChangesRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.clientRequests.SaveNewMenuRequest;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.MenuClient;
@@ -84,8 +83,6 @@ public class EditMenuController {
             FXMLLoader changeBranchesLoader = new FXMLLoader(getClass().getResource("ChangeBranches.fxml"));
             Node changeBranchesNode = changeBranchesLoader.load();
             changeBranchesController = changeBranchesLoader.getController();
-            // Use Platform.runLater to update ChangeBranchesContainer
-//            Platform.runLater(() -> {
             ChangeBranchesScrollPaneContainer.setVisible(false);
             ChangeBranchesScrollPaneContainer.setManaged(false);
             ChangeBranchesContainer.getChildren().clear();
@@ -100,13 +97,10 @@ public class EditMenuController {
             FXMLLoader changeIngredientsLoader = new FXMLLoader(getClass().getResource("ChangeIngredients.fxml"));
             Node changeIngredientsNode = changeIngredientsLoader.load();
             changeIngredientsController = changeIngredientsLoader.getController();
-            // Use Platform.runLater to update ChangeIngredientsContainer
-//            Platform.runLater(() -> {
             ChangeIngredientsScrollPaneContainer.setVisible(false);
             ChangeIngredientsScrollPaneContainer.setManaged(false);
             ChangeIngredientsContainer.getChildren().clear();
             ChangeIngredientsContainer.getChildren().add(changeIngredientsNode);
-//            });
             changeIngredientsController.getSubmittedIngredients().addListener((ListChangeListener<String>) change -> {
                 handleSubmittedIngredients();
             });
@@ -121,67 +115,43 @@ public class EditMenuController {
     }
 
     private void hideChangeBranches() {
-        // Use Platform.runLater to update visibility
-//        Platform.runLater(() -> {
             ChangeBranchesScrollPaneContainer.setVisible(false);
             ChangeBranchesScrollPaneContainer.setManaged(false);
-//        });
     }
 
     private void changeBranches() {
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
             changeBranchesController.checkBranches(editDishController.getDish().getAvailableBranches());
             ChangeBranchesScrollPaneContainer.setVisible(true);
             ChangeBranchesScrollPaneContainer.setManaged(true);
-//        });
     }
 
     private void handelSubmittedBranches() {
         List<String> submittedBranches = changeBranchesController.getSubmittedBranches();
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
             editDishController.updateBranches(submittedBranches);
             ChangeBranchesScrollPaneContainer.setVisible(false);
             ChangeBranchesScrollPaneContainer.setManaged(false);
-//        });
     }
 
     private void hideChangeIngredients() {
-        // Use Platform.runLater to update visibility
-//        Platform.runLater(() -> {
             ChangeIngredientsScrollPaneContainer.setVisible(false);
             ChangeIngredientsScrollPaneContainer.setManaged(false);
-//        });
     }
 
     private void changeIngredients() {
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
             changeIngredientsController.checkIngredients(editDishController.getDish().getIngredients());
             ChangeIngredientsScrollPaneContainer.setVisible(true);
             ChangeIngredientsScrollPaneContainer.setManaged(true);
-//        });
     }
 
     private void handleSubmittedIngredients() {
         List<String> submittedIngredients = changeIngredientsController.getSubmittedIngredients();
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
             editDishController.updateIngredients(submittedIngredients);
             ChangeIngredientsScrollPaneContainer.setVisible(false);
             ChangeIngredientsScrollPaneContainer.setManaged(false);
-//        });
     }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     public void deleteDishPressed(MenuItem dish) {
         PopupDialogService popupDialogService = new PopupDialogService();
-        // Use Platform.runLater to handle popup and UI updates
-//        Platform.runLater(() -> {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to delete the dish?", (Stage) controlSection.getScene().getWindow());
                 if (isConfirmed) {
@@ -191,7 +161,6 @@ public class EditMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        });
     }
 
     public void EditDishPressed(MenuItem dish) {
@@ -200,8 +169,6 @@ public class EditMenuController {
 
     private void handleEditDishIsSubmittedChange(boolean oldValue, boolean newValue) {
         if (newValue && (!oldValue)) {
-            // Use Platform.runLater to update UI
-//            Platform.runLater(() -> {
                 editDishContainer.setVisible(false);
                 editDishContainer.setManaged(false);
                 if (!editDishController.isEdit()) {
@@ -219,25 +186,21 @@ public class EditMenuController {
                     menu.removeDish(editDishController.getOriginalDish());
                     addDishToMenu(editDishController.getDish());
                 }
-//            });
         }
     }
 
     public void setMenu(MenuClient menu) {
         this.menu = menu;
         lastSavedMenu = new MenuClient(menu);
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
         menuName.setText(menu.getMenuName());
         menuController.setMenu(menu);
-//        });
     }
 
     public void setMenu(MenuClient menu, boolean iscopy){
         this.menu = menu;
         if (iscopy){
             lastSavedMenu = new MenuClient();
-        }else{
+        } else {
             lastSavedMenu = new MenuClient(menu);
         }
         menuName.setText(menu.getMenuName());
@@ -246,18 +209,10 @@ public class EditMenuController {
 
     @FXML
     private void addNewDish() {
-        // Use Platform.runLater to update UI
-//        Platform.runLater(() -> {
             editDishController.setDish(new MenuItem());
             editDishController.setEdit(false);
             editDishContainer.setVisible(true);
             editDishContainer.setManaged(true);
-//        });
-    }
-
-    @FXML
-    private void addDishFromDatabase() {
-        // Placeholder method; no UI updates currently
     }
 
     private void EditDish(MenuItem dish) {
@@ -271,8 +226,6 @@ public class EditMenuController {
     @FXML
     private void saveChanges() {
         PopupDialogService popupDialogService = new PopupDialogService();
-        // Use Platform.runLater to handle popup and navigation
-//        Platform.runLater(() -> {
             try {
                 boolean isConfirmed = popupDialogService.openPopup("ConfirmationWindow.fxml", "are you sure you want to save the changes?", (Stage) controlSection.getScene().getWindow());
                 if (isConfirmed) {
@@ -307,7 +260,6 @@ public class EditMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        });
     }
     private boolean requestToSaveMenuChanges(MenuClient oldMenu, MenuClient newMenu) {
         try {
@@ -350,13 +302,10 @@ public class EditMenuController {
 
     @FXML
     public void goToHomePage() throws IOException {
-        // Use Platform.runLater to handle scene navigation
-//        Platform.runLater(() -> {
             try {
                 App.setRoot("home-page");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        });
     }
 }

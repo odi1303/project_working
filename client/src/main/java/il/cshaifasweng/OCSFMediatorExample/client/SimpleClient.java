@@ -14,42 +14,16 @@ import java.util.List;
 import il.cshaifasweng.OCSFMediatorExample.entities.models.OrderClient;
 
 public class SimpleClient extends AbstractClient {
-	//private static SimpleClient client = null;
 	private static SimpleClient client;
 	public static List<Restaurant> BranchList = new ArrayList<>();
 	public static List<Long> userBranchesIdList = new ArrayList<>();
 
-    /*static {
-        try {
-            client = new SimpleClient("localhost", 3000);
-			System.out.println("pp");
-			try {
-				System.out.println("initializing client");
-				//EventBus.getDefault().register(this);
-				client.sendToServer("add client");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     private SimpleClient(String host, int port) throws IOException {
 		super(host, port);
-		//EventBus.getDefault().register(this);
 	}
 
 	@FXML
-	public void initialize() {
-		/*try {
-			System.out.println("initializing client");
-			//EventBus.getDefault().register(this);
-			sendToServer("add client");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-	}
+	public void initialize() {}
 
 	public void onDestroy() {
 		EventBus.getDefault().unregister(this);
@@ -57,25 +31,13 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	public void handleMessageFromServer(Object msg) throws IOException {
-		//System.out.println("got the message from the server");
 		System.out.println("the received from server is "+msg);
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post("ERROR");
 		} else if (msg instanceof String message) {
-            //System.out.println(message);
 			if (message.equals("added successfully")) {
 				EventBus.getDefault().post("added");
-			} /*else if (message.contains("does not exist")) {
-				EventBus.getDefault().post(message);
-			} else if (message.contains("the password is ok")) {
-				int startIndex = message.indexOf("(") + 1;F
-				int commaIndex = message.indexOf(",");
-				int endIndex = message.indexOf(")");
-				String username = message.substring(startIndex, commaIndex).trim();
-				String password = message.substring(commaIndex + 1, endIndex).trim();
-				String type=message.substring(endIndex + 1).trim();
-				App.saveClientDetails(username,password,type);
-			}*/
+			}
 		} else if (msg instanceof Message message) {
 			Object payload = message.getPayload();
 			Class<?> expectedType = message.getResponseType();
@@ -85,9 +47,9 @@ public class SimpleClient extends AbstractClient {
 			}
 		} else if (msg instanceof UserType type) {
 			EventBus.getDefault().post(msg);
-			if (type != UserType.Empty) {
+			/*if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
-			}
+			}*/
 		}
 
 		else if (msg instanceof BranchReportEvent) {
@@ -99,8 +61,6 @@ public class SimpleClient extends AbstractClient {
 		}
 
 		else if (msg instanceof List<?> list) {
-			//List<?> list = (List<?>) msg;
-			//System.out.println("hola");
 			if (!list.isEmpty()) {
 				Object first = list.getFirst();
 
@@ -117,18 +77,13 @@ public class SimpleClient extends AbstractClient {
 			}
 		}
 		else if (msg instanceof OrderClient order){
-			System.out.println("gor the order");
+			System.out.println("got the order");
+			System.out.println(EventBus.getDefault().hasSubscriberForEvent(OrderClient.class));
 			EventBus.getDefault().post(order);
 		}
 
 
 	}
-
-
-	/*public void sendGetBranchReport(int year, int month, Long branchId) throws IOException {
-		GetBranchReportRequest request = new GetBranchReportRequest(branchId, year, month);
-		sendToServer(request);
-	}*/
 
 	public static synchronized SimpleClient getClient() throws IOException {
 		System.out.println("client == null"+client==null);

@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ViewComplaints {
-    private String APPROVED_STRING="";
     @FXML
     private ComboBox<String> chose_complaint;
     @FXML // fx:id="chose_status"
@@ -55,7 +54,7 @@ public class ViewComplaints {
             EventBus.getDefault().register(this);
             chose_status.getItems().addAll("Approved", "Denied");
         }
-        //chose_complaint.getItems().add("there are no complaints today");
+
         if (complaints==null||complaints.isEmpty()) {
             new Thread(() -> {
                 try {

@@ -92,17 +92,6 @@ public class BranchReportController {
         headlineText.setText("Branch Report For Branch: " + SelectReportController.getSelectedBranchName() +
                 " For Month: " + SelectReportController.getSelectedMonth() + "/" +
                 SelectReportController.getSelectedYear());
-        /*try {
-            *//*SimpleClient.getClient().sendGetBranchReport(
-                    SelectReportController.getSelectedYear(),
-                    SelectReportController.getSelectedMonth(),
-                    SelectReportController.getSelectedBranchId()
-            );*//*
-            System.out.println("Requested branch report from server");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Platform.runLater(() -> orderSummaryLabel.setText("Error requesting report: " + e.getMessage()));
-        }*/
     }
 
     @FXML

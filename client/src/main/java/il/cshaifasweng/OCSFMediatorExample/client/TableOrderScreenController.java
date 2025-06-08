@@ -98,8 +98,6 @@ public class TableOrderScreenController {
     private void initialize() {
         reservationDate.setValue(LocalDate.now());
         try {
-//            EventBus.getDefault().register(this);
-
 //             Disable past dates in the DatePicker
             reservationDate.setDayCellFactory(datePicker -> new javafx.scene.control.DateCell() {
                 @Override
@@ -127,10 +125,6 @@ public class TableOrderScreenController {
             onDateChanged();
         });
     }
-
-//    public void onDestroy() {
-//        EventBus.getDefault().unregister(this);
-//    }
 
     private void onDateChanged(){
         time.getSelectionModel().clearSelection();
@@ -332,7 +326,6 @@ public class TableOrderScreenController {
         PopupDialogService popupDialogService = new PopupDialogService();
         Platform.runLater(() -> {
             try {
-//                popupDialogService.openPopup("InformationWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
                 PersonalInformation personalInformation = popupDialogService.openPopup("PersonalInformationPopupWindow.fxml", "testing", (Stage) reservationSpace.getScene().getWindow());
                 if (personalInformation == null) {
                     showOptions();
@@ -361,12 +354,10 @@ public class TableOrderScreenController {
                             popupDialogService.openPopup("InformationWindow.fxml", "reservation failed, the restaurant is full at that time", (Stage) reservationSpace.getScene().getWindow());
                             showOptions();
                         }
-                        return;
                     }
                 } else {
                     popupDialogService.openPopup("InformationWindow.fxml", "reservation failed, the restaurant is full at that time", (Stage) reservationSpace.getScene().getWindow());
                     showOptions();
-                    return;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
