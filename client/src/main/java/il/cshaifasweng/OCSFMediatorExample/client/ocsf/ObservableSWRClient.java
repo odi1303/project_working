@@ -8,23 +8,13 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
-/**
- * This class acts as a subclass of <code>AbstractClient</code>
- * and is also an <code>Observable</code> class.
- * Each time a new message is received, observers are notified.
- * This class contains two blocking methods that can be used
- * when a user wishes to send a message and then wait for a reply
- * from the server.
- *
- * @author Dr Robert Lagani&egrave;re
- * @version April 2002
- */
+
 public class ObservableSWRClient extends ObservableClient
 {
   //Instance variables **********************************************
 
   /**
-   * Indicates a that the client is still waiting for a reply.
+   * Indicates that the client is still waiting for a reply.
    */
   public static final String WAITING_FOR_REPLY = "#OC:Waiting for reply.";
 

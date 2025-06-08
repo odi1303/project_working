@@ -95,7 +95,7 @@ public class CancelDelivey {
             if (diffHours >= 3) {
                 emailSender.send_email_respond(email.getText(),delivery_num+delivery.getId().toString()+canceled, acceptedCancel+ending);
                 System.out.println("your delivery canceled successfully for free");
-            } else if (diffHours<3 && diffHours>1){
+            } else if (diffHours == 2){
                 String temp=" due to the late announcement you will be charged with 50% of the order price";
                 emailSender.send_email_respond(email.getText(),delivery_num+delivery.getId().toString()+canceled, acceptedCancel+temp+ending);
                 System.out.println("your delivery canceled successfully for 50% of the order price");

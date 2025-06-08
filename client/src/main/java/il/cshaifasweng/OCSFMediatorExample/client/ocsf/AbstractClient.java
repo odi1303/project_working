@@ -8,55 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-/**
-* The <code> AbstractClient </code> contains all the
-* methods necessary to set up the client side of a client-server
-* architecture.  When a client is thus connected to the
-* server, the two programs can then exchange <code> Object </code>
-* instances.<p>
-*
-* Method <code> handleMessageFromServer </code> must be defined by
-* a concrete subclass. Several other hook methods may also be
-* overriden.<p>
-*
-* Several public service methods are provided to
-* application that use this framework.<p>
-*
-* The modifications made to this class in version 2.2 are:
-* <ul>
-* <li> Method <code>sendToServer()</code> is not
-* declared final anymore. This allows user of the
-* framework to override it, perhaps to perform some
-* filtering before sending the message to the server.
-* However, any overriden version of this method
-* should include a call to the original one.
-* <li> A test is made before calling the
-* <code>handleMessageFromServer</code> method such that
-* when  <code>closeConnection</code> returns, it
-* is garanteed that no new messages will be handled.
-* </ul>
-* The modifications made to this class in version 2.31 are:
-* <ul>
-* <li> The <code>run()</code> method now calls the <code>connectionException</code> 
-* callback when an object of unknown class is received from the input stream
-* or when the message handler throw a <code>RuntimeException</code>.
-* <li> The <code>connectionClosed</code> callback might be called after
-* <code>connectionException</code> if the exception causes the end of te thread.
-* <li> The <code>clientReader</code> reference is set to <code>null</code>
-* earlier in <code>run()</code> method.
-* <li> The call to <code>connectionClosed</code> has been moved from
-* <code>closeConnection</code> to <code>run</code> method to garantee
-* that connection is really closed when this callback is called.
-* </ul><p>
-*
-* Project Name: OCSF (Object Client-Server Framework)<p>
-*
-* @author Dr. Robert Lagani&egrave;re
-* @author Dr. Timothy C. Lethbridge
-* @author Fran&ccedil;ois  B&eacutel;langer
-* @author Paul Holden
-* @version December 2003 (2.31)
-*/
+
 public abstract class AbstractClient implements Runnable
 {
 

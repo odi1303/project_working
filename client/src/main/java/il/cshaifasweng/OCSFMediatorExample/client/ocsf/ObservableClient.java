@@ -8,16 +8,6 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
-/**
- * This class acts as a subclass of <code>AbstractClient</code>
- * and is also an <code>Observable</code> class.
- * Each time a new message is received, observers are notified.
- *
- * @author Dr Robert Lagani&egrave;re
- * @author Dr Timothy C. Lethbridge
- * @author Fran&ccedil;ois B&eacute;lange
- * @version Febuary 2001
- */
 public class ObservableClient extends Observable
 {
   // Class variables ***************************************************
@@ -68,7 +58,7 @@ public class ObservableClient extends Observable
    * Sends an object to the server. This is the only way that
    * methods should communicate with the server.
    *
-   *  @param msg   The message to be sent.
+   *  @param msg The message to be sent.
    */
   final public void sendToServer(Object msg) throws IOException
   {
@@ -78,7 +68,7 @@ public class ObservableClient extends Observable
 // ACCESSING METHODS ------------------------------------------------
 
   /**
-   * Used to find out if the client is connnected.
+   * Used to find out if the client is connected.
    */
   final public boolean isConnected()
   {
@@ -95,7 +85,7 @@ public class ObservableClient extends Observable
 
   /**
    * Sets the server port number for the next connection.
-   * Only has effect if the client is not currently connected.
+   * Only has an effect if the client is not currently connected.
    *
    * @param port the port number.
    */
@@ -114,7 +104,7 @@ public class ObservableClient extends Observable
 
   /**
    * Sets the server host for the next connection.
-   * Only has effect if the client is not currently connected.
+   * Only has an effect if the client is not currently connected.
    *
    * @param host the host name.
    */
@@ -134,7 +124,7 @@ public class ObservableClient extends Observable
 
   /**
    * This method is used to handle messages from the server.  This method
-   * can be overriden but should always call notifyObservers().
+   * can be overridden but should always call notifyObservers().
    *
    * @param message The message received from the client.
    */

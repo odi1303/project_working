@@ -65,16 +65,7 @@ public class ChangeBranchesController {
             return List.of();
         }
     }
-//    private List<String> getAllPossibleBranches() {
-//        return Arrays.asList(
-//                "Rome", "Naples", "Florence",
-//                "Milan", "Venice",
-//                "New York", "Chicago", "Dallas",
-//                "Nashville", "Houston", "Atlanta",
-//                "Tokyo", "Osaka", "Kyoto",
-//                "Fukuoka", "Sapporo"
-//        );
-//    }
+
 
     private List<String> getCheckedBranches() {
         List<String> checkedBranches = new ArrayList<>();
