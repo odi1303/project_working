@@ -348,6 +348,9 @@ public class ManualDatabase {
 // Restaurant 1
         Restaurant r1 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables1);
         r1.name = "Haifa Branch";
+        for (RestaurantTable table : tables1){
+            table.setBranch(r1);
+        }
         table1.setBranch(r1);
         table2.setBranch(r1);
         table3.setBranch(r1);
@@ -362,7 +365,11 @@ public class ManualDatabase {
         OpeningHours wed1 = new OpeningHours(10L, 22L), thu1 = new OpeningHours(10L, 22L), fri1 = new OpeningHours(10L, 22L), sat1 = new OpeningHours(10L, 22L);
         Restaurant r2 = new Restaurant(sun1, mon1, tue1, wed1, thu1, fri1, sat1, tables2);
         r2.name = "Grand Kenyon";
+        for (RestaurantTable table : tables2){
+            table.setBranch(r2);
+        }
         session.save(r2);
+
 
 // Restaurant 3
 
@@ -371,7 +378,11 @@ public class ManualDatabase {
 
         Restaurant r3 = new Restaurant(sun2, mon2, tue2, wed2, thu2, fri2, sat2, tables3);
         r3.name = "Kiryon";
+        for (RestaurantTable table : tables3){
+            table.setBranch(r3);
+        }
         session.save(r3);
+
 
         session.flush();
         session.getTransaction().commit();
