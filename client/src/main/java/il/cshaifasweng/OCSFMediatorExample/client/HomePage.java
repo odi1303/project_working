@@ -51,36 +51,50 @@ public class HomePage {
         reserveButton.setVisible(true);
         showMenu.setVisible(true);
         EditMenu.setVisible(false);
+        EditMenu.setManaged(false);
         orderDelivery.setVisible(true);
         cancelDeliveryOrReservation.setVisible(true);
         fileComplaint.setVisible(true);
         watchComplaints.setVisible(false);
+        watchComplaints.setManaged(false);
         watchBranchesCapacity.setVisible(false);
+        watchBranchesCapacity.setManaged(false);
         viewReports.setVisible(false);
+        viewReports.setManaged(false);
 
         switch (userType) {
             case Employee:
                 watchBranchesCapacity.setVisible(true);
+                watchBranchesCapacity.setManaged(true);
                 break;
             case Dietitian:
                 EditMenu.setVisible(true);
+                EditMenu.setManaged(true);
                 watchBranchesCapacity.setVisible(true);
+                watchBranchesCapacity.setManaged(true);
                 break;
             case BranchManager:
                 watchBranchesCapacity.setVisible(true);
+                watchBranchesCapacity.setManaged(true);
                 viewReports.setVisible(true);
+                viewReports.setManaged(true);
                 break;
             case ChainManager:
                 watchBranchesCapacity.setVisible(true);
+                watchBranchesCapacity.setManaged(true);
                 viewReports.setVisible(false);
+                viewReports.setManaged(true);
                 break;
             case CustomerServiceWorker:
                 watchBranchesCapacity.setVisible(true);
+                watchBranchesCapacity.setManaged(true);
                 watchComplaints.setVisible(true);
+                watchComplaints.setManaged(true);
                 break;
             case Empty:
             default:
                 connectButton.setVisible(true); // Show login button if not logged in
+                connectButton.setManaged(true);
                 break;
         }
     }
