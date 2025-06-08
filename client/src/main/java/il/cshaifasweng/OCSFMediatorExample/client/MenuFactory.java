@@ -14,7 +14,6 @@ public class MenuFactory {
     @FXML
     public void initialize() {
         try {
-//            EventBus.getDefault().register(this);
         } catch (Exception e) {
             throw new RuntimeException();
         }

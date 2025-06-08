@@ -72,12 +72,7 @@ public class ReportsView {
     void to_go_back(ActionEvent event) throws IOException {
         App.setRoot("manager_personal_page");
     }
-/*
-    @Subscribe
-    public void onComplaintsReceived(List<Complain> complaints) {
-        handleReportData(complaints, "Complaints", Complain::getRegisteredAt, Complain::getRestaurantId);
-    }*/
-
+    
     @Subscribe
     public void onDeliveriesReceived(List<Delivery> deliveries) {
         handleReportData(deliveries, "Deliveries", Delivery::getArravilDate, delivery -> delivery.restaurant.getId());

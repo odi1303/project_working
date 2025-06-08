@@ -21,8 +21,6 @@ public class PopupDialogService {
 
         controller.reInitialize(input); //use reInitialize to pass the input to the scene controller and reinitialize the scene with the input.
         popupStage.setScene(new Scene(root)); //show the fxml in the popup window, not visible until now.
-        //popupStage.setResizable(false); //blocks changing the pop-up window location, shape and size.
-
         popupStage.showAndWait();
 
         return controller.getOutput();

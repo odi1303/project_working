@@ -44,9 +44,7 @@ public class PersonalInformationPopupWindowController implements PopupController
     }
 
     @Override
-    public void reInitialize(String input){
-
-    }
+    public void reInitialize(String input){}
 
     @Override
     public PersonalInformation getOutput(){

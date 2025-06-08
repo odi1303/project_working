@@ -27,5 +27,4 @@ public class SuggestionView {
     void to_go_back(ActionEvent event) throws IOException {
         App.setRoot("manager_personal_page");
     }
-
 }
