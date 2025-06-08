@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities.models;
 
-//import javafx.fxml.FXML;
 
 import jakarta.persistence.*;
 
