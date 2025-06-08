@@ -106,11 +106,14 @@ public class ManualDatabase {
     @Transactional
     public void generateData() {
         session.beginTransaction();
+
+        String foodImageUrl = "file:/C:/Users/sharo/Documents/Kiran_workspace/software_enginiring/project_working/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
+
         MenuItem pizza = new MenuItem(
                 "Pizza",
                 "Cheese pizza with tomato sauce",
                 35,
-                "images/pizza.jpg",
+                foodImageUrl,
                 Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Cheese", "Tomato Sauce", "Dough"),
                 new ArrayList<>(),
@@ -125,7 +128,7 @@ public class ManualDatabase {
                 "Burger",
                 "Beef burger with lettuce and tomato",
                 40,
-                "images/burger.jpg",
+                foodImageUrl,
                 Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Beef Patty", "Lettuce", "Tomato", "Bun"),
                 new ArrayList<>(),
@@ -136,7 +139,7 @@ public class ManualDatabase {
                 "Pasta",
                 "Spaghetti with meatballs",
                 30,
-                "images/pasta.jpg",
+                foodImageUrl,
                 Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Spaghetti", "Meatballs", "Tomato Sauce"),
                 new ArrayList<>(),
@@ -147,7 +150,7 @@ public class ManualDatabase {
                 "Salad",
                 "Fresh vegetable salad",
                 25,
-                "images/salad.jpg",
+                foodImageUrl,
                 Arrays.asList("Kiryon", "Grand Kenyon"),
                 Arrays.asList("Lettuce", "Tomato", "Cucumber", "Dressing"),
                 new ArrayList<>(),
@@ -158,7 +161,7 @@ public class ManualDatabase {
                 "Sushi",
                 "Assorted sushi platter",
                 55,
-                "images/sushi.jpg",
+                foodImageUrl,
                 Arrays.asList("Kiryon"),
                 Arrays.asList("Rice", "Fish", "Seaweed", "Vegetables"),
                 new ArrayList<>(),
@@ -169,7 +172,7 @@ public class ManualDatabase {
                 "Hummus Plate",
                 "Creamy hummus served with vegetables and pita.",
                 25,
-                "https://example.com/images/hummus.jpg",
+                foodImageUrl,
                 List.of("Grand Kenyon"),
                 List.of("Hummus", "Tomato", "Onion", "Olives"),
                 new ArrayList<>(),
@@ -180,7 +183,7 @@ public class ManualDatabase {
                 "Falafel Plate",
                 "Delicious falafel balls served with hummus and salad.",
                 22,
-                "https://example.com/images/falafel.jpg",
+                foodImageUrl,
                 List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Lettuce", "Tomato"),
                 new ArrayList<>(),
@@ -191,7 +194,7 @@ public class ManualDatabase {
                 "Cheese Sandwich",
                 "A simple cheese sandwich with tomato and lettuce.",
                 20,
-                "https://example.com/images/cheese_sandwich.jpg",
+                foodImageUrl,
                 List.of("Grand Kenyon"),
                 List.of("Cheese", "Tomato", "Lettuce"),
                 new ArrayList<>(),
@@ -202,7 +205,7 @@ public class ManualDatabase {
                 "Beef Salad",
                 "Salad with grilled beef, lettuce, tomato, and cucumber.",
                 40,
-                "https://example.com/images/beef_salad.jpg",
+                foodImageUrl,
                 List.of("Kiryon"),
                 List.of("Beef", "Lettuce", "Tomato", "Cucumber"),
                 new ArrayList<>(),
@@ -213,7 +216,7 @@ public class ManualDatabase {
                 "Falafel Wrap",
                 "Falafel served in pita bread with lettuce and hummus.",
                 24,
-                "https://example.com/images/falafel_wrap.jpg",
+                foodImageUrl,
                 List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Lettuce"),
                 new ArrayList<>(),
@@ -224,7 +227,7 @@ public class ManualDatabase {
                 "Mixed Platter",
                 "Combination of falafel, hummus, tomato, and olives.",
                 30,
-                "https://example.com/images/mixed_platter.jpg",
+                foodImageUrl,
                 List.of("Kiryon", "Grand Kenyon"),
                 List.of("Falafel", "Hummus", "Tomato", "Olives"),
                 new ArrayList<>(),
@@ -337,9 +340,10 @@ public class ManualDatabase {
         RestaurantTable table2 = new RestaurantTable(2L, true, null); // Table 2 with 6 seats
         RestaurantTable table3 = new RestaurantTable(2L, true, null); // Table 3 with 2 seats
 
-        List<RestaurantTable> tables1 = new ArrayList<>(List.of(table1));
-        List<RestaurantTable> tables2 = new ArrayList<>(List.of(table2));
-        List<RestaurantTable> tables3 = new ArrayList<>(List.of(table3));
+
+        List<RestaurantTable> tables1 = createTablesList();
+        List<RestaurantTable> tables2 = createTablesList();
+        List<RestaurantTable> tables3 = createTablesList();
 
 // Restaurant 1
         Restaurant r1 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables1);
@@ -352,16 +356,22 @@ public class ManualDatabase {
         session.saveOrUpdate(table2);
         session.saveOrUpdate(table3);
         session.saveOrUpdate(r1);
-/*
+
 // Restaurant 2
-        Restaurant r2 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables2);
+        OpeningHours sun1 = new OpeningHours(10L, 22L), mon1 = new OpeningHours(10L, 22L), tue1 = new OpeningHours(10L, 22L);
+        OpeningHours wed1 = new OpeningHours(10L, 22L), thu1 = new OpeningHours(10L, 22L), fri1 = new OpeningHours(10L, 22L), sat1 = new OpeningHours(10L, 22L);
+        Restaurant r2 = new Restaurant(sun1, mon1, tue1, wed1, thu1, fri1, sat1, tables2);
         r2.name = "Grand Kenyon";
         session.save(r2);
 
 // Restaurant 3
-        Restaurant r3 = new Restaurant(sun, mon, tue, wed, thu, fri, sat, tables3);
+
+        OpeningHours sun2 = new OpeningHours(10L, 22L), mon2 = new OpeningHours(10L, 22L), tue2 = new OpeningHours(10L, 22L);
+        OpeningHours wed2 = new OpeningHours(10L, 22L), thu2 = new OpeningHours(10L, 22L), fri2 = new OpeningHours(10L, 22L), sat2 = new OpeningHours(10L, 22L);
+
+        Restaurant r3 = new Restaurant(sun2, mon2, tue2, wed2, thu2, fri2, sat2, tables3);
         r3.name = "Kiryon";
-        session.save(r3);*/
+        session.save(r3);
 
         session.flush();
         session.getTransaction().commit();
@@ -497,6 +507,27 @@ public class ManualDatabase {
     }
     public Session getSession() {
         return session;
+    }
+
+    private List<RestaurantTable> createTablesList() {
+        List<RestaurantTable> tables = new ArrayList<>();
+
+        // Create tables with 2 seats
+        for (int i = 0; i < 2; i++) {
+            tables.add(new RestaurantTable(2L, true, null));
+        }
+
+        // Create tables with 3 seats
+        for (int i = 0; i < 2; i++) {
+            tables.add(new RestaurantTable(3L, true, null));
+        }
+
+        // Create tables with 4 seats
+        for (int i = 0; i < 2; i++) {
+            tables.add(new RestaurantTable(4L, true, null));
+        }
+
+        return tables;
     }
 
 }
@@ -882,7 +913,7 @@ class DeliveriesBL {
 class RestaurantsBL {
     public static OpeningTimes getOpeningTimes(Session session, String branch, LocalDate date) {
         System.out.println("hello from get opening times: ");
-        final var opening_hours = session.byNaturalId(Restaurant.class).using("restaurant_name", branch).loadOptional().map(r->r.getOpeningHours(date));
+        final var opening_hours = session.byNaturalId(Restaurant.class).using("name", branch).loadOptional().map(r->r.getOpeningHours(date));
         System.out.println("hello from get opening times: "+opening_hours);
         return new OpeningTimes(branch, opening_hours.orElseThrow().startHour + ":00");
     }
