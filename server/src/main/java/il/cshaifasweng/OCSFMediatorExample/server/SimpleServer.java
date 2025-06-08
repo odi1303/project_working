@@ -144,8 +144,8 @@ public class SimpleServer extends AbstractServer{
 			client.sendToClient(openComplaints);
 		}
 		else if (msgString.equals("send all reservation")) {
-			List<OrderClient>orders = db_.getAll(OrderClient.class);
-			System.out.println("num of orders=" + orders.size());
+			List<Reservation>orders = db_.getAll(Reservation.class);
+			System.out.println("num of reservations=" + orders.size());
 			client.sendToClient(orders);
 		}
 		else if (msgString.equals("send all orders")) {
@@ -177,35 +177,14 @@ public class SimpleServer extends AbstractServer{
 
 		}
 
-		else if (msg instanceof GetBranchReportRequest request) {
-			try {
-				// Query the database for BranchReportEnt
-				List<BranchReportEnt> reports = db_.getAll(BranchReportEnt.class);
-				BranchReportEnt report = reports.stream()
-						.filter(r -> r.getBranch().getId() == request.getBranchId() &&
-								r.getYear() == request.getYear() &&
-								r.getMonth() == request.getMonth())
-						.findFirst()
-						.orElse(null);
-				System.out.println("Sending BranchReportEnt for branchId=" + request.getBranchId() +
-						", year=" + request.getYear() + ", month=" + request.getMonth());
-				client.sendToClient(report);
-			} catch (Exception e) {
-				e.printStackTrace();
-				client.sendToClient(null);
-			}
-		}
-
 		else if (msg instanceof OrderClient order) {
 			try {
-				System.out.println("saved order");
-
 				db_.saveOrUpdate(order);  // suspect this is blocking or failing
 
 				System.out.println("sending the order");
-				List<OrderClient> openComplaints = db_.getAll(OrderClient.class);
-				System.out.println("num of open orders=" + openComplaints.size());
-                for (OrderClient openComplaint : openComplaints) {
+				List<OrderClient> orders = db_.getAll(OrderClient.class);
+				System.out.println("num of open orders=" + orders.size());
+                for (OrderClient openComplaint : orders) {
                     if (order == openComplaint) {
                         client.sendToClient(openComplaint);
                     }

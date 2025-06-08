@@ -48,7 +48,7 @@ public class MenuController {
 
     private MenuClient currentMenu;
     private PersonalInformation personalInformation;
-    private ArrayList<MenuItem> dishesInOrder = new ArrayList<>();
+    private final ArrayList<MenuItem> dishesInOrder = new ArrayList<>();
     private boolean isOrder;
     private boolean isDelete = false;
     private boolean isMain; //used to differentiate between menu used for main menu or used for un inputted menu

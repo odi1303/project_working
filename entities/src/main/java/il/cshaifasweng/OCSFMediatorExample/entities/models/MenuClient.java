@@ -32,18 +32,18 @@ public class MenuClient implements Serializable {
     public MenuClient(MenuClient menuClient) {
         this.menuName = menuClient.menuName;
         this.menu = new ArrayList<>();
-        for (MenuItem item : menuClient.menu) {
+        /*for (MenuItem item : menuClient.menu) {
             this.menu.add(MenuItem.deepCopyMenuItem(item));
 //            if (item.getPersonalPreferences() != null){
 //                this.menu.add(new MenuItem(item.getName(), item.getDescription(), item.getPrice(), item.getImageUrl(), item.getAvailableBranches(),item.getIngredients(), item.getPersonalPreferences(), item.getSale()));
 //            }else{
 //                this.menu.add(MenuItem.deepCopyMenuItem(item));
 //            }
-        }
+        }*/
     }
     public MenuClient(MenuServer menuClient) {
         this.menuName = menuClient.getMenuName();
-        this.menu = new ArrayList<>(menuClient.getMenu());
+        this.menu = menuClient.getMenu();
         /*for (MenuItem item : menuClient.menu) {
             this.menu.add(MenuItem.deepCopyMenuItem(item));
 //            if (item.getPersonalPreferences() != null){
@@ -58,7 +58,7 @@ public class MenuClient implements Serializable {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
-            menu = new ArrayList<>(dishes);
+            menu = dishes;
         }
         menuName = "";
     }
@@ -67,7 +67,7 @@ public class MenuClient implements Serializable {
         if (dishes == null){
             menu = new ArrayList<>();
         }else {
-            menu = new ArrayList<>(dishes);
+            menu = dishes;
         }
         this.menuName = menuName;
     }
