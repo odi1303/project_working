@@ -5,8 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.models.User;
 
 import java.io.Serializable;
 import java.util.Date;
-//האם צריך שכל אחת מהמחלקות היורשות יהיו טבלה בפני עצמה? או שכולם תחת המחלקה הזאת? צריך לחשוב על זה ולהחליט
-// לדעתי צריך להוסיף לפה @etinity אבל זה תלוי בתכנון
+
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="origin", discriminatorType = DiscriminatorType.STRING)
 @Data()
@@ -37,9 +36,6 @@ public class/*abstract*/ Complain implements Serializable
 
     @Column(name = "compensation")
     public Long compensation;
-
-    /*@ManyToOne()
-    public User complainer;*/
 
     @Column(name = "email")
     public String email;
@@ -88,13 +84,6 @@ public class/*abstract*/ Complain implements Serializable
         this.compensation = compensation;
     }
 
-    /*public User getComplainer() {
-        return complainer;
-    }
-
-    public void setComplainer(User complainer) {
-        this.complainer = complainer;
-    }*/
 
     public Complain(String description, Date registeredAt, User complainer) {
         this.description = description;

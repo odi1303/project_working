@@ -50,7 +50,6 @@ public class CancelReservationScreenController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 ReservationListContainer.getChildren().add(hbox);
             }
         });
