@@ -526,17 +526,17 @@ public class ManualDatabase {
 
         // Create tables with 2 seats
         for (int i = 0; i < 2; i++) {
-            tables.add(new RestaurantTable(2L, true, null));
+            tables.add(new RestaurantTable(2L, true, new ArrayList<>()));
         }
 
         // Create tables with 3 seats
         for (int i = 0; i < 2; i++) {
-            tables.add(new RestaurantTable(3L, true, null));
+            tables.add(new RestaurantTable(3L, true, new ArrayList<>()));
         }
 
         // Create tables with 4 seats
         for (int i = 0; i < 2; i++) {
-            tables.add(new RestaurantTable(4L, true, null));
+            tables.add(new RestaurantTable(4L, true, new ArrayList<>()));
         }
 
         return tables;
