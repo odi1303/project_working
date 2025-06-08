@@ -47,9 +47,9 @@ public class SimpleClient extends AbstractClient {
 			}
 		} else if (msg instanceof UserType type) {
 			EventBus.getDefault().post(msg);
-			if (type != UserType.Empty) {
+			/*if (type != UserType.Empty) {
 				App.saveClientDetails(null, null, type);
-			}
+			}*/
 		}
 
 		else if (msg instanceof BranchReportEvent) {
@@ -77,7 +77,8 @@ public class SimpleClient extends AbstractClient {
 			}
 		}
 		else if (msg instanceof OrderClient order){
-			System.out.println("gor the order");
+			System.out.println("got the order");
+			System.out.println(EventBus.getDefault().hasSubscriberForEvent(OrderClient.class));
 			EventBus.getDefault().post(order);
 		}
 

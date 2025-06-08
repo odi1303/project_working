@@ -126,7 +126,8 @@ public class ManualDatabase {
         session.saveOrUpdate(dietitian);
         session.saveOrUpdate(customerServiceWorker);
 
-        String foodImageUrl = "file:/C:/Users/sharo/Documents/Kiran_workspace/software_enginiring/project_working/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
+
+        String foodImageUrl = "client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/menuItemPictures/FOOD_image.png";
 
         MenuItem pizza = new MenuItem(
                 "Pizza",

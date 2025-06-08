@@ -70,6 +70,11 @@ public class HelloController {
                     wrongDetails.setText("Navigation error: " + e.getMessage());
                     e.printStackTrace();
                 }
+                try {
+                    App.setRoot("home-page");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

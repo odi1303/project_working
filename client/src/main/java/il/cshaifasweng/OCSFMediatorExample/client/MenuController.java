@@ -492,8 +492,8 @@ public class MenuController {
     }
 
 
-    @Subscribe
-    public void onEventDummy(Object ignored) {}
+    /*@Subscribe
+    public void onEventDummy(Object ignored) {}*/
 
 
     private void sendOrder(OrderClient order) {
@@ -501,7 +501,7 @@ public class MenuController {
         try{
             System.out.println("is the order null?"+order==null);
             App.sendMessageToServer(order);
-            App.setRoot("home-page");
+            //App.setRoot("home-page");
         }catch(Exception e){
             e.printStackTrace();
         }
